@@ -8,55 +8,46 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; }
         .container { max-width: 1600px; margin: 0 auto; }
-        
         header { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        h1 { color: #333; margin-bottom: 15px; font-size: 32px; }
-        .guide { 
-            background: #eef7ff; 
-            padding: 15px 20px; 
-            border-radius: 8px; 
-            border-left: 5px solid #007aff;
-            color: #333;
-            font-size: 15px;
-            line-height: 1.6;
-        }
+        .guide { background: #eef7ff; padding: 15px; border-radius: 8px; border-left: 5px solid #007aff; font-size: 15px; line-height: 1.6; }
 
         .controls { background: white; padding: 20px 30px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
         .name-input-group { display: flex; min-width: 350px; gap: 10px; }
-        .name-input-group input { padding: 10px 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; flex: 1; }
-
-        .btn-gem { padding: 10px 25px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; }
+        .name-input-group input { padding: 10px; border: 2px solid #ddd; border-radius: 8px; flex: 1; }
+        .btn-gem { padding: 10px 25px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
         .btn-gem.saved { background: #34c759; }
 
-        #adminArea { display: none; gap: 10px; align-items: center; border-left: 2px solid #eee; padding-left: 15px; }
-        .admin-btn { padding: 10px 20px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
+        #adminArea { display: none; gap: 10px; border-left: 2px solid #eee; padding-left: 15px; align-items: center; }
+        .admin-btn { padding: 10px 15px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; }
+        .btn-ai { background: #5856d6; }
 
         .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .book-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s; position: relative; display: flex; flex-direction: column; }
+        .book-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s; display: flex; flex-direction: column; cursor: pointer; text-align: center; }
         .book-card:hover { transform: translateY(-4px); }
-        .book-title { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
-        .book-author { color: #666; font-size: 14px; margin-bottom: 8px; }
-
-        /* Rettet link styling */
-        .card-search-link { font-size: 13px; color: #007aff; text-decoration: none; margin-bottom: 12px; display: inline-block; position: relative; z-index: 5; }
-        .card-search-link:hover { text-decoration: underline; color: #0056b3; }
         
-        .btn-direct-claim { width: 100%; padding: 10px; margin-top: 15px; border: none; border-radius: 8px; background: #007aff; color: white; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.2s; position: relative; z-index: 5; }
+        .card-img { width: 100px; height: 140px; object-fit: cover; margin: 0 auto 15px; border-radius: 4px; background: #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .book-title { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+        .book-author { color: #666; font-size: 14px; margin-bottom: 5px; }
+        .info-hint { font-size: 12px; color: #007aff; margin-bottom: 12px; font-style: italic; }
+
+        .btn-direct-claim { width: 100%; padding: 10px; margin-top: 15px; border: none; border-radius: 8px; background: #007aff; color: white; font-weight: 600; cursor: pointer; }
         .btn-direct-claim.claimed { background: #ff3b30; }
         .btn-direct-claim:disabled { background: #ccc; cursor: not-allowed; }
 
-        .claim-slots { display: flex; gap: 6px; margin-top: 10px; }
-        .claim-slot { flex: 1; padding: 6px; background: #f8f8f8; border: 2px dashed #ddd; border-radius: 6px; font-size: 12px; text-align: center; color: #999; }
-        .claim-slot.filled { background: #e3f2fd; border: 2px solid #2196f3; color: #1976d2; font-weight: 600; }
-        .claim-slot.winner { background: #ffd700; border: 2px solid #ffa000; color: #c67100; animation: pulse 1.5s infinite; }
-        
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .claim-slots { display: flex; gap: 6px; margin-top: 10px; justify-content: center; }
+        .claim-slot { width: 60px; padding: 6px; background: #f8f8f8; border: 1px solid #ddd; border-radius: 6px; font-size: 10px; text-align: center; color: #666; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .claim-slot.winner { background: #ffd700; border-color: #ffa000; color: #000; font-weight: bold; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
         .modal.active { display: flex; }
-        .modal-content { background: white; border-radius: 16px; padding: 30px; max-width: 500px; width: 90%; }
+        .modal-content { background: white; border-radius: 16px; padding: 30px; max-width: 500px; width: 95%; max-height: 90vh; overflow-y: auto; text-align: center; }
+        .modal-img { width: 140px; height: 200px; object-fit: cover; margin-bottom: 20px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .modal-desc { margin: 15px 0; font-size: 14px; line-height: 1.5; color: #444; background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; text-align: left; }
         .modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
         .modal-buttons button { flex: 1; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
+        
+        .winner-list-item { padding: 8px; background: #f0f0f0; margin-top: 5px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
+        .winner-list-item.is-winner { background: #ffd700; border: 1px solid #ffa000; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -64,10 +55,8 @@
         <header>
             <h1>📚 Bogsnup</h1>
             <div class="guide">
-                <strong>Vejledning:</strong><br>
-                1. Skriv dit navn og klik på <strong>GEM</strong>.<br>
-                2. Klik på <strong>"Jeg ønsker mig bogen her"</strong> for at ønske.<br>
-                3. Klik på titlen for at se alle claims.
+                <strong>Vejledning:</strong> 1. Skriv dit navn & GEM. 2. Klik på bogen for info. 3. Klik "Jeg ønsker mig bogen her".<br>
+                <em>Regel: Man kan vinde flere bøger, hvis man er den eneste der har ønsket dem, men kun én bog hvor der er flere om buddet.</em>
             </div>
         </header>
 
@@ -76,28 +65,29 @@
                 <input type="text" id="userName" placeholder="Dit navn">
                 <button class="btn-gem" id="saveNameBtn" onclick="saveUserName()">GEM</button>
             </div>
-
-            <div id="adminArea" class="admin-section">
-                <input type="password" id="adminPass" placeholder="Admin Kode">
-                <button id="lockBtn" onclick="toggleAdmin()">🔓</button>
+            <div id="adminArea">
+                <input type="password" id="adminPass" placeholder="Kode">
+                <button class="admin-btn" onclick="toggleAdmin()">🔓</button>
                 <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="handleCSVUpload(event)">
                 <button class="admin-btn" onclick="document.getElementById('csvFileInput').click()" id="btnUpload" disabled>📁 CSV</button>
-                <button class="admin-btn" onclick="runAllLotteries()" id="btnLottery" disabled>🎲 Lodtrækning</button>
-                <button class="admin-btn" style="background:#ff3b30" onclick="clearAllData()" id="btnReset" disabled>🔄 Nulstil Alt</button>
+                <button class="admin-btn btn-ai" onclick="fetchAllInfo()" id="btnFetch" disabled>✨ Hent info</button>
+                <button class="admin-btn" onclick="runSmartLottery()" id="btnLottery" disabled>🎲 Lodtrækning</button>
+                <button class="admin-btn" style="background:#ff3b30" onclick="clearAllData()" id="btnReset" disabled>🔄 Slet Alt</button>
             </div>
         </div>
-
         <div class="book-grid" id="bookGrid"></div>
     </div>
 
     <div class="modal" id="bookModal">
         <div class="modal-content">
+            <img id="modalImg" class="modal-img" src="" alt="Forside" style="display: none;">
             <h2 id="modalTitle"></h2>
-            <p id="modalAuthor" style="margin-bottom:20px; color:#666;"></p>
-            <div id="modalBody"></div>
+            <p id="modalAuthor" style="color:#666; margin-bottom:10px;"></p>
+            <div id="modalDesc" class="modal-desc"></div>
+            <div id="modalClaims"></div>
             <div class="modal-buttons">
-                <button style="background:#007aff; color:white;" id="modalActionButton"></button>
-                <button onclick="closeModal()">Luk</button>
+                <button id="modalActionButton" style="background:#007aff; color:white;"></button>
+                <button onclick="closeModal()" style="background:#eee;">Luk</button>
             </div>
         </div>
     </div>
@@ -106,18 +96,11 @@
         let books = JSON.parse(localStorage.getItem('bookShuffleData')) || [];
         let currentBookId = null;
 
-        document.addEventListener('keydown', function(e) {
-            if (e.shiftKey && e.key === 'L') {
-                const area = document.getElementById('adminArea');
-                area.style.display = (area.style.display === 'flex') ? 'none' : 'flex';
-            }
-        });
+        document.addEventListener('keydown', e => { if (e.shiftKey && e.key === 'L') document.getElementById('adminArea').style.display = 'flex'; });
         
         function toggleAdmin() {
             if (document.getElementById('adminPass').value === "Bogsnup2026") {
                 document.querySelectorAll('.admin-btn').forEach(b => b.disabled = false);
-                document.getElementById('lockBtn').textContent = "🔒";
-                document.getElementById('adminPass').disabled = true;
             } else { alert("Forkert kode!"); }
         }
 
@@ -126,8 +109,7 @@
             if (name) {
                 localStorage.setItem('shufflerUserName', name);
                 const btn = document.getElementById('saveNameBtn');
-                btn.textContent = '✓ Gemt';
-                btn.classList.add('saved');
+                btn.textContent = '✓ Gemt'; btn.classList.add('saved');
                 setTimeout(() => { btn.textContent = 'GEM'; btn.classList.remove('saved'); }, 2000);
                 renderBooks();
             }
@@ -139,48 +121,111 @@
                 const lines = e.target.result.split('\n').filter(l => l.trim());
                 books = lines.slice(1).map((l, i) => {
                     const p = l.split(/[;,]/);
-                    return { id: 'book-' + Date.now() + '-' + i, title: p[0].trim(), author: p[1]?.trim() || 'Ukendt', claims: [], winner: null };
+                    return { 
+                        id: 'b-' + Date.now() + '-' + i, 
+                        title: p[0]?.trim(), 
+                        author: p[1]?.trim() || 'Ukendt', 
+                        desc: 'Brug "Hent info" for beskrivelse.',
+                        cover: '',
+                        claims: [],
+                        winner: null
+                    };
                 });
                 saveData(); renderBooks();
             };
             reader.readAsText(event.target.files[0]);
         }
 
+        async function fetchAllInfo() {
+            const btn = document.getElementById('btnFetch');
+            btn.textContent = "..."; btn.disabled = true;
+            for (let b of books) {
+                try {
+                    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(b.title)}+inauthor:${encodeURIComponent(b.author)}&langRestrict=da`);
+                    const data = await res.json();
+                    if (data.items && data.items[0]) {
+                        const info = data.items[0].volumeInfo;
+                        b.desc = info.description || b.desc;
+                        b.cover = info.imageLinks ? info.imageLinks.thumbnail.replace('http:', 'https:') : '';
+                    }
+                } catch (e) {}
+            }
+            btn.textContent = "✨ Hent info"; btn.disabled = false;
+            saveData(); renderBooks();
+        }
+
+        // --- DEN NYE SMART LODTRÆKNING ---
+        function runSmartLottery() {
+            if (!confirm("Vil du køre lodtrækningen nu?")) return;
+            
+            // Nulstil tidligere vindere
+            books.forEach(b => b.winner = null);
+            
+            let usersWithPopularWin = new Set();
+            
+            // 1. Gennemløb alle bøger med kun 1 claim (Garanteret gevinst)
+            books.forEach(b => {
+                if (b.claims.length === 1) {
+                    b.winner = b.claims[0];
+                }
+            });
+
+            // 2. Gennemløb bøger med flere claims (Lodtrækning med begrænsning)
+            // Vi blander rækkefølgen af bøger for at gøre det fair
+            let popularBooks = books.filter(b => b.claims.length > 1);
+            popularBooks.sort(() => Math.random() - 0.5);
+
+            popularBooks.forEach(b => {
+                // Find de kandidater på bogen, som ikke har vundet en populær bog endnu
+                let eligibleCandidates = b.claims.filter(user => !usersWithPopularWin.has(user));
+                
+                if (eligibleCandidates.length > 0) {
+                    let luckyWinner = eligibleCandidates[Math.floor(Math.random() * eligibleCandidates.length)];
+                    b.winner = luckyWinner;
+                    usersWithPopularWin.add(luckyWinner);
+                } else {
+                    // Hvis ALLE på listen allerede har vundet noget andet, trækker vi lod blandt alle alligevel som fallback
+                    b.winner = b.claims[Math.floor(Math.random() * b.claims.length)];
+                }
+            });
+
+            saveData();
+            renderBooks();
+            alert("Lodtrækning fuldført!");
+        }
+
         function renderBooks() {
             const grid = document.getElementById('bookGrid');
             const user = document.getElementById('userName').value.trim();
-            grid.innerHTML = books.length ? '' : '<p style="grid-column: 1/-1; text-align: center; padding: 50px; color: #999;">Listen er tom.</p>';
+            grid.innerHTML = books.length ? '' : '<p style="text-align:center; grid-column:1/-1;">Upload CSV for at starte.</p>';
             
             books.forEach(b => {
                 const card = document.createElement('div');
                 card.className = 'book-card';
+                card.onclick = () => openModal(b.id);
                 
-                // Opdateret søgelink der er mere "Google-venligt"
-                const queryStr = `${b.title} ${b.author} carlsen.dk lindhardtogringhof.dk`;
-                const googleLink = `https://www.google.com/search?q=${encodeURIComponent(queryStr)}`;
-
                 const slots = Array(4).fill().map((_, i) => {
                     const c = b.claims[i];
-                    return `<div class="claim-slot ${c ? 'filled' : ''}">${c || '-'}</div>`;
+                    const isWin = b.winner === c && c;
+                    return `<div class="claim-slot ${isWin ? 'winner' : ''}">${c || '-'} ${isWin ? '🏆' : ''}</div>`;
                 }).join('');
 
                 const isClaimed = user && b.claims.includes(user);
-                const btnText = isClaimed ? "Fjern ønske" : (b.claims.length >= 4 ? "Fuld" : "Jeg ønsker mig bogen her");
-                const btnDisabled = !user || (!isClaimed && b.claims.length >= 4);
+                const coverImg = b.cover ? `<img src="${b.cover}" class="card-img">` : `<div class="card-img"></div>`;
 
                 card.innerHTML = `
                     <div style="flex-grow: 1;">
-                        <div class="book-title" onclick="openModal('${b.id}')" style="cursor:pointer">${b.title}</div>
-                        <div class="book-author" onclick="openModal('${b.id}')" style="cursor:pointer">${b.author}</div>
-                        <a href="${googleLink}" target="_blank" class="card-search-link" onclick="event.stopPropagation()">🔍 Læs mere om bogen her</a>
-                        <div class="claim-slots" onclick="openModal('${b.id}')" style="cursor:pointer">${slots}</div>
+                        ${coverImg}
+                        <div class="book-title">${b.title}</div>
+                        <div class="book-author">${b.author}</div>
+                        <div class="info-hint">ℹ️ Klik for beskrivelse</div>
+                        <div class="claim-slots">${slots}</div>
                     </div>
                     <button class="btn-direct-claim ${isClaimed ? 'claimed' : ''}" 
-                            ${btnDisabled ? 'disabled' : ''} 
-                            onclick="toggleClaim('${b.id}')">
-                        ${!user ? 'Skriv navn først' : btnText}
-                    </button>
-                `;
+                            ${(!user || (!isClaimed && b.claims.length >= 4)) ? 'disabled' : ''} 
+                            onclick="event.stopPropagation(); toggleClaim('${b.id}')">
+                        ${!user ? 'Skriv navn' : (isClaimed ? 'Fjern ønske' : (b.claims.length >= 4 ? 'Fuld' : 'Jeg ønsker mig bogen her'))}
+                    </button>`;
                 grid.appendChild(card);
             });
         }
@@ -188,61 +233,37 @@
         function toggleClaim(id) {
             const user = document.getElementById('userName').value.trim();
             if (!user) return;
-            
             const b = books.find(x => x.id === id);
-            if (!b) return;
-
-            const index = b.claims.indexOf(user);
-            if (index > -1) {
-                b.claims.splice(index, 1);
-            } else if (b.claims.length < 4) {
-                b.claims.push(user);
-            }
-            
-            saveData();
-            renderBooks();
-            if (currentBookId === id && document.getElementById('bookModal').classList.contains('active')) {
-                openModal(id);
-            }
+            const idx = b.claims.indexOf(user);
+            if (idx > -1) { b.claims.splice(idx, 1); if(b.winner === user) b.winner = null; }
+            else if (b.claims.length < 4) b.claims.push(user);
+            saveData(); renderBooks();
+            if (currentBookId === id) openModal(id);
         }
 
         function openModal(id) {
             currentBookId = id;
             const b = books.find(x => x.id === id);
             const user = document.getElementById('userName').value.trim();
+            const img = document.getElementById('modalImg');
+            if (b.cover) { img.src = b.cover; img.style.display = 'inline-block'; } else { img.style.display = 'none'; }
             document.getElementById('modalTitle').textContent = b.title;
             document.getElementById('modalAuthor').textContent = b.author;
-            
-            let claimsHtml = b.claims.map(c => `
-                <div style="padding:10px; background:#f8f8f8; border-radius:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-                    <span>${c}</span>
-                </div>`).join('') || 'Ingen ønsker endnu';
-            
-            document.getElementById('modalBody').innerHTML = claimsHtml;
-            
+            document.getElementById('modalDesc').textContent = b.desc;
+            document.getElementById('modalClaims').innerHTML = b.claims.map(c => `
+                <div class="winner-list-item ${b.winner === c ? 'is-winner' : ''}">
+                    <span>${c}</span> ${b.winner === c ? '🏆 VINDER' : ''}
+                </div>`).join('');
             const btn = document.getElementById('modalActionButton');
-            const isClaimed = user && b.claims.includes(user);
-            
-            btn.textContent = isClaimed ? "Fjern ønske" : "Jeg ønsker mig bogen her";
-            btn.style.background = isClaimed ? "#ff3b30" : "#007aff";
+            btn.textContent = user && b.claims.includes(user) ? "Fjern ønske" : "Jeg ønsker mig bogen her";
             btn.onclick = () => toggleClaim(id);
-            
             document.getElementById('bookModal').classList.add('active');
-        }
-
-        function runAllLotteries() {
-            books.forEach(b => { if (b.claims.length > 0) b.winner = b.claims[Math.floor(Math.random() * b.claims.length)]; });
-            saveData(); renderBooks();
         }
 
         function clearAllData() { if (confirm("Slet alt?")) { books = []; saveData(); renderBooks(); } }
         function saveData() { localStorage.setItem('bookShuffleData', JSON.stringify(books)); }
         function closeModal() { document.getElementById('bookModal').classList.remove('active'); }
-        window.onload = () => { 
-            const n = localStorage.getItem('shufflerUserName');
-            if (n) document.getElementById('userName').value = n;
-            renderBooks(); 
-        };
+        window.onload = renderBooks;
     </script>
 </body>
 </html>
