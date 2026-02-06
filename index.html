@@ -37,10 +37,11 @@
         .book-title { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
         .book-author { color: #666; font-size: 14px; margin-bottom: 8px; }
 
-        .card-search-link { font-size: 13px; color: #007aff; text-decoration: none; margin-bottom: 12px; display: inline-block; position: relative; z-index: 2; }
-        .card-search-link:hover { text-decoration: underline; }
+        /* Rettet link styling */
+        .card-search-link { font-size: 13px; color: #007aff; text-decoration: none; margin-bottom: 12px; display: inline-block; position: relative; z-index: 5; }
+        .card-search-link:hover { text-decoration: underline; color: #0056b3; }
         
-        .btn-direct-claim { width: 100%; padding: 10px; margin-top: 15px; border: none; border-radius: 8px; background: #007aff; color: white; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.2s; position: relative; z-index: 2; }
+        .btn-direct-claim { width: 100%; padding: 10px; margin-top: 15px; border: none; border-radius: 8px; background: #007aff; color: white; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.2s; position: relative; z-index: 5; }
         .btn-direct-claim.claimed { background: #ff3b30; }
         .btn-direct-claim:disabled { background: #ccc; cursor: not-allowed; }
 
@@ -138,7 +139,7 @@
                 const lines = e.target.result.split('\n').filter(l => l.trim());
                 books = lines.slice(1).map((l, i) => {
                     const p = l.split(/[;,]/);
-                    return { id: i + '-' + Date.now(), title: p[0].trim(), author: p[1]?.trim() || 'Ukendt', claims: [], winner: null };
+                    return { id: 'book-' + Date.now() + '-' + i, title: p[0].trim(), author: p[1]?.trim() || 'Ukendt', claims: [], winner: null };
                 });
                 saveData(); renderBooks();
             };
@@ -154,13 +155,13 @@
                 const card = document.createElement('div');
                 card.className = 'book-card';
                 
-                const searchQuery = encodeURIComponent(`${b.title} ${b.author} (site:carlsen.dk OR site:lindhardtogringhof.dk)`);
-                const googleLink = `https://www.google.com/search?q=${searchQuery}`;
+                // Opdateret søgelink der er mere "Google-venligt"
+                const queryStr = `${b.title} ${b.author} carlsen.dk lindhardtogringhof.dk`;
+                const googleLink = `https://www.google.com/search?q=${encodeURIComponent(queryStr)}`;
 
                 const slots = Array(4).fill().map((_, i) => {
                     const c = b.claims[i];
-                    const win = b.winner === c && c;
-                    return `<div class="claim-slot ${win ? 'winner' : (c ? 'filled' : '')}">${c || '-'}</div>`;
+                    return `<div class="claim-slot ${c ? 'filled' : ''}">${c || '-'}</div>`;
                 }).join('');
 
                 const isClaimed = user && b.claims.includes(user);
@@ -171,7 +172,7 @@
                     <div style="flex-grow: 1;">
                         <div class="book-title" onclick="openModal('${b.id}')" style="cursor:pointer">${b.title}</div>
                         <div class="book-author" onclick="openModal('${b.id}')" style="cursor:pointer">${b.author}</div>
-                        <a href="${googleLink}" target="_blank" class="card-search-link">🔍 Læs mere</a>
+                        <a href="${googleLink}" target="_blank" class="card-search-link" onclick="event.stopPropagation()">🔍 Læs mere om bogen her</a>
                         <div class="claim-slots" onclick="openModal('${b.id}')" style="cursor:pointer">${slots}</div>
                     </div>
                     <button class="btn-direct-claim ${isClaimed ? 'claimed' : ''}" 
@@ -194,7 +195,6 @@
             const index = b.claims.indexOf(user);
             if (index > -1) {
                 b.claims.splice(index, 1);
-                if (b.winner === user) b.winner = null;
             } else if (b.claims.length < 4) {
                 b.claims.push(user);
             }
@@ -214,8 +214,8 @@
             document.getElementById('modalAuthor').textContent = b.author;
             
             let claimsHtml = b.claims.map(c => `
-                <div style="padding:10px; background:${b.winner === c ? '#ffd700' : '#f8f8f8'}; border-radius:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-                    <span>${c}</span> ${b.winner === c ? '🏆' : ''}
+                <div style="padding:10px; background:#f8f8f8; border-radius:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                    <span>${c}</span>
                 </div>`).join('') || 'Ingen ønsker endnu';
             
             document.getElementById('modalBody').innerHTML = claimsHtml;
