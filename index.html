@@ -23,64 +23,42 @@
         }
         .guide strong { color: #007aff; }
 
-        /* Controls & Styling */
+        /* Controls */
         .controls { background: white; padding: 20px 30px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
-        
         .name-input-group { display: flex; min-width: 350px; gap: 10px; }
-        .name-input-group input { 
-            padding: 10px 15px; 
-            border: 2px solid #ddd; 
-            border-radius: 8px; 
-            font-size: 14px; 
-            flex: 1; 
-        }
+        .name-input-group input { padding: 10px 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; flex: 1; }
 
-        .btn-gem { 
-            padding: 10px 25px; 
-            background: #007aff; 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 14px; 
-            font-weight: 600; 
-            transition: all 0.2s; 
-        }
-        .btn-gem:hover { opacity: 0.9; }
+        .btn-gem { padding: 10px 25px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; }
         .btn-gem.saved { background: #34c759; }
 
-        /* Admin sektion (Skjult - brug Shift + L) */
+        /* Admin (Shift + L) */
         #adminArea { display: none; gap: 10px; align-items: center; border-left: 2px solid #eee; padding-left: 15px; }
         .admin-section input { padding: 10px; border: 2px solid #ddd; border-radius: 8px; width: 130px; }
-        .admin-btn, .secondary-btn { padding: 10px 20px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
-        .secondary-btn { background: #34c759; }
+        .admin-btn { padding: 10px 20px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
         button:disabled { background: #ccc !important; cursor: not-allowed; opacity: 0.6; }
 
         /* Grid & Cards */
         .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .book-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s; position: relative; display: flex; flex-direction: column; }
         .book-card:hover { transform: translateY(-4px); }
-        .book-title { font-size: 16px; font-weight: 600; margin-bottom: 5px; cursor: pointer; }
-        .book-author { color: #666; font-size: 14px; margin-bottom: 12px; cursor: pointer; }
-        
-        .btn-direct-claim { 
-            width: 100%; 
-            padding: 10px; 
-            margin-top: 15px; 
-            border: none; 
-            border-radius: 8px; 
-            background: #007aff; 
-            color: white; 
-            font-weight: 600; 
-            cursor: pointer; 
-            font-size: 13px; 
-            transition: all 0.2s; 
+        .book-title { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+        .book-author { color: #666; font-size: 14px; margin-bottom: 8px; }
+
+        /* DET NYE LINK PÅ KORTET */
+        .card-search-link {
+            font-size: 13px;
+            color: #007aff;
+            text-decoration: none;
+            margin-bottom: 12px;
+            display: inline-block;
         }
+        .card-search-link:hover { text-decoration: underline; }
+        
+        .btn-direct-claim { width: 100%; padding: 10px; margin-top: 15px; border: none; border-radius: 8px; background: #007aff; color: white; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.2s; }
         .btn-direct-claim.claimed { background: #ff3b30; }
         .btn-direct-claim:disabled { background: #ccc; cursor: not-allowed; }
 
-        /* Claims Slots */
-        .claim-slots { display: flex; gap: 6px; margin-top: 10px; cursor: pointer; }
+        .claim-slots { display: flex; gap: 6px; margin-top: 10px; }
         .claim-slot { flex: 1; padding: 6px; background: #f8f8f8; border: 2px dashed #ddd; border-radius: 6px; font-size: 12px; text-align: center; color: #999; }
         .claim-slot.filled { background: #e3f2fd; border: 2px solid #2196f3; color: #1976d2; font-weight: 600; }
         .claim-slot.winner { background: #ffd700; border: 2px solid #ffa000; color: #c67100; animation: pulse 1.5s infinite; }
@@ -91,10 +69,8 @@
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
         .modal.active { display: flex; }
         .modal-content { background: white; border-radius: 16px; padding: 30px; max-width: 500px; width: 90%; }
-        .btn-search { display: block; width: 100%; padding: 12px; background: #0056b3; color: white; text-decoration: none; text-align: center; border-radius: 8px; font-weight: 600; margin-bottom: 20px; }
         .modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
         .modal-buttons button { flex: 1; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
-        .btn-primary { background: #007aff; color: white; }
     </style>
 </head>
 <body>
@@ -118,9 +94,9 @@
                 <input type="password" id="adminPass" placeholder="Admin Kode">
                 <button id="lockBtn" onclick="toggleAdmin()">🔓</button>
                 <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="handleCSVUpload(event)">
-                <button class="secondary-btn admin-btn" id="btnUpload" onclick="document.getElementById('csvFileInput').click()" disabled>📁 CSV</button>
-                <button class="secondary-btn admin-btn" id="btnLottery" onclick="runAllLotteries()" disabled>🎲 Lodtrækning</button>
-                <button class="admin-btn" style="background:#ff3b30" id="btnReset" onclick="clearAllData()" disabled>🔄 Nulstil Alt</button>
+                <button class="admin-btn" onclick="document.getElementById('csvFileInput').click()" id="btnUpload" disabled>📁 CSV</button>
+                <button class="admin-btn" onclick="runAllLotteries()" id="btnLottery" disabled>🎲 Lodtrækning</button>
+                <button class="admin-btn" style="background:#ff3b30" onclick="clearAllData()" id="btnReset" disabled>🔄 Nulstil Alt</button>
             </div>
         </div>
 
@@ -133,7 +109,7 @@
             <p id="modalAuthor" style="margin-bottom:20px; color:#666;"></p>
             <div id="modalBody"></div>
             <div class="modal-buttons">
-                <button class="btn-primary" id="modalActionButton"></button>
+                <button style="background:#007aff; color:white;" id="modalActionButton"></button>
                 <button onclick="closeModal()">Luk</button>
             </div>
         </div>
@@ -143,7 +119,6 @@
         let books = JSON.parse(localStorage.getItem('bookShuffleData')) || [];
         let currentBookId = null;
 
-        // Genvej til admin: Shift + L
         document.addEventListener('keydown', function(e) {
             if (e.shiftKey && e.key === 'L') {
                 const area = document.getElementById('adminArea');
@@ -166,10 +141,7 @@
                 const btn = document.getElementById('saveNameBtn');
                 btn.textContent = '✓ Gemt';
                 btn.classList.add('saved');
-                setTimeout(() => { 
-                    btn.textContent = 'GEM'; 
-                    btn.classList.remove('saved'); 
-                }, 2000);
+                setTimeout(() => { btn.textContent = 'GEM'; btn.classList.remove('saved'); }, 2000);
                 renderBooks();
             }
         }
@@ -195,6 +167,10 @@
             books.forEach(b => {
                 const card = document.createElement('div');
                 card.className = 'book-card';
+                
+                const searchQuery = encodeURIComponent(`${b.title} ${b.author} (site:carlsen.dk OR site:lindhardtogringhof.dk)`);
+                const googleLink = `https://www.google.com/search?q=${searchQuery}`;
+
                 const slots = Array(4).fill().map((_, i) => {
                     const c = b.claims[i];
                     const win = b.winner === c && c;
@@ -208,10 +184,11 @@
                 else if (b.claims.length >= 4) { btnText = "Fuld"; btnDisabled = true; }
 
                 card.innerHTML = `
-                    <div onclick="openModal(${b.id})" style="flex-grow: 1;">
-                        <div class="book-title">${b.title}</div>
-                        <div class="book-author">${b.author}</div>
-                        <div class="claim-slots">${slots}</div>
+                    <div style="flex-grow: 1;">
+                        <div class="book-title" onclick="openModal(${b.id})" style="cursor:pointer">${b.title}</div>
+                        <div class="book-author" onclick="openModal(${b.id})" style="cursor:pointer">${b.author}</div>
+                        <a href="${googleLink}" target="_blank" class="card-search-link">🔍 Læs mere om bogen her</a>
+                        <div class="claim-slots" onclick="openModal(${b.id})" style="cursor:pointer">${slots}</div>
                     </div>
                     <button class="${btnClass}" ${btnDisabled ? 'disabled' : ''} onclick="toggleClaim(${b.id})">
                         ${!user ? 'Skriv navn først' : btnText}
@@ -237,11 +214,10 @@
             currentBookId = id;
             const b = books.find(x => x.id === id);
             const user = document.getElementById('userName').value.trim();
-            const searchQuery = encodeURIComponent(`${b.title} ${b.author} (site:carlsen.dk OR site:lindhardtogringhof.dk)`);
             document.getElementById('modalTitle').textContent = b.title;
             document.getElementById('modalAuthor').textContent = b.author;
-            let claimsHtml = b.claims.map(c => `<div class="modal-claim-item ${b.winner === c ? 'winner' : ''}"><span>${c}</span> ${b.winner === c ? '🏆' : ''}</div>`).join('') || 'Ingen claims';
-            document.getElementById('modalBody').innerHTML = `<a href="https://www.google.com/search?q=${searchQuery}" target="_blank" class="btn-search">📖 Læs mere</a>${claimsHtml}`;
+            let claimsHtml = b.claims.map(c => `<div style="padding:10px; background:#f8f8f8; border-radius:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;" class="${b.winner === c ? 'winner' : ''}"><span>${c}</span> ${b.winner === c ? '🏆' : ''}</div>`).join('') || 'Ingen claims';
+            document.getElementById('modalBody').innerHTML = claimsHtml;
             const btn = document.getElementById('modalActionButton');
             if (user && b.claims.includes(user)) { btn.textContent = "Fjern ønske"; btn.style.background = "#ff3b30"; }
             else { btn.textContent = "Jeg ønsker mig bogen her"; btn.style.background = "#007aff"; }
