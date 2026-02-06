@@ -9,7 +9,6 @@
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; }
         .container { max-width: 1600px; margin: 0 auto; }
         
-        /* Header & Vejledning */
         header { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         h1 { color: #333; margin-bottom: 15px; font-size: 32px; }
         .guide { 
@@ -21,9 +20,7 @@
             font-size: 15px;
             line-height: 1.6;
         }
-        .guide strong { color: #007aff; }
 
-        /* Controls */
         .controls { background: white; padding: 20px 30px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
         .name-input-group { display: flex; min-width: 350px; gap: 10px; }
         .name-input-group input { padding: 10px 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; flex: 1; }
@@ -31,30 +28,19 @@
         .btn-gem { padding: 10px 25px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; }
         .btn-gem.saved { background: #34c759; }
 
-        /* Admin (Shift + L) */
         #adminArea { display: none; gap: 10px; align-items: center; border-left: 2px solid #eee; padding-left: 15px; }
-        .admin-section input { padding: 10px; border: 2px solid #ddd; border-radius: 8px; width: 130px; }
         .admin-btn { padding: 10px 20px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
-        button:disabled { background: #ccc !important; cursor: not-allowed; opacity: 0.6; }
 
-        /* Grid & Cards */
         .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .book-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s; position: relative; display: flex; flex-direction: column; }
         .book-card:hover { transform: translateY(-4px); }
         .book-title { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
         .book-author { color: #666; font-size: 14px; margin-bottom: 8px; }
 
-        /* DET NYE LINK PÅ KORTET */
-        .card-search-link {
-            font-size: 13px;
-            color: #007aff;
-            text-decoration: none;
-            margin-bottom: 12px;
-            display: inline-block;
-        }
+        .card-search-link { font-size: 13px; color: #007aff; text-decoration: none; margin-bottom: 12px; display: inline-block; position: relative; z-index: 2; }
         .card-search-link:hover { text-decoration: underline; }
         
-        .btn-direct-claim { width: 100%; padding: 10px; margin-top: 15px; border: none; border-radius: 8px; background: #007aff; color: white; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        .btn-direct-claim { width: 100%; padding: 10px; margin-top: 15px; border: none; border-radius: 8px; background: #007aff; color: white; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.2s; position: relative; z-index: 2; }
         .btn-direct-claim.claimed { background: #ff3b30; }
         .btn-direct-claim:disabled { background: #ccc; cursor: not-allowed; }
 
@@ -65,7 +51,6 @@
         
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-        /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
         .modal.active { display: flex; }
         .modal-content { background: white; border-radius: 16px; padding: 30px; max-width: 500px; width: 90%; }
@@ -79,8 +64,9 @@
             <h1>📚 Bogsnup</h1>
             <div class="guide">
                 <strong>Vejledning:</strong><br>
-                1. Skriv dit navn i feltet nedenfor og klik på <strong>GEM</strong>.<br>
-                2. Klik på <strong>"Jeg ønsker mig bogen her"</strong> for at registrere dit ønske.
+                1. Skriv dit navn og klik på <strong>GEM</strong>.<br>
+                2. Klik på <strong>"Jeg ønsker mig bogen her"</strong> for at ønske.<br>
+                3. Klik på titlen for at se alle claims.
             </div>
         </header>
 
@@ -152,7 +138,7 @@
                 const lines = e.target.result.split('\n').filter(l => l.trim());
                 books = lines.slice(1).map((l, i) => {
                     const p = l.split(/[;,]/);
-                    return { id: Date.now() + i, title: p[0].trim(), author: p[1]?.trim() || 'Ukendt', claims: [], winner: null };
+                    return { id: i + '-' + Date.now(), title: p[0].trim(), author: p[1]?.trim() || 'Ukendt', claims: [], winner: null };
                 });
                 saveData(); renderBooks();
             };
@@ -162,7 +148,7 @@
         function renderBooks() {
             const grid = document.getElementById('bookGrid');
             const user = document.getElementById('userName').value.trim();
-            grid.innerHTML = books.length ? '' : '<p style="grid-column: 1/-1; text-align: center; padding: 50px; color: #999;">Ingen bøger på listen.</p>';
+            grid.innerHTML = books.length ? '' : '<p style="grid-column: 1/-1; text-align: center; padding: 50px; color: #999;">Listen er tom.</p>';
             
             books.forEach(b => {
                 const card = document.createElement('div');
@@ -174,23 +160,23 @@
                 const slots = Array(4).fill().map((_, i) => {
                     const c = b.claims[i];
                     const win = b.winner === c && c;
-                    return `<div class="claim-slot ${win ? 'winner' : (c ? 'filled' : '')}">${c || '-'} ${win ? '👑' : ''}</div>`;
+                    return `<div class="claim-slot ${win ? 'winner' : (c ? 'filled' : '')}">${c || '-'}</div>`;
                 }).join('');
 
-                let btnText = "Jeg ønsker mig bogen her";
-                let btnClass = "btn-direct-claim";
-                let btnDisabled = !user;
-                if (user && b.claims.includes(user)) { btnText = "Fjern ønske"; btnClass += " claimed"; }
-                else if (b.claims.length >= 4) { btnText = "Fuld"; btnDisabled = true; }
+                const isClaimed = user && b.claims.includes(user);
+                const btnText = isClaimed ? "Fjern ønske" : (b.claims.length >= 4 ? "Fuld" : "Jeg ønsker mig bogen her");
+                const btnDisabled = !user || (!isClaimed && b.claims.length >= 4);
 
                 card.innerHTML = `
                     <div style="flex-grow: 1;">
-                        <div class="book-title" onclick="openModal(${b.id})" style="cursor:pointer">${b.title}</div>
-                        <div class="book-author" onclick="openModal(${b.id})" style="cursor:pointer">${b.author}</div>
-                        <a href="${googleLink}" target="_blank" class="card-search-link">🔍 Læs mere om bogen her</a>
-                        <div class="claim-slots" onclick="openModal(${b.id})" style="cursor:pointer">${slots}</div>
+                        <div class="book-title" onclick="openModal('${b.id}')" style="cursor:pointer">${b.title}</div>
+                        <div class="book-author" onclick="openModal('${b.id}')" style="cursor:pointer">${b.author}</div>
+                        <a href="${googleLink}" target="_blank" class="card-search-link">🔍 Læs mere</a>
+                        <div class="claim-slots" onclick="openModal('${b.id}')" style="cursor:pointer">${slots}</div>
                     </div>
-                    <button class="${btnClass}" ${btnDisabled ? 'disabled' : ''} onclick="toggleClaim(${b.id})">
+                    <button class="btn-direct-claim ${isClaimed ? 'claimed' : ''}" 
+                            ${btnDisabled ? 'disabled' : ''} 
+                            onclick="toggleClaim('${b.id}')">
                         ${!user ? 'Skriv navn først' : btnText}
                     </button>
                 `;
@@ -201,13 +187,23 @@
         function toggleClaim(id) {
             const user = document.getElementById('userName').value.trim();
             if (!user) return;
+            
             const b = books.find(x => x.id === id);
-            if (b.claims.includes(user)) {
-                b.claims = b.claims.filter(c => c !== user);
+            if (!b) return;
+
+            const index = b.claims.indexOf(user);
+            if (index > -1) {
+                b.claims.splice(index, 1);
                 if (b.winner === user) b.winner = null;
-            } else if (b.claims.length < 4) { b.claims.push(user); }
-            saveData(); renderBooks();
-            if (currentBookId === id && document.getElementById('bookModal').classList.contains('active')) openModal(id);
+            } else if (b.claims.length < 4) {
+                b.claims.push(user);
+            }
+            
+            saveData();
+            renderBooks();
+            if (currentBookId === id && document.getElementById('bookModal').classList.contains('active')) {
+                openModal(id);
+            }
         }
 
         function openModal(id) {
@@ -216,12 +212,21 @@
             const user = document.getElementById('userName').value.trim();
             document.getElementById('modalTitle').textContent = b.title;
             document.getElementById('modalAuthor').textContent = b.author;
-            let claimsHtml = b.claims.map(c => `<div style="padding:10px; background:#f8f8f8; border-radius:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;" class="${b.winner === c ? 'winner' : ''}"><span>${c}</span> ${b.winner === c ? '🏆' : ''}</div>`).join('') || 'Ingen claims';
+            
+            let claimsHtml = b.claims.map(c => `
+                <div style="padding:10px; background:${b.winner === c ? '#ffd700' : '#f8f8f8'}; border-radius:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                    <span>${c}</span> ${b.winner === c ? '🏆' : ''}
+                </div>`).join('') || 'Ingen ønsker endnu';
+            
             document.getElementById('modalBody').innerHTML = claimsHtml;
+            
             const btn = document.getElementById('modalActionButton');
-            if (user && b.claims.includes(user)) { btn.textContent = "Fjern ønske"; btn.style.background = "#ff3b30"; }
-            else { btn.textContent = "Jeg ønsker mig bogen her"; btn.style.background = "#007aff"; }
+            const isClaimed = user && b.claims.includes(user);
+            
+            btn.textContent = isClaimed ? "Fjern ønske" : "Jeg ønsker mig bogen her";
+            btn.style.background = isClaimed ? "#ff3b30" : "#007aff";
             btn.onclick = () => toggleClaim(id);
+            
             document.getElementById('bookModal').classList.add('active');
         }
 
