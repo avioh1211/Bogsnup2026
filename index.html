@@ -88,6 +88,7 @@
                 <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="handleCSVUpload(event)">
                 <button class="admin-btn" onclick="document.getElementById('csvFileInput').click()" id="btnUpload" disabled>📁 CSV</button>
                 <button class="admin-btn btn-ai" onclick="fetchAllInfo()" id="btnFetch" disabled>✨ Hent info</button>
+                <button class="admin-btn" onclick="showFetchErrors()" id="btnErrors" disabled>⚠️ Vis fejl</button>
                 <button class="admin-btn" onclick="runSmartLottery()" id="btnLottery" disabled>🎲 Lodtrækning</button>
                 <button class="admin-btn" style="background:#ff3b30" onclick="clearAllData()" id="btnReset" disabled>🔄 Slet Alt</button>
             </div>
@@ -113,12 +114,20 @@
             <!-- Admin Image Upload Section -->
             <div class="admin-image-upload" id="adminImageUpload">
                 <h4 style="margin-bottom: 10px; color: #007aff;">📸 Upload forsidefoto (Admin)</h4>
+                <div style="margin-bottom: 10px;">
+                    <a id="googleImagesLink" href="#" target="_blank" style="color: #007aff; text-decoration: none; font-size: 13px;">
+                        🔍 Søg på Google Images
+                    </a>
+                </div>
                 <input type="url" id="imageUrlInput" placeholder="Indsæt URL til billede (f.eks. https://...)">
                 <input type="file" id="imageFileInput" accept="image/*">
                 <div>
                     <button onclick="uploadImageFromUrl()">Gem URL</button>
                     <button onclick="uploadImageFromFile()">Upload fil</button>
                     <button onclick="removeBookCover()" style="background: #ff3b30;">Fjern billede</button>
+                </div>
+                <div style="margin-top: 10px; font-size: 11px; color: #666;">
+                    💡 Højreklik på et billede i Google Images → "Kopier billedadresse" → Indsæt URL
                 </div>
             </div>
             
@@ -316,42 +325,90 @@
                 progressBar.textContent = `${i + 1}/${books.length} - ${book.title}`;
                 
                 try {
-                    const query = `intitle:"${book.title}" inauthor:"${book.author}"`;
-                    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&langRestrict=da&maxResults=1`;
+                    // Try multiple query variations for better results
+                    const queries = [
+                        `intitle:"${book.title}" inauthor:"${book.author}"`,
+                        `${book.title} ${book.author}`,
+                        book.title
+                    ];
                     
-                    const response = await fetch(url);
+                    let bookFound = false;
                     
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    for (const query of queries) {
+                        if (bookFound) break;
+                        
+                        try {
+                            const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&langRestrict=da&maxResults=3`;
+                            
+                            const response = await fetch(url, {
+                                method: 'GET',
+                                headers: {
+                                    'Accept': 'application/json',
+                                },
+                                mode: 'cors',
+                                cache: 'default'
+                            });
+                            
+                            if (!response.ok) {
+                                if (response.status === 429) {
+                                    throw new Error('Rate limit - vent venligst');
+                                }
+                                throw new Error(`HTTP ${response.status}`);
+                            }
+                            
+                            const data = await response.json();
+                            
+                            if (data.items && data.items.length > 0) {
+                                // Find best match
+                                let bestMatch = data.items[0];
+                                
+                                // Try to find exact title match
+                                for (const item of data.items) {
+                                    const itemTitle = item.volumeInfo.title || '';
+                                    if (itemTitle.toLowerCase().includes(book.title.toLowerCase())) {
+                                        bestMatch = item;
+                                        break;
+                                    }
+                                }
+                                
+                                const info = bestMatch.volumeInfo;
+                                
+                                // Update book info
+                                book.desc = info.description || book.desc;
+                                
+                                if (info.imageLinks) {
+                                    // Use larger image if available
+                                    book.cover = (info.imageLinks.large || 
+                                                 info.imageLinks.medium || 
+                                                 info.imageLinks.thumbnail || 
+                                                 info.imageLinks.smallThumbnail || 
+                                                 '').replace('http:', 'https:');
+                                }
+                                
+                                // Also update author if we got better info
+                                if (info.authors && info.authors.length > 0) {
+                                    book.author = info.authors.join(', ');
+                                }
+                                
+                                book.fetchSuccess = true;
+                                bookFound = true;
+                                successCount++;
+                            }
+                        } catch (queryError) {
+                            console.warn(`Query attempt failed: ${query}`, queryError);
+                            // Continue to next query variation
+                        }
                     }
                     
-                    const data = await response.json();
-                    
-                    if (data.items && data.items.length > 0) {
-                        const info = data.items[0].volumeInfo;
-                        
-                        // Update book info
-                        book.desc = info.description || book.desc;
-                        
-                        if (info.imageLinks) {
-                            // Use larger image if available
-                            book.cover = (info.imageLinks.large || 
-                                         info.imageLinks.medium || 
-                                         info.imageLinks.thumbnail || 
-                                         info.imageLinks.smallThumbnail || 
-                                         '').replace('http:', 'https:');
-                        }
-                        
-                        book.fetchSuccess = true;
-                        successCount++;
-                    } else {
+                    if (!bookFound) {
                         console.warn(`No results found for: ${book.title} by ${book.author}`);
+                        book.fetchError = 'Ikke fundet i Google Books';
                         failCount++;
                     }
                     
                     book.fetchAttempted = true;
                     
-                    // Save progress after each successful fetch
+                    // Save progress after each book
                     saveData();
                     
                     // Add delay between requests to avoid rate limiting
@@ -361,8 +418,24 @@
                     
                 } catch (error) {
                     console.error(`Error fetching info for "${book.title}":`, error);
+                    
+                    // Store error message for debugging
+                    if (error.message.includes('fetch') || error.message.includes('Failed to fetch')) {
+                        book.fetchError = 'Netværksfejl - Google Books blokeret eller ingen forbindelse';
+                    } else if (error.message.includes('Rate limit')) {
+                        book.fetchError = 'Rate limit - for mange forespørgsler';
+                    } else {
+                        book.fetchError = error.message || 'Ukendt fejl';
+                    }
+                    
                     book.fetchAttempted = true;
                     failCount++;
+                    
+                    // Update progress bar to show error
+                    progressBar.textContent = `${i + 1}/${books.length} - ❌ ${book.title} (${book.fetchError})`;
+                    
+                    // Brief pause to show error
+                    await delay(800);
                 }
             }
             
@@ -374,10 +447,64 @@
             btn.textContent = '✨ Hent info';
             progressContainer.style.display = 'none';
             
-            showError(
-                `Færdig! ✅ ${successCount} bøger hentet | ❌ ${failCount} fejlede`,
-                'success'
-            );
+            if (failCount > 0) {
+                showError(
+                    `Færdig! ✅ ${successCount} bøger hentet | ❌ ${failCount} fejlede. Klik "Vis fejl" for detaljer.`,
+                    failCount === books.length ? 'error' : 'success'
+                );
+            } else {
+                showError(
+                    `🎉 Perfekt! Alle ${successCount} bøger blev hentet korrekt!`,
+                    'success'
+                );
+            }
+        }
+
+        function showFetchErrors() {
+            const failedBooks = books.filter(b => b.fetchAttempted && !b.fetchSuccess);
+            
+            if (failedBooks.length === 0) {
+                showError('Ingen fejl at vise! Alle bøger blev hentet korrekt.', 'success');
+                return;
+            }
+            
+            // Count error types
+            const networkErrors = failedBooks.filter(b => b.fetchError?.includes('Netværksfejl')).length;
+            const notFoundErrors = failedBooks.filter(b => b.fetchError?.includes('Ikke fundet')).length;
+            const otherErrors = failedBooks.length - networkErrors - notFoundErrors;
+            
+            let errorReport = `📋 FEJLRAPPORT (${failedBooks.length} bøger)\n`;
+            errorReport += `${'='.repeat(50)}\n\n`;
+            
+            if (networkErrors > 0) {
+                errorReport += `⚠️ NETVÆRKSFEJL (${networkErrors} bøger):\n`;
+                errorReport += `Google Books API er blokeret eller utilgængelig.\n\n`;
+                errorReport += `LØSNINGER:\n`;
+                errorReport += `• Check din internetforbindelse\n`;
+                errorReport += `• Prøv fra en anden browser (Chrome/Firefox)\n`;
+                errorReport += `• Prøv fra en anden netværk/WiFi\n`;
+                errorReport += `• Brug VPN hvis API er blokeret\n`;
+                errorReport += `• Upload forsider manuelt (se nedenfor)\n\n`;
+            }
+            
+            errorReport += `FEJLEDE BØGER:\n`;
+            errorReport += `${'-'.repeat(50)}\n`;
+            
+            failedBooks.forEach((book, i) => {
+                errorReport += `${i + 1}. "${book.title}" af ${book.author}\n`;
+                errorReport += `   Fejl: ${book.fetchError || 'Ikke fundet'}\n`;
+                errorReport += `   Status: ${book.cover ? '✓ Har forside' : '✗ Mangler forside'}${book.manualCover ? ' (Manuel)' : ''}\n\n`;
+            });
+            
+            errorReport += `\n💡 MANUEL LØSNING:\n`;
+            errorReport += `${'='.repeat(50)}\n`;
+            errorReport += `1. Klik på en bog uden forside\n`;
+            errorReport += `2. Klik på "🔍 Søg på Google Images"\n`;
+            errorReport += `3. Højreklik på forsidebilledet → "Kopier billedadresse"\n`;
+            errorReport += `4. Indsæt URL'en og klik "Gem URL"\n`;
+            errorReport += `\nEller upload fra din computer!\n`;
+            
+            alert(errorReport);
         }
 
         function runSmartLottery() {
@@ -759,6 +886,11 @@
                 // Clear previous inputs
                 document.getElementById('imageUrlInput').value = '';
                 document.getElementById('imageFileInput').value = '';
+                
+                // Set Google Images search link
+                const searchQuery = encodeURIComponent(`${book.title} ${book.author} bog forside`);
+                const googleImagesLink = document.getElementById('googleImagesLink');
+                googleImagesLink.href = `https://www.google.com/search?tbm=isch&q=${searchQuery}`;
             } else {
                 adminUploadSection.classList.remove('active');
             }
