@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bogsnup - Firebase Edition</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 1600px; margin: 0 auto; }
+        header { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .guide { background: #eef7ff; padding: 15px; border-radius: 8px; border-left: 5px solid #007aff; font-size: 15px; line-height: 1.6; }
+        .firebase-status { background: #34c759; color: white; padding: 8px 12px; border-radius: 6px; font-size: 13px; display: inline-block; margin-top: 10px; }
+        .firebase-status.offline { background: #ff3b30; }
+
+        .controls { background: white; padding: 20px 30px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .name-input-group { display: flex; min-width: 350px; gap: 10px; }
+        .name-input-group input { padding: 10px; border: 2px solid #ddd; border-radius: 8px; flex: 1; }
+        .btn-gem { padding: 10px 25px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-gem.saved { background: #34c759; }
+
+        #adminArea { display: none; gap: 10px; border-left: 2px solid #eee; padding-left: 15px; align-items: center; }
+        .admin-btn { padding: 10px 15px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; }
+        .btn-ai { background: #5856d6; }
+        
+        .progress-container { display: none; width: 100%; background: #f0f0f0; border-radius: 8px; overflow: hidden; margin-top: 10px; height: 30px; position: relative; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #007aff, #5856d6); transition: width 0.3s ease; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 600; }
+        
+        .error-message { background: #ff3b30; color: white; padding: 10px 15px; border-radius: 8px; margin-top: 10px; font-size: 13px; display: none; }
+
+        .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .book-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s; display: flex; flex-direction: column; cursor: pointer; text-align: center; }
+        .book-card:hover { transform: translateY(-4px); }
+        
+        .card-img { width: 100px; height: 140px; object-fit: cover; margin: 0 auto 15px; border-radius: 4px; background: #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .book-title { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+        .book-author { color: #666; font-size: 14px; margin-bottom: 5px; }
+        .info-hint { font-size: 12px; color: #007aff; margin-bottom: 12px; font-style: italic; }
+
+        .btn-direct-claim { width: 100%; padding: 10px; margin-top: 15px; border: none; border-radius: 8px; background: #007aff; color: white; font-weight: 600; cursor: pointer; }
+        .btn-direct-claim.claimed { background: #ff3b30; }
+        .btn-direct-claim:disabled { background: #ccc; cursor: not-allowed; }
+
+        .claim-slots { display: flex; gap: 6px; margin-top: 10px; justify-content: center; flex-wrap: wrap; }
+        .claim-slot { width: 60px; padding: 6px; background: #f8f8f8; border: 1px solid #ddd; border-radius: 6px; font-size: 10px; text-align: center; color: #666; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .claim-slot.winner { background: #ffd700; border-color: #ffa000; color: #000; font-weight: bold; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 16px; padding: 30px; max-width: 500px; width: 95%; max-height: 90vh; overflow-y: auto; text-align: center; }
+        .modal-img { width: 140px; height: 200px; object-fit: cover; margin: 0 auto 20px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); display: block; }
+        .modal-desc { margin: 15px 0; font-size: 14px; line-height: 1.5; color: #444; background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; text-align: left; }
+        .modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .modal-buttons button { flex: 1; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
+        
+        .winner-list-item { padding: 8px; background: #f0f0f0; margin-top: 5px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
+        .winner-list-item.is-winner { background: #ffd700; border: 1px solid #ffa000; font-weight: bold; }
+        
+        .stats-badge { display: inline-block; background: #34c759; color: white; padding: 4px 8px; border-radius: 12px; font-size: 11px; margin-left: 8px; }
+        .fetch-failed-badge { background: #ff9500; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-left: 5px; }
+        
+        .admin-image-upload { display: none; margin-top: 15px; padding: 15px; background: #f9f9f9; border-radius: 8px; border: 2px dashed #007aff; }
+        .admin-image-upload.active { display: block; }
+        .admin-image-upload input[type="url"] { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; }
+        .admin-image-upload input[type="file"] { margin-bottom: 10px; }
+        .admin-image-upload textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; resize: vertical; }
+        .admin-image-upload button { padding: 8px 15px; background: #007aff; color: white; border: none; border-radius: 6px; cursor: pointer; margin-right: 5px; }
+        .admin-image-upload button:hover { background: #0051d5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Bogsnup <span style="font-size: 14px; color: #666;">⚡ Real-time Edition</span></h1>
+            <div class="guide">
+                <strong>Vejledning:</strong> 1. Skriv dit navn & GEM. 2. Klik på bogen for info. 3. Klik "Jeg ønsker mig bogen her".<br>
+                <em>Regel: Man kan vinde flere bøger, hvis man er den eneste der har ønsket dem, men kun én bog hvor der er flere om buddet.</em><br>
+                <span class="firebase-status" id="firebaseStatus">🔄 Forbinder til Firebase...</span>
+            </div>
+        </header>
+
+        <div class="controls">
+            <div class="name-input-group">
+                <input type="text" id="userName" placeholder="Dit navn">
+                <button class="btn-gem" id="saveNameBtn" onclick="saveUserName()">GEM</button>
+            </div>
+            <div id="adminArea">
+                <input type="password" id="adminPass" placeholder="Kode">
+                <button class="admin-btn" onclick="toggleAdmin()">🔓</button>
+                <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="handleCSVUpload(event)">
+                <button class="admin-btn" onclick="document.getElementById('csvFileInput').click()" id="btnUpload" disabled>📁 CSV</button>
+                <button class="admin-btn btn-ai" onclick="fetchAllInfo()" id="btnFetch" disabled>✨ Hent info</button>
+                <button class="admin-btn" onclick="showFetchErrors()" id="btnErrors" disabled>⚠️ Vis fejl</button>
+                <button class="admin-btn" onclick="runSmartLottery()" id="btnLottery" disabled>🎲 Lodtrækning</button>
+                <button class="admin-btn" style="background:#ff3b30" onclick="clearAllData()" id="btnReset" disabled>🔄 Slet Alt</button>
+            </div>
+        </div>
+        
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+        
+        <div class="error-message" id="errorMessage"></div>
+        
+        <div class="book-grid" id="bookGrid"></div>
+    </div>
+
+    <div class="modal" id="bookModal">
+        <div class="modal-content">
+            <img id="modalImg" class="modal-img" src="" alt="Forside" style="display: none;">
+            <h2 id="modalTitle"></h2>
+            <p id="modalAuthor" style="color:#666; margin-bottom:10px;"></p>
+            <div id="modalDesc" class="modal-desc"></div>
+            <div id="modalClaims"></div>
+            
+            <div class="admin-image-upload" id="adminImageUpload">
+                <h4 style="margin-bottom: 10px; color: #007aff;">📸 Upload forsidefoto (Admin)</h4>
+                <div style="margin-bottom: 10px;">
+                    <a id="googleImagesLink" href="#" target="_blank" style="color: #007aff; text-decoration: none; font-size: 13px;">
+                        🔍 Søg på Google Images
+                    </a>
+                </div>
+                <input type="url" id="imageUrlInput" placeholder="Indsæt URL til billede">
+                <input type="file" id="imageFileInput" accept="image/*">
+                <div style="margin-bottom: 15px;">
+                    <button onclick="uploadImageFromUrl()">Gem URL</button>
+                    <button onclick="uploadImageFromFile()">Upload fil</button>
+                    <button onclick="removeBookCover()" style="background: #ff3b30;">Fjern billede</button>
+                </div>
+                
+                <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
+                
+                <h4 style="margin-bottom: 10px; color: #007aff;">✏️ Rediger beskrivelse (Admin)</h4>
+                <textarea id="descriptionTextarea" rows="4"></textarea>
+                <div style="margin-top: 10px;">
+                    <button onclick="saveManualDescription()">Gem beskrivelse</button>
+                    <button onclick="clearDescription()" style="background: #ff9500;">Nulstil</button>
+                </div>
+            </div>
+            
+            <div class="modal-buttons">
+                <button id="modalActionButton" style="background:#007aff; color:white;"></button>
+                <button onclick="closeModal()" style="background:#eee;">Luk</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+    <script>
+        // ============================================
+        // FIREBASE CONFIGURATION
+        // ============================================
+        // TODO: Replace with your Firebase config
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        let database;
+        let isFirebaseReady = false;
+        
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            isFirebaseReady = true;
+            updateFirebaseStatus(true);
+            
+            // Listen for connection state
+            database.ref('.info/connected').on('value', (snapshot) => {
+                updateFirebaseStatus(snapshot.val() === true);
+            });
+        } catch (error) {
+            console.error('Firebase initialization error:', error);
+            updateFirebaseStatus(false);
+            alert('⚠️ FIREBASE KONFIGURATION MANGLER!\n\nSe FIREBASE_SETUP.md for instruktioner.');
+        }
+
+        function updateFirebaseStatus(connected) {
+            const status = document.getElementById('firebaseStatus');
+            if (connected) {
+                status.textContent = '✅ Forbundet til Firebase';
+                status.className = 'firebase-status';
+            } else {
+                status.textContent = '❌ Ikke forbundet';
+                status.className = 'firebase-status offline';
+            }
+        }
+
+        // ============================================
+        // CONSTANTS & STATE
+        // ============================================
+        const USER_KEY = 'shufflerUserName';
+        const ADMIN_PASSWORD = 'Bogsnup2026';
+        const MAX_CLAIMS_PER_BOOK = 4;
+        const API_DELAY_MS = 500;
+
+        let books = [];
+        let currentBookId = null;
+        let isAdminMode = false;
+
+        // ============================================
+        // FIREBASE DATA MANAGEMENT
+        // ============================================
+        function setupFirebaseListeners() {
+            if (!isFirebaseReady) return;
+            
+            // Listen for all book changes in real-time
+            database.ref('books').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    books = Object.keys(data).map(key => ({
+                        firebaseKey: key,
+                        ...data[key]
+                    }));
+                } else {
+                    books = [];
+                }
+                renderBooks();
+                
+                // Update modal if open
+                if (currentBookId) {
+                    const book = books.find(b => b.id === currentBookId);
+                    if (book) {
+                        updateModalContent(book);
+                    }
+                }
+            });
+        }
+
+        async function saveBookToFirebase(book) {
+            if (!isFirebaseReady) {
+                showError('Firebase ikke klar');
+                return;
+            }
+            
+            try {
+                if (book.firebaseKey) {
+                    // Update existing
+                    await database.ref('books/' + book.firebaseKey).set(book);
+                } else {
+                    // Create new
+                    const newRef = await database.ref('books').push(book);
+                    book.firebaseKey = newRef.key;
+                }
+            } catch (error) {
+                console.error('Firebase save error:', error);
+                showError('Kunne ikke gemme til Firebase: ' + error.message);
+            }
+        }
+
+        async function saveAllBooksToFirebase(booksArray) {
+            if (!isFirebaseReady) {
+                showError('Firebase ikke klar');
+                return;
+            }
+            
+            try {
+                const updates = {};
+                booksArray.forEach(book => {
+                    const key = book.firebaseKey || database.ref('books').push().key;
+                    const bookData = { ...book };
+                    delete bookData.firebaseKey;
+                    updates['/books/' + key] = bookData;
+                });
+                await database.ref().update(updates);
+                showError('Alle bøger gemt til Firebase', 'success');
+            } catch (error) {
+                console.error('Firebase batch save error:', error);
+                showError('Kunne ikke gemme til Firebase: ' + error.message);
+            }
+        }
+
+        async function deleteAllBooksFromFirebase() {
+            if (!isFirebaseReady) return;
+            
+            try {
+                await database.ref('books').remove();
+                books = [];
+                renderBooks();
+            } catch (error) {
+                console.error('Firebase delete error:', error);
+                showError('Kunne ikke slette fra Firebase');
+            }
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        function init() {
+            loadUserName();
+            setupEventListeners();
+            setupFirebaseListeners();
+        }
+
+        function setupEventListeners() {
+            document.addEventListener('keydown', e => {
+                if (e.shiftKey && e.key === 'L') {
+                    document.getElementById('adminArea').style.display = 'flex';
+                }
+            });
+            
+            document.getElementById('bookModal').addEventListener('click', (e) => {
+                if (e.target.id === 'bookModal') closeModal();
+            });
+        }
+
+        function loadUserName() {
+            const savedName = localStorage.getItem(USER_KEY);
+            if (savedName) {
+                document.getElementById('userName').value = savedName;
+            }
+        }
+
+        // ============================================
+        // USER MANAGEMENT
+        // ============================================
+        function saveUserName() {
+            const input = document.getElementById('userName');
+            const name = input.value.trim();
+            
+            if (!name) {
+                showError('Skriv venligst dit navn');
+                return;
+            }
+            
+            localStorage.setItem(USER_KEY, name);
+            
+            const btn = document.getElementById('saveNameBtn');
+            btn.textContent = '✓ Gemt';
+            btn.classList.add('saved');
+            
+            setTimeout(() => {
+                btn.textContent = 'GEM';
+                btn.classList.remove('saved');
+            }, 2000);
+            
+            renderBooks();
+        }
+
+        // ============================================
+        // ADMIN FUNCTIONS
+        // ============================================
+        function toggleAdmin() {
+            const password = document.getElementById('adminPass').value;
+            
+            if (password === ADMIN_PASSWORD) {
+                isAdminMode = true;
+                document.querySelectorAll('.admin-btn').forEach(btn => btn.disabled = false);
+                showError('Admin adgang aktiveret', 'success');
+            } else {
+                showError('Forkert adgangskode!');
+            }
+        }
+
+        function handleCSVUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const lines = e.target.result.split('\n').filter(l => l.trim());
+                    
+                    if (lines.length < 2) {
+                        showError('CSV-filen skal indeholde mindst en overskrift og en bog');
+                        return;
+                    }
+                    
+                    const newBooks = lines.slice(1).map((line, i) => {
+                        const parts = line.split(/[;,]/).map(p => p.trim());
+                        return {
+                            id: 'b-' + Date.now() + '-' + i,
+                            title: parts[0] || 'Ingen titel',
+                            author: parts[1] || 'Ukendt forfatter',
+                            desc: 'Brug "Hent info" for at hente beskrivelse fra Google Books.',
+                            cover: '',
+                            claims: [],
+                            winner: null,
+                            fetchAttempted: false,
+                            fetchSuccess: false,
+                            manualCover: false,
+                            manualDesc: false
+                        };
+                    });
+                    
+                    await saveAllBooksToFirebase(newBooks);
+                    showError(`${newBooks.length} bøger uploadet til Firebase`, 'success');
+                } catch (error) {
+                    console.error('CSV parsing error:', error);
+                    showError('Fejl ved indlæsning af CSV-fil');
+                }
+            };
+            
+            reader.onerror = () => {
+                showError('Kunne ikke læse filen');
+            };
+            
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        async function fetchAllInfo() {
+            if (books.length === 0) {
+                showError('Ingen bøger at hente info for. Upload først en CSV-fil.');
+                return;
+            }
+            
+            const btn = document.getElementById('btnFetch');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            
+            btn.disabled = true;
+            btn.textContent = '⏳ Henter...';
+            progressContainer.style.display = 'block';
+            
+            let successCount = 0;
+            let failCount = 0;
+            
+            for (let i = 0; i < books.length; i++) {
+                const book = books[i];
+                
+                const progress = Math.round(((i + 1) / books.length) * 100);
+                progressBar.style.width = progress + '%';
+                
+                let skipNote = '';
+                if (book.manualCover && book.manualDesc) {
+                    skipNote = ' (springes over - manuel)';
+                } else if (book.manualCover) {
+                    skipNote = ' (kun beskrivelse)';
+                } else if (book.manualDesc) {
+                    skipNote = ' (kun forside)';
+                }
+                
+                progressBar.textContent = `${i + 1}/${books.length} - ${book.title}${skipNote}`;
+                
+                if (book.manualCover && book.manualDesc) {
+                    await delay(100);
+                    continue;
+                }
+                
+                try {
+                    const queries = [
+                        `intitle:"${book.title}" inauthor:"${book.author}"`,
+                        `${book.title} ${book.author}`,
+                        book.title
+                    ];
+                    
+                    let bookFound = false;
+                    
+                    for (const query of queries) {
+                        if (bookFound) break;
+                        
+                        try {
+                            const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&langRestrict=da&maxResults=3`;
+                            
+                            const response = await fetch(url, {
+                                method: 'GET',
+                                headers: { 'Accept': 'application/json' },
+                                mode: 'cors',
+                                cache: 'default'
+                            });
+                            
+                            if (!response.ok) {
+                                if (response.status === 429) {
+                                    throw new Error('Rate limit - vent venligst');
+                                }
+                                throw new Error(`HTTP ${response.status}`);
+                            }
+                            
+                            const data = await response.json();
+                            
+                            if (data.items && data.items.length > 0) {
+                                let bestMatch = data.items[0];
+                                
+                                for (const item of data.items) {
+                                    const itemTitle = item.volumeInfo.title || '';
+                                    if (itemTitle.toLowerCase().includes(book.title.toLowerCase())) {
+                                        bestMatch = item;
+                                        break;
+                                    }
+                                }
+                                
+                                const info = bestMatch.volumeInfo;
+                                
+                                if (!book.manualDesc) {
+                                    let description = '';
+                                    if (info.description) {
+                                        description = info.description;
+                                    } else if (info.subtitle) {
+                                        description = `${info.subtitle}\n\n(Ingen fuld beskrivelse tilgængelig fra Google Books)`;
+                                    } else if (info.categories && info.categories.length > 0) {
+                                        description = `Kategori: ${info.categories.join(', ')}\n\n(Ingen beskrivelse tilgængelig fra Google Books)`;
+                                    } else {
+                                        description = 'Ingen beskrivelse tilgængelig fra Google Books API.';
+                                    }
+                                    
+                                    if (description && !description.includes('Brug "Hent info"')) {
+                                        book.desc = description;
+                                    }
+                                }
+                                
+                                if (!book.manualCover && info.imageLinks) {
+                                    book.cover = (info.imageLinks.large || 
+                                                 info.imageLinks.medium || 
+                                                 info.imageLinks.thumbnail || 
+                                                 info.imageLinks.smallThumbnail || 
+                                                 '').replace('http:', 'https:');
+                                }
+                                
+                                if (info.authors && info.authors.length > 0) {
+                                    book.author = info.authors.join(', ');
+                                }
+                                
+                                book.apiData = {
+                                    hasDescription: !!info.description,
+                                    hasSubtitle: !!info.subtitle,
+                                    hasCategories: !!(info.categories && info.categories.length > 0),
+                                    title: info.title
+                                };
+                                
+                                book.fetchSuccess = true;
+                                bookFound = true;
+                                successCount++;
+                            }
+                        } catch (queryError) {
+                            console.warn(`Query attempt failed: ${query}`, queryError);
+                        }
+                    }
+                    
+                    if (!bookFound) {
+                        console.warn(`No results found for: ${book.title} by ${book.author}`);
+                        book.fetchError = 'Ikke fundet i Google Books';
+                        failCount++;
+                    }
+                    
+                    book.fetchAttempted = true;
+                    
+                    // Save to Firebase
+                    await saveBookToFirebase(book);
+                    
+                    if (i < books.length - 1) {
+                        await delay(API_DELAY_MS);
+                    }
+                    
+                } catch (error) {
+                    console.error(`Error fetching info for "${book.title}":`, error);
+                    
+                    if (error.message.includes('fetch') || error.message.includes('Failed to fetch')) {
+                        book.fetchError = 'Netværksfejl - Google Books blokeret eller ingen forbindelse';
+                    } else if (error.message.includes('Rate limit')) {
+                        book.fetchError = 'Rate limit - for mange forespørgsler';
+                    } else {
+                        book.fetchError = error.message || 'Ukendt fejl';
+                    }
+                    
+                    book.fetchAttempted = true;
+                    failCount++;
+                    
+                    progressBar.textContent = `${i + 1}/${books.length} - ❌ ${book.title} (${book.fetchError})`;
+                    
+                    await saveBookToFirebase(book);
+                    await delay(800);
+                }
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '✨ Hent info';
+            progressContainer.style.display = 'none';
+            
+            if (failCount > 0) {
+                showError(
+                    `Færdig! ✅ ${successCount} bøger hentet | ❌ ${failCount} fejlede. Klik "Vis fejl" for detaljer.`,
+                    failCount === books.length ? 'error' : 'success'
+                );
+            } else {
+                showError(
+                    `🎉 Perfekt! Alle ${successCount} bøger blev hentet korrekt!`,
+                    'success'
+                );
+            }
+        }
+
+        function showFetchErrors() {
+            const failedBooks = books.filter(b => b.fetchAttempted && !b.fetchSuccess);
+            
+            if (failedBooks.length === 0) {
+                showError('Ingen fejl at vise! Alle bøger blev hentet korrekt.', 'success');
+                return;
+            }
+            
+            const networkErrors = failedBooks.filter(b => b.fetchError?.includes('Netværksfejl')).length;
+            
+            let errorReport = `📋 FEJLRAPPORT (${failedBooks.length} bøger)\n`;
+            errorReport += `${'='.repeat(50)}\n\n`;
+            
+            if (networkErrors > 0) {
+                errorReport += `⚠️ NETVÆRKSFEJL (${networkErrors} bøger):\n`;
+                errorReport += `Google Books API er blokeret eller utilgængelig.\n\n`;
+            }
+            
+            errorReport += `FEJLEDE BØGER:\n${'-'.repeat(50)}\n`;
+            
+            failedBooks.forEach((book, i) => {
+                const hasDesc = book.desc && !book.desc.includes('Brug "Hent info"');
+                errorReport += `${i + 1}. "${book.title}" af ${book.author}\n`;
+                errorReport += `   Fejl: ${book.fetchError || 'Ikke fundet'}\n`;
+                errorReport += `   Forside: ${book.cover ? '✓' : '✗'}${book.manualCover ? ' (Manuel)' : ''}\n`;
+                errorReport += `   Beskrivelse: ${hasDesc ? '✓' : '✗'}${book.manualDesc ? ' (Manuel)' : ''}\n\n`;
+            });
+            
+            errorReport += `\n💡 MANUEL LØSNING:\n${'='.repeat(50)}\n`;
+            errorReport += `Klik på en bog og upload billede/beskrivelse via admin-panelet.\n`;
+            
+            alert(errorReport);
+        }
+
+        async function runSmartLottery() {
+            if (books.length === 0) {
+                showError('Ingen bøger at trække lod om');
+                return;
+            }
+            
+            const totalClaims = books.reduce((sum, b) => sum + (b.claims?.length || 0), 0);
+            if (totalClaims === 0) {
+                showError('Ingen ønsker er registreret endnu');
+                return;
+            }
+            
+            if (!confirm(`Vil du køre lodtrækningen nu?\n\nDette vil tildele vindere til alle ${books.length} bøger baseret på ${totalClaims} ønsker.`)) {
+                return;
+            }
+            
+            books.forEach(b => b.winner = null);
+            
+            const usersWithPopularWin = new Set();
+            
+            books.forEach(book => {
+                if (book.claims && book.claims.length === 1) {
+                    book.winner = book.claims[0];
+                }
+            });
+            
+            const popularBooks = books.filter(b => b.claims && b.claims.length > 1);
+            shuffleArray(popularBooks);
+            
+            popularBooks.forEach(book => {
+                const eligibleCandidates = book.claims.filter(user => !usersWithPopularWin.has(user));
+                
+                if (eligibleCandidates.length > 0) {
+                    const winner = eligibleCandidates[Math.floor(Math.random() * eligibleCandidates.length)];
+                    book.winner = winner;
+                    usersWithPopularWin.add(winner);
+                } else {
+                    book.winner = book.claims[Math.floor(Math.random() * book.claims.length)];
+                }
+            });
+            
+            await saveAllBooksToFirebase(books);
+            
+            const winners = new Set(books.filter(b => b.winner).map(b => b.winner));
+            const booksWithWinners = books.filter(b => b.winner).length;
+            
+            showError(
+                `🎉 Lodtrækning fuldført!\n${booksWithWinners} bøger tildelt til ${winners.size} vindere`,
+                'success'
+            );
+        }
+
+        async function clearAllData() {
+            if (!confirm('Er du sikker på at du vil slette ALLE data?\n\nDette kan ikke fortrydes!')) {
+                return;
+            }
+            
+            if (!confirm('Sidste advarsel! Al data vil blive slettet permanent.')) {
+                return;
+            }
+            
+            await deleteAllBooksFromFirebase();
+            showError('Alle data er slettet', 'success');
+        }
+
+        // ============================================
+        // MANUAL IMAGE/DESCRIPTION UPLOAD (ADMIN)
+        // ============================================
+        async function uploadImageFromUrl() {
+            if (!currentBookId) return;
+            
+            const url = document.getElementById('imageUrlInput').value.trim();
+            if (!url) {
+                showError('Indtast venligst en URL');
+                return;
+            }
+            
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                showError('URL skal starte med http:// eller https://');
+                return;
+            }
+            
+            const book = books.find(b => b.id === currentBookId);
+            if (!book) return;
+            
+            book.cover = url;
+            book.manualCover = true;
+            await saveBookToFirebase(book);
+            
+            const img = document.getElementById('modalImg');
+            img.src = url;
+            img.style.display = 'block';
+            
+            document.getElementById('imageUrlInput').value = '';
+            showError('Forsidefoto opdateret!', 'success');
+        }
+
+        async function uploadImageFromFile() {
+            if (!currentBookId) return;
+            
+            const fileInput = document.getElementById('imageFileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showError('Vælg venligst en fil');
+                return;
+            }
+            
+            if (!file.type.startsWith('image/')) {
+                showError('Filen skal være et billede');
+                return;
+            }
+            
+            if (file.size > 2 * 1024 * 1024) {
+                showError('Billedet må maks være 2MB');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const book = books.find(b => b.id === currentBookId);
+                if (!book) return;
+                
+                book.cover = e.target.result;
+                book.manualCover = true;
+                await saveBookToFirebase(book);
+                
+                const img = document.getElementById('modalImg');
+                img.src = e.target.result;
+                img.style.display = 'block';
+                
+                fileInput.value = '';
+                showError('Forsidefoto uploadet!', 'success');
+            };
+            
+            reader.onerror = () => {
+                showError('Kunne ikke læse filen');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        async function removeBookCover() {
+            if (!currentBookId) return;
+            
+            if (!confirm('Vil du fjerne forsidebilledet fra denne bog?')) {
+                return;
+            }
+            
+            const book = books.find(b => b.id === currentBookId);
+            if (!book) return;
+            
+            book.cover = '';
+            book.manualCover = false;
+            await saveBookToFirebase(book);
+            
+            document.getElementById('modalImg').style.display = 'none';
+            showError('Forsidefoto fjernet', 'success');
+        }
+
+        async function saveManualDescription() {
+            if (!currentBookId) return;
+            
+            const textarea = document.getElementById('descriptionTextarea');
+            const newDesc = textarea.value.trim();
+            
+            if (!newDesc) {
+                showError('Skriv venligst en beskrivelse');
+                return;
+            }
+            
+            const book = books.find(b => b.id === currentBookId);
+            if (!book) return;
+            
+            book.desc = newDesc;
+            book.manualDesc = true;
+            await saveBookToFirebase(book);
+            
+            document.getElementById('modalDesc').textContent = newDesc;
+            showError('Beskrivelse gemt!', 'success');
+        }
+
+        async function clearDescription() {
+            if (!currentBookId) return;
+            
+            if (!confirm('Vil du nulstille beskrivelsen til standardteksten?')) {
+                return;
+            }
+            
+            const book = books.find(b => b.id === currentBookId);
+            if (!book) return;
+            
+            book.desc = 'Brug "Hent info" for at hente beskrivelse fra Google Books.';
+            book.manualDesc = false;
+            await saveBookToFirebase(book);
+            
+            document.getElementById('modalDesc').textContent = book.desc;
+            document.getElementById('descriptionTextarea').value = book.desc;
+            showError('Beskrivelse nulstillet', 'success');
+        }
+
+        // ============================================
+        // BOOK CLAIM MANAGEMENT
+        // ============================================
+        async function toggleClaim(bookId) {
+            const user = document.getElementById('userName').value.trim();
+            
+            if (!user) {
+                showError('Skriv dit navn og tryk GEM først');
+                return;
+            }
+            
+            const book = books.find(b => b.id === bookId);
+            if (!book) return;
+            
+            if (!book.claims) book.claims = [];
+            
+            const userIndex = book.claims.indexOf(user);
+            
+            if (userIndex > -1) {
+                book.claims.splice(userIndex, 1);
+                if (book.winner === user) book.winner = null;
+            } else {
+                if (book.claims.length >= MAX_CLAIMS_PER_BOOK) {
+                    showError('Denne bog har allerede 4 ønsker');
+                    return;
+                }
+                book.claims.push(user);
+            }
+            
+            await saveBookToFirebase(book);
+        }
+
+        // ============================================
+        // UI RENDERING
+        // ============================================
+        function renderBooks() {
+            const grid = document.getElementById('bookGrid');
+            const user = document.getElementById('userName').value.trim();
+            
+            if (books.length === 0) {
+                grid.innerHTML = `
+                    <div style="text-align:center; grid-column:1/-1; padding: 40px;">
+                        <p style="font-size: 18px; color: #666; margin-bottom: 10px;">📚 Ingen bøger endnu</p>
+                        <p style="font-size: 14px; color: #999;">Upload en CSV-fil for at komme i gang (admin)</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = '';
+            
+            books.forEach(book => {
+                const card = createBookCard(book, user);
+                grid.appendChild(card);
+            });
+        }
+
+        function createBookCard(book, user) {
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            card.onclick = () => openModal(book.id);
+            
+            const claims = book.claims || [];
+            const isClaimed = user && claims.includes(user);
+            const isWinner = book.winner === user;
+            
+            const slots = Array(MAX_CLAIMS_PER_BOOK).fill().map((_, i) => {
+                const claimant = claims[i];
+                const isSlotWinner = book.winner === claimant && claimant;
+                return `<div class="claim-slot ${isSlotWinner ? 'winner' : ''}">${claimant || '-'} ${isSlotWinner ? '🏆' : ''}</div>`;
+            }).join('');
+            
+            const coverImg = book.cover 
+                ? `<img src="${book.cover}" class="card-img" alt="${book.title}">`
+                : `<div class="card-img"></div>`;
+            
+            const fetchFailedBadge = (book.fetchAttempted && !book.cover && !book.manualCover) 
+                ? '<span class="fetch-failed-badge">⚠️ Ingen forside</span>' 
+                : '';
+            
+            const manualBadge = book.manualCover 
+                ? '<span class="fetch-failed-badge" style="background: #34c759;">✓ Manuel</span>' 
+                : '';
+            
+            let buttonClass = 'btn-direct-claim';
+            let buttonText = 'Jeg ønsker mig bogen her';
+            let buttonDisabled = false;
+            
+            if (!user) {
+                buttonText = 'Skriv navn først';
+                buttonDisabled = true;
+            } else if (isClaimed) {
+                buttonClass += ' claimed';
+                buttonText = 'Fjern ønske';
+            } else if (claims.length >= MAX_CLAIMS_PER_BOOK) {
+                buttonText = 'Fuld (4/4)';
+                buttonDisabled = true;
+            }
+            
+            card.innerHTML = `
+                <div style="flex-grow: 1;">
+                    ${coverImg}
+                    <div class="book-title">${escapeHtml(book.title)}${isWinner ? ' <span class="stats-badge">🏆 DIN</span>' : ''}${fetchFailedBadge}${manualBadge}</div>
+                    <div class="book-author">${escapeHtml(book.author)}</div>
+                    <div class="info-hint">ℹ️ Klik for beskrivelse</div>
+                    <div class="claim-slots">${slots}</div>
+                </div>
+                <button class="${buttonClass}" 
+                        ${buttonDisabled ? 'disabled' : ''} 
+                        onclick="event.stopPropagation(); toggleClaim('${book.id}')">
+                    ${buttonText}
+                </button>
+            `;
+            
+            return card;
+        }
+
+        function openModal(bookId) {
+            currentBookId = bookId;
+            const book = books.find(b => b.id === bookId);
+            if (!book) return;
+            
+            updateModalContent(book);
+            document.getElementById('bookModal').classList.add('active');
+        }
+
+        function updateModalContent(book) {
+            const user = document.getElementById('userName').value.trim();
+            
+            const modal = document.getElementById('bookModal');
+            const img = document.getElementById('modalImg');
+            
+            if (book.cover) {
+                img.src = book.cover;
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+            
+            document.getElementById('modalTitle').textContent = book.title;
+            document.getElementById('modalAuthor').textContent = book.author;
+            document.getElementById('modalDesc').textContent = book.desc || 'Ingen beskrivelse tilgængelig.';
+            
+            const claims = book.claims || [];
+            const claimsHTML = claims.length > 0
+                ? claims.map(claimant => `
+                    <div class="winner-list-item ${book.winner === claimant ? 'is-winner' : ''}">
+                        <span>${escapeHtml(claimant)}</span>
+                        ${book.winner === claimant ? '<span>🏆 VINDER</span>' : ''}
+                    </div>
+                `).join('')
+                : '<p style="color: #999; font-style: italic;">Ingen ønsker endnu</p>';
+            
+            document.getElementById('modalClaims').innerHTML = claimsHTML;
+            
+            const actionBtn = document.getElementById('modalActionButton');
+            const isClaimed = user && claims.includes(user);
+            
+            if (!user) {
+                actionBtn.textContent = 'Skriv dit navn først';
+                actionBtn.disabled = true;
+            } else if (isClaimed) {
+                actionBtn.textContent = 'Fjern ønske';
+                actionBtn.disabled = false;
+            } else if (claims.length >= MAX_CLAIMS_PER_BOOK) {
+                actionBtn.textContent = 'Bogen er fuld (4/4)';
+                actionBtn.disabled = true;
+            } else {
+                actionBtn.textContent = 'Jeg ønsker mig bogen her';
+                actionBtn.disabled = false;
+            }
+            
+            actionBtn.onclick = () => toggleClaim(book.id);
+            
+            const adminUploadSection = document.getElementById('adminImageUpload');
+            if (isAdminMode) {
+                adminUploadSection.classList.add('active');
+                document.getElementById('imageUrlInput').value = '';
+                document.getElementById('imageFileInput').value = '';
+                document.getElementById('descriptionTextarea').value = book.desc || '';
+                
+                const searchQuery = encodeURIComponent(`${book.title} ${book.author} bog forside`);
+                document.getElementById('googleImagesLink').href = `https://www.google.com/search?tbm=isch&q=${searchQuery}`;
+            } else {
+                adminUploadSection.classList.remove('active');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('bookModal').classList.remove('active');
+            currentBookId = null;
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function showError(message, type = 'error') {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            errorDiv.style.background = type === 'success' ? '#34c759' : '#ff3b30';
+            
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ============================================
+        // START APPLICATION
+        // ============================================
+        window.onload = init;
+    </script>
+</body>
+</html>
