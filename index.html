@@ -20,6 +20,13 @@
         #adminArea { display: none; gap: 10px; border-left: 2px solid #eee; padding-left: 15px; align-items: center; }
         .admin-btn { padding: 10px 15px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; }
         .btn-ai { background: #5856d6; }
+        
+        /* Progress bar */
+        .progress-container { display: none; width: 100%; background: #f0f0f0; border-radius: 8px; overflow: hidden; margin-top: 10px; height: 30px; position: relative; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #007aff, #5856d6); transition: width 0.3s ease; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 600; }
+        
+        /* Error messages */
+        .error-message { background: #ff3b30; color: white; padding: 10px 15px; border-radius: 8px; margin-top: 10px; font-size: 13px; display: none; }
 
         .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .book-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s; display: flex; flex-direction: column; cursor: pointer; text-align: center; }
@@ -34,20 +41,30 @@
         .btn-direct-claim.claimed { background: #ff3b30; }
         .btn-direct-claim:disabled { background: #ccc; cursor: not-allowed; }
 
-        .claim-slots { display: flex; gap: 6px; margin-top: 10px; justify-content: center; }
+        .claim-slots { display: flex; gap: 6px; margin-top: 10px; justify-content: center; flex-wrap: wrap; }
         .claim-slot { width: 60px; padding: 6px; background: #f8f8f8; border: 1px solid #ddd; border-radius: 6px; font-size: 10px; text-align: center; color: #666; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
         .claim-slot.winner { background: #ffd700; border-color: #ffa000; color: #000; font-weight: bold; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
         .modal.active { display: flex; }
         .modal-content { background: white; border-radius: 16px; padding: 30px; max-width: 500px; width: 95%; max-height: 90vh; overflow-y: auto; text-align: center; }
-        .modal-img { width: 140px; height: 200px; object-fit: cover; margin-bottom: 20px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .modal-img { width: 140px; height: 200px; object-fit: cover; margin: 0 auto 20px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); display: block; }
         .modal-desc { margin: 15px 0; font-size: 14px; line-height: 1.5; color: #444; background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; text-align: left; }
         .modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
         .modal-buttons button { flex: 1; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
         
         .winner-list-item { padding: 8px; background: #f0f0f0; margin-top: 5px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
         .winner-list-item.is-winner { background: #ffd700; border: 1px solid #ffa000; font-weight: bold; }
+        
+        .stats-badge { display: inline-block; background: #34c759; color: white; padding: 4px 8px; border-radius: 12px; font-size: 11px; margin-left: 8px; }
+        
+        .admin-image-upload { display: none; margin-top: 15px; padding: 15px; background: #f9f9f9; border-radius: 8px; border: 2px dashed #007aff; }
+        .admin-image-upload.active { display: block; }
+        .admin-image-upload input[type="url"] { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; }
+        .admin-image-upload input[type="file"] { margin-bottom: 10px; }
+        .admin-image-upload button { padding: 8px 15px; background: #007aff; color: white; border: none; border-radius: 6px; cursor: pointer; margin-right: 5px; }
+        .admin-image-upload button:hover { background: #0051d5; }
+        .fetch-failed-badge { background: #ff9500; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-left: 5px; }
     </style>
 </head>
 <body>
@@ -75,6 +92,13 @@
                 <button class="admin-btn" style="background:#ff3b30" onclick="clearAllData()" id="btnReset" disabled>🔄 Slet Alt</button>
             </div>
         </div>
+        
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+        
+        <div class="error-message" id="errorMessage"></div>
+        
         <div class="book-grid" id="bookGrid"></div>
     </div>
 
@@ -85,6 +109,19 @@
             <p id="modalAuthor" style="color:#666; margin-bottom:10px;"></p>
             <div id="modalDesc" class="modal-desc"></div>
             <div id="modalClaims"></div>
+            
+            <!-- Admin Image Upload Section -->
+            <div class="admin-image-upload" id="adminImageUpload">
+                <h4 style="margin-bottom: 10px; color: #007aff;">📸 Upload forsidefoto (Admin)</h4>
+                <input type="url" id="imageUrlInput" placeholder="Indsæt URL til billede (f.eks. https://...)">
+                <input type="file" id="imageFileInput" accept="image/*">
+                <div>
+                    <button onclick="uploadImageFromUrl()">Gem URL</button>
+                    <button onclick="uploadImageFromFile()">Upload fil</button>
+                    <button onclick="removeBookCover()" style="background: #ff3b30;">Fjern billede</button>
+                </div>
+            </div>
+            
             <div class="modal-buttons">
                 <button id="modalActionButton" style="background:#007aff; color:white;"></button>
                 <button onclick="closeModal()" style="background:#eee;">Luk</button>
@@ -93,177 +130,682 @@
     </div>
 
     <script>
-        let books = JSON.parse(localStorage.getItem('bookShuffleData')) || [];
-        let currentBookId = null;
+        // ============================================
+        // DATA MANAGEMENT
+        // ============================================
+        const STORAGE_KEY = 'bookShuffleData';
+        const USER_KEY = 'shufflerUserName';
+        const ADMIN_PASSWORD = 'Bogsnup2026';
+        const MAX_CLAIMS_PER_BOOK = 4;
+        const API_DELAY_MS = 500; // Delay between API calls to avoid rate limiting
 
-        document.addEventListener('keydown', e => { if (e.shiftKey && e.key === 'L') document.getElementById('adminArea').style.display = 'flex'; });
-        
-        function toggleAdmin() {
-            if (document.getElementById('adminPass').value === "Bogsnup2026") {
-                document.querySelectorAll('.admin-btn').forEach(b => b.disabled = false);
-            } else { alert("Forkert kode!"); }
+        let books = [];
+        let currentBookId = null;
+        let isAdminMode = false;
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        function init() {
+            loadData();
+            loadUserName();
+            renderBooks();
+            setupEventListeners();
         }
 
+        function setupEventListeners() {
+            document.addEventListener('keydown', e => {
+                if (e.shiftKey && e.key === 'L') {
+                    document.getElementById('adminArea').style.display = 'flex';
+                }
+            });
+            
+            // Close modal on background click
+            document.getElementById('bookModal').addEventListener('click', (e) => {
+                if (e.target.id === 'bookModal') closeModal();
+            });
+        }
+
+        function loadData() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                books = data ? JSON.parse(data) : [];
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('Kunne ikke indlæse data fra browseren');
+                books = [];
+            }
+        }
+
+        function loadUserName() {
+            const savedName = localStorage.getItem(USER_KEY);
+            if (savedName) {
+                document.getElementById('userName').value = savedName;
+            }
+        }
+
+        function saveData() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
+            } catch (error) {
+                console.error('Error saving data:', error);
+                showError('Kunne ikke gemme data');
+            }
+        }
+
+        // ============================================
+        // USER MANAGEMENT
+        // ============================================
         function saveUserName() {
-            const name = document.getElementById('userName').value.trim();
-            if (name) {
-                localStorage.setItem('shufflerUserName', name);
-                const btn = document.getElementById('saveNameBtn');
-                btn.textContent = '✓ Gemt'; btn.classList.add('saved');
-                setTimeout(() => { btn.textContent = 'GEM'; btn.classList.remove('saved'); }, 2000);
-                renderBooks();
+            const input = document.getElementById('userName');
+            const name = input.value.trim();
+            
+            if (!name) {
+                showError('Skriv venligst dit navn');
+                return;
+            }
+            
+            localStorage.setItem(USER_KEY, name);
+            
+            const btn = document.getElementById('saveNameBtn');
+            btn.textContent = '✓ Gemt';
+            btn.classList.add('saved');
+            
+            setTimeout(() => {
+                btn.textContent = 'GEM';
+                btn.classList.remove('saved');
+            }, 2000);
+            
+            renderBooks();
+        }
+
+        // ============================================
+        // ADMIN FUNCTIONS
+        // ============================================
+        function toggleAdmin() {
+            const password = document.getElementById('adminPass').value;
+            
+            if (password === ADMIN_PASSWORD) {
+                isAdminMode = true;
+                document.querySelectorAll('.admin-btn').forEach(btn => btn.disabled = false);
+                showError('Admin adgang aktiveret', 'success');
+            } else {
+                showError('Forkert adgangskode!');
             }
         }
 
         function handleCSVUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
             const reader = new FileReader();
             reader.onload = (e) => {
-                const lines = e.target.result.split('\n').filter(l => l.trim());
-                books = lines.slice(1).map((l, i) => {
-                    const p = l.split(/[;,]/);
-                    return { 
-                        id: 'b-' + Date.now() + '-' + i, 
-                        title: p[0]?.trim(), 
-                        author: p[1]?.trim() || 'Ukendt', 
-                        desc: 'Brug "Hent info" for beskrivelse.',
-                        cover: '',
-                        claims: [],
-                        winner: null
-                    };
-                });
-                saveData(); renderBooks();
+                try {
+                    const lines = e.target.result.split('\n').filter(l => l.trim());
+                    
+                    if (lines.length < 2) {
+                        showError('CSV-filen skal indeholde mindst en overskrift og en bog');
+                        return;
+                    }
+                    
+                    books = lines.slice(1).map((line, i) => {
+                        const parts = line.split(/[;,]/).map(p => p.trim());
+                        return {
+                            id: 'b-' + Date.now() + '-' + i,
+                            title: parts[0] || 'Ingen titel',
+                            author: parts[1] || 'Ukendt forfatter',
+                            desc: 'Brug "Hent info" for at hente beskrivelse fra Google Books.',
+                            cover: '',
+                            claims: [],
+                            winner: null,
+                            fetchAttempted: false,
+                            fetchSuccess: false,
+                            manualCover: false
+                        };
+                    });
+                    
+                    saveData();
+                    renderBooks();
+                    showError(`${books.length} bøger indlæst fra CSV`, 'success');
+                } catch (error) {
+                    console.error('CSV parsing error:', error);
+                    showError('Fejl ved indlæsning af CSV-fil');
+                }
             };
-            reader.readAsText(event.target.files[0]);
+            
+            reader.onerror = () => {
+                showError('Kunne ikke læse filen');
+            };
+            
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
         }
 
         async function fetchAllInfo() {
-            const btn = document.getElementById('btnFetch');
-            btn.textContent = "..."; btn.disabled = true;
-            for (let b of books) {
-                try {
-                    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(b.title)}+inauthor:${encodeURIComponent(b.author)}&langRestrict=da`);
-                    const data = await res.json();
-                    if (data.items && data.items[0]) {
-                        const info = data.items[0].volumeInfo;
-                        b.desc = info.description || b.desc;
-                        b.cover = info.imageLinks ? info.imageLinks.thumbnail.replace('http:', 'https:') : '';
-                    }
-                } catch (e) {}
+            if (books.length === 0) {
+                showError('Ingen bøger at hente info for. Upload først en CSV-fil.');
+                return;
             }
-            btn.textContent = "✨ Hent info"; btn.disabled = false;
-            saveData(); renderBooks();
-        }
-
-        // --- DEN NYE SMART LODTRÆKNING ---
-        function runSmartLottery() {
-            if (!confirm("Vil du køre lodtrækningen nu?")) return;
             
-            // Nulstil tidligere vindere
-            books.forEach(b => b.winner = null);
+            const btn = document.getElementById('btnFetch');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
             
-            let usersWithPopularWin = new Set();
+            btn.disabled = true;
+            btn.textContent = '⏳ Henter...';
+            progressContainer.style.display = 'block';
             
-            // 1. Gennemløb alle bøger med kun 1 claim (Garanteret gevinst)
-            books.forEach(b => {
-                if (b.claims.length === 1) {
-                    b.winner = b.claims[0];
-                }
-            });
-
-            // 2. Gennemløb bøger med flere claims (Lodtrækning med begrænsning)
-            // Vi blander rækkefølgen af bøger for at gøre det fair
-            let popularBooks = books.filter(b => b.claims.length > 1);
-            popularBooks.sort(() => Math.random() - 0.5);
-
-            popularBooks.forEach(b => {
-                // Find de kandidater på bogen, som ikke har vundet en populær bog endnu
-                let eligibleCandidates = b.claims.filter(user => !usersWithPopularWin.has(user));
+            let successCount = 0;
+            let failCount = 0;
+            
+            for (let i = 0; i < books.length; i++) {
+                const book = books[i];
                 
-                if (eligibleCandidates.length > 0) {
-                    let luckyWinner = eligibleCandidates[Math.floor(Math.random() * eligibleCandidates.length)];
-                    b.winner = luckyWinner;
-                    usersWithPopularWin.add(luckyWinner);
-                } else {
-                    // Hvis ALLE på listen allerede har vundet noget andet, trækker vi lod blandt alle alligevel som fallback
-                    b.winner = b.claims[Math.floor(Math.random() * b.claims.length)];
+                // Skip if book already has a manual cover
+                if (book.manualCover) {
+                    progressBar.style.width = Math.round(((i + 1) / books.length) * 100) + '%';
+                    progressBar.textContent = `${i + 1}/${books.length} - ${book.title} (springes over - manuel forside)`;
+                    await delay(100); // Brief pause for visual feedback
+                    continue;
                 }
-            });
-
+                
+                const progress = Math.round(((i + 1) / books.length) * 100);
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = `${i + 1}/${books.length} - ${book.title}`;
+                
+                try {
+                    const query = `intitle:"${book.title}" inauthor:"${book.author}"`;
+                    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&langRestrict=da&maxResults=1`;
+                    
+                    const response = await fetch(url);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.items && data.items.length > 0) {
+                        const info = data.items[0].volumeInfo;
+                        
+                        // Update book info
+                        book.desc = info.description || book.desc;
+                        
+                        if (info.imageLinks) {
+                            // Use larger image if available
+                            book.cover = (info.imageLinks.large || 
+                                         info.imageLinks.medium || 
+                                         info.imageLinks.thumbnail || 
+                                         info.imageLinks.smallThumbnail || 
+                                         '').replace('http:', 'https:');
+                        }
+                        
+                        book.fetchSuccess = true;
+                        successCount++;
+                    } else {
+                        console.warn(`No results found for: ${book.title} by ${book.author}`);
+                        failCount++;
+                    }
+                    
+                    book.fetchAttempted = true;
+                    
+                    // Save progress after each successful fetch
+                    saveData();
+                    
+                    // Add delay between requests to avoid rate limiting
+                    if (i < books.length - 1) {
+                        await delay(API_DELAY_MS);
+                    }
+                    
+                } catch (error) {
+                    console.error(`Error fetching info for "${book.title}":`, error);
+                    book.fetchAttempted = true;
+                    failCount++;
+                }
+            }
+            
+            // Final update
             saveData();
             renderBooks();
-            alert("Lodtrækning fuldført!");
+            
+            btn.disabled = false;
+            btn.textContent = '✨ Hent info';
+            progressContainer.style.display = 'none';
+            
+            showError(
+                `Færdig! ✅ ${successCount} bøger hentet | ❌ ${failCount} fejlede`,
+                'success'
+            );
         }
 
+        function runSmartLottery() {
+            if (books.length === 0) {
+                showError('Ingen bøger at trække lod om');
+                return;
+            }
+            
+            const totalClaims = books.reduce((sum, b) => sum + b.claims.length, 0);
+            if (totalClaims === 0) {
+                showError('Ingen ønsker er registreret endnu');
+                return;
+            }
+            
+            if (!confirm(`Vil du køre lodtrækningen nu?\n\nDette vil tildele vindere til alle ${books.length} bøger baseret på ${totalClaims} ønsker.`)) {
+                return;
+            }
+            
+            // Reset all winners
+            books.forEach(b => b.winner = null);
+            
+            const usersWithPopularWin = new Set();
+            
+            // Phase 1: Assign books with only 1 claim (guaranteed wins)
+            books.forEach(book => {
+                if (book.claims.length === 1) {
+                    book.winner = book.claims[0];
+                }
+            });
+            
+            // Phase 2: Lottery for books with multiple claims
+            const popularBooks = books.filter(b => b.claims.length > 1);
+            
+            // Shuffle to make the process fair
+            shuffleArray(popularBooks);
+            
+            popularBooks.forEach(book => {
+                // Find candidates who haven't won a popular book yet
+                const eligibleCandidates = book.claims.filter(user => !usersWithPopularWin.has(user));
+                
+                if (eligibleCandidates.length > 0) {
+                    // Pick random winner from eligible candidates
+                    const winner = eligibleCandidates[Math.floor(Math.random() * eligibleCandidates.length)];
+                    book.winner = winner;
+                    usersWithPopularWin.add(winner);
+                } else {
+                    // Fallback: if everyone has already won, pick from all claims
+                    book.winner = book.claims[Math.floor(Math.random() * book.claims.length)];
+                }
+            });
+            
+            saveData();
+            renderBooks();
+            
+            // Calculate statistics
+            const winners = new Set(books.filter(b => b.winner).map(b => b.winner));
+            const booksWithWinners = books.filter(b => b.winner).length;
+            
+            showError(
+                `🎉 Lodtrækning fuldført!\n${booksWithWinners} bøger tildelt til ${winners.size} vindere`,
+                'success'
+            );
+        }
+
+        function clearAllData() {
+            if (!confirm('Er du sikker på at du vil slette ALLE data?\n\nDette kan ikke fortrydes!')) {
+                return;
+            }
+            
+            if (!confirm('Sidste advarsel! Al data vil blive slettet permanent.')) {
+                return;
+            }
+            
+            books = [];
+            saveData();
+            renderBooks();
+            showError('Alle data er slettet', 'success');
+        }
+
+        // ============================================
+        // MANUAL IMAGE UPLOAD (ADMIN)
+        // ============================================
+        function uploadImageFromUrl() {
+            if (!currentBookId) return;
+            
+            const url = document.getElementById('imageUrlInput').value.trim();
+            if (!url) {
+                showError('Indtast venligst en URL');
+                return;
+            }
+            
+            // Basic URL validation
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                showError('URL skal starte med http:// eller https://');
+                return;
+            }
+            
+            const book = books.find(b => b.id === currentBookId);
+            if (!book) return;
+            
+            book.cover = url;
+            book.manualCover = true;
+            saveData();
+            renderBooks();
+            
+            // Update modal image
+            const img = document.getElementById('modalImg');
+            img.src = url;
+            img.style.display = 'block';
+            
+            // Clear input
+            document.getElementById('imageUrlInput').value = '';
+            
+            showError('Forsidefoto opdateret!', 'success');
+        }
+
+        function uploadImageFromFile() {
+            if (!currentBookId) return;
+            
+            const fileInput = document.getElementById('imageFileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showError('Vælg venligst en fil');
+                return;
+            }
+            
+            if (!file.type.startsWith('image/')) {
+                showError('Filen skal være et billede');
+                return;
+            }
+            
+            // Check file size (max 2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                showError('Billedet må maks være 2MB');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const book = books.find(b => b.id === currentBookId);
+                if (!book) return;
+                
+                book.cover = e.target.result; // Base64 data URL
+                book.manualCover = true;
+                saveData();
+                renderBooks();
+                
+                // Update modal image
+                const img = document.getElementById('modalImg');
+                img.src = e.target.result;
+                img.style.display = 'block';
+                
+                // Clear input
+                fileInput.value = '';
+                
+                showError('Forsidefoto uploadet!', 'success');
+            };
+            
+            reader.onerror = () => {
+                showError('Kunne ikke læse filen');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function removeBookCover() {
+            if (!currentBookId) return;
+            
+            if (!confirm('Vil du fjerne forsidebilledet fra denne bog?')) {
+                return;
+            }
+            
+            const book = books.find(b => b.id === currentBookId);
+            if (!book) return;
+            
+            book.cover = '';
+            book.manualCover = false;
+            saveData();
+            renderBooks();
+            
+            // Update modal image
+            const img = document.getElementById('modalImg');
+            img.style.display = 'none';
+            
+            showError('Forsidefoto fjernet', 'success');
+        }
+
+        // ============================================
+        // BOOK MANAGEMENT
+        // ============================================
+        function toggleClaim(bookId) {
+            const user = document.getElementById('userName').value.trim();
+            
+            if (!user) {
+                showError('Skriv dit navn og tryk GEM først');
+                return;
+            }
+            
+            const book = books.find(b => b.id === bookId);
+            if (!book) return;
+            
+            const userIndex = book.claims.indexOf(user);
+            
+            if (userIndex > -1) {
+                // Remove claim
+                book.claims.splice(userIndex, 1);
+                
+                // Remove winner status if applicable
+                if (book.winner === user) {
+                    book.winner = null;
+                }
+            } else {
+                // Add claim
+                if (book.claims.length >= MAX_CLAIMS_PER_BOOK) {
+                    showError('Denne bog har allerede 4 ønsker');
+                    return;
+                }
+                book.claims.push(user);
+            }
+            
+            saveData();
+            renderBooks();
+            
+            // Update modal if it's open
+            if (currentBookId === bookId) {
+                openModal(bookId);
+            }
+        }
+
+        // ============================================
+        // UI RENDERING
+        // ============================================
         function renderBooks() {
             const grid = document.getElementById('bookGrid');
             const user = document.getElementById('userName').value.trim();
-            grid.innerHTML = books.length ? '' : '<p style="text-align:center; grid-column:1/-1;">Upload CSV for at starte.</p>';
             
-            books.forEach(b => {
-                const card = document.createElement('div');
-                card.className = 'book-card';
-                card.onclick = () => openModal(b.id);
-                
-                const slots = Array(4).fill().map((_, i) => {
-                    const c = b.claims[i];
-                    const isWin = b.winner === c && c;
-                    return `<div class="claim-slot ${isWin ? 'winner' : ''}">${c || '-'} ${isWin ? '🏆' : ''}</div>`;
-                }).join('');
-
-                const isClaimed = user && b.claims.includes(user);
-                const coverImg = b.cover ? `<img src="${b.cover}" class="card-img">` : `<div class="card-img"></div>`;
-
-                card.innerHTML = `
-                    <div style="flex-grow: 1;">
-                        ${coverImg}
-                        <div class="book-title">${b.title}</div>
-                        <div class="book-author">${b.author}</div>
-                        <div class="info-hint">ℹ️ Klik for beskrivelse</div>
-                        <div class="claim-slots">${slots}</div>
+            if (books.length === 0) {
+                grid.innerHTML = `
+                    <div style="text-align:center; grid-column:1/-1; padding: 40px;">
+                        <p style="font-size: 18px; color: #666; margin-bottom: 10px;">📚 Ingen bøger endnu</p>
+                        <p style="font-size: 14px; color: #999;">Upload en CSV-fil for at komme i gang</p>
                     </div>
-                    <button class="btn-direct-claim ${isClaimed ? 'claimed' : ''}" 
-                            ${(!user || (!isClaimed && b.claims.length >= 4)) ? 'disabled' : ''} 
-                            onclick="event.stopPropagation(); toggleClaim('${b.id}')">
-                        ${!user ? 'Skriv navn' : (isClaimed ? 'Fjern ønske' : (b.claims.length >= 4 ? 'Fuld' : 'Jeg ønsker mig bogen her'))}
-                    </button>`;
+                `;
+                return;
+            }
+            
+            grid.innerHTML = '';
+            
+            books.forEach(book => {
+                const card = createBookCard(book, user);
                 grid.appendChild(card);
             });
         }
 
-        function toggleClaim(id) {
-            const user = document.getElementById('userName').value.trim();
-            if (!user) return;
-            const b = books.find(x => x.id === id);
-            const idx = b.claims.indexOf(user);
-            if (idx > -1) { b.claims.splice(idx, 1); if(b.winner === user) b.winner = null; }
-            else if (b.claims.length < 4) b.claims.push(user);
-            saveData(); renderBooks();
-            if (currentBookId === id) openModal(id);
+        function createBookCard(book, user) {
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            card.onclick = () => openModal(book.id);
+            
+            const isClaimed = user && book.claims.includes(user);
+            const isWinner = book.winner === user;
+            
+            // Create claim slots
+            const slots = Array(MAX_CLAIMS_PER_BOOK).fill().map((_, i) => {
+                const claimant = book.claims[i];
+                const isSlotWinner = book.winner === claimant && claimant;
+                return `<div class="claim-slot ${isSlotWinner ? 'winner' : ''}">${claimant || '-'} ${isSlotWinner ? '🏆' : ''}</div>`;
+            }).join('');
+            
+            // Create cover image or placeholder
+            const coverImg = book.cover 
+                ? `<img src="${book.cover}" class="card-img" alt="${book.title}">`
+                : `<div class="card-img"></div>`;
+            
+            // Show indicator if fetch was attempted but no cover found
+            const fetchFailedBadge = (book.fetchAttempted && !book.cover && !book.manualCover) 
+                ? '<span class="fetch-failed-badge">⚠️ Ingen forside</span>' 
+                : '';
+            
+            // Show manual badge if cover was manually added
+            const manualBadge = book.manualCover 
+                ? '<span class="fetch-failed-badge" style="background: #34c759;">✓ Manuel</span>' 
+                : '';
+            
+            // Determine button state
+            let buttonClass = 'btn-direct-claim';
+            let buttonText = 'Jeg ønsker mig bogen her';
+            let buttonDisabled = false;
+            
+            if (!user) {
+                buttonText = 'Skriv navn først';
+                buttonDisabled = true;
+            } else if (isClaimed) {
+                buttonClass += ' claimed';
+                buttonText = 'Fjern ønske';
+            } else if (book.claims.length >= MAX_CLAIMS_PER_BOOK) {
+                buttonText = 'Fuld (4/4)';
+                buttonDisabled = true;
+            }
+            
+            card.innerHTML = `
+                <div style="flex-grow: 1;">
+                    ${coverImg}
+                    <div class="book-title">${escapeHtml(book.title)}${isWinner ? ' <span class="stats-badge">🏆 DIN</span>' : ''}${fetchFailedBadge}${manualBadge}</div>
+                    <div class="book-author">${escapeHtml(book.author)}</div>
+                    <div class="info-hint">ℹ️ Klik for beskrivelse</div>
+                    <div class="claim-slots">${slots}</div>
+                </div>
+                <button class="${buttonClass}" 
+                        ${buttonDisabled ? 'disabled' : ''} 
+                        onclick="event.stopPropagation(); toggleClaim('${book.id}')">
+                    ${buttonText}
+                </button>
+            `;
+            
+            return card;
         }
 
-        function openModal(id) {
-            currentBookId = id;
-            const b = books.find(x => x.id === id);
+        function openModal(bookId) {
+            currentBookId = bookId;
+            const book = books.find(b => b.id === bookId);
+            if (!book) return;
+            
             const user = document.getElementById('userName').value.trim();
+            
+            const modal = document.getElementById('bookModal');
             const img = document.getElementById('modalImg');
-            if (b.cover) { img.src = b.cover; img.style.display = 'inline-block'; } else { img.style.display = 'none'; }
-            document.getElementById('modalTitle').textContent = b.title;
-            document.getElementById('modalAuthor').textContent = b.author;
-            document.getElementById('modalDesc').textContent = b.desc;
-            document.getElementById('modalClaims').innerHTML = b.claims.map(c => `
-                <div class="winner-list-item ${b.winner === c ? 'is-winner' : ''}">
-                    <span>${c}</span> ${b.winner === c ? '🏆 VINDER' : ''}
-                </div>`).join('');
-            const btn = document.getElementById('modalActionButton');
-            btn.textContent = user && b.claims.includes(user) ? "Fjern ønske" : "Jeg ønsker mig bogen her";
-            btn.onclick = () => toggleClaim(id);
-            document.getElementById('bookModal').classList.add('active');
+            
+            // Set cover image
+            if (book.cover) {
+                img.src = book.cover;
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+            
+            // Set book details
+            document.getElementById('modalTitle').textContent = book.title;
+            document.getElementById('modalAuthor').textContent = book.author;
+            document.getElementById('modalDesc').textContent = book.desc;
+            
+            // Render claims list
+            const claimsHTML = book.claims.length > 0
+                ? book.claims.map(claimant => `
+                    <div class="winner-list-item ${book.winner === claimant ? 'is-winner' : ''}">
+                        <span>${escapeHtml(claimant)}</span>
+                        ${book.winner === claimant ? '<span>🏆 VINDER</span>' : ''}
+                    </div>
+                `).join('')
+                : '<p style="color: #999; font-style: italic;">Ingen ønsker endnu</p>';
+            
+            document.getElementById('modalClaims').innerHTML = claimsHTML;
+            
+            // Set action button
+            const actionBtn = document.getElementById('modalActionButton');
+            const isClaimed = user && book.claims.includes(user);
+            
+            if (!user) {
+                actionBtn.textContent = 'Skriv dit navn først';
+                actionBtn.disabled = true;
+            } else if (isClaimed) {
+                actionBtn.textContent = 'Fjern ønske';
+                actionBtn.disabled = false;
+            } else if (book.claims.length >= MAX_CLAIMS_PER_BOOK) {
+                actionBtn.textContent = 'Bogen er fuld (4/4)';
+                actionBtn.disabled = true;
+            } else {
+                actionBtn.textContent = 'Jeg ønsker mig bogen her';
+                actionBtn.disabled = false;
+            }
+            
+            actionBtn.onclick = () => toggleClaim(bookId);
+            
+            // Show/hide admin image upload section
+            const adminUploadSection = document.getElementById('adminImageUpload');
+            if (isAdminMode) {
+                adminUploadSection.classList.add('active');
+                // Clear previous inputs
+                document.getElementById('imageUrlInput').value = '';
+                document.getElementById('imageFileInput').value = '';
+            } else {
+                adminUploadSection.classList.remove('active');
+            }
+            
+            modal.classList.add('active');
         }
 
-        function clearAllData() { if (confirm("Slet alt?")) { books = []; saveData(); renderBooks(); } }
-        function saveData() { localStorage.setItem('bookShuffleData', JSON.stringify(books)); }
-        function closeModal() { document.getElementById('bookModal').classList.remove('active'); }
-        window.onload = renderBooks;
+        function closeModal() {
+            document.getElementById('bookModal').classList.remove('active');
+            currentBookId = null;
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function showError(message, type = 'error') {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            errorDiv.style.background = type === 'success' ? '#34c759' : '#ff3b30';
+            
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ============================================
+        // INITIALIZE ON LOAD
+        // ============================================
+        window.onload = init;
     </script>
 </body>
 </html>
