@@ -84,6 +84,7 @@
                 <input type="text" id="userName" placeholder="Dit navn">
                 <button class="btn-gem" id="saveNameBtn" onclick="saveUserName()">GEM</button>
             </div>
+            <button class="btn-gem" onclick="manualRefresh()" style="background: #5856d6;">🔄 Genindlæs</button>
             <div id="adminArea">
                 <input type="password" id="adminPass" placeholder="Kode">
                 <button class="admin-btn" onclick="toggleAdmin()">🔓</button>
@@ -91,6 +92,7 @@
                 <button class="admin-btn" onclick="document.getElementById('csvFileInput').click()" id="btnUpload" disabled>📁 CSV</button>
                 <button class="admin-btn btn-ai" onclick="fetchAllInfo()" id="btnFetch" disabled>✨ Hent info</button>
                 <button class="admin-btn" onclick="showFetchErrors()" id="btnErrors" disabled>⚠️ Vis fejl</button>
+                <button class="admin-btn" style="background: #5856d6;" onclick="debugFirebase()" id="btnDebug" disabled>🔍 Debug Firebase</button>
                 <button class="admin-btn" onclick="runSmartLottery()" id="btnLottery" disabled>🎲 Lodtrækning</button>
                 <button class="admin-btn" style="background:#ff3b30" onclick="clearAllData()" id="btnReset" disabled>🔄 Slet Alt</button>
             </div>
@@ -155,14 +157,13 @@
         // ============================================
         // TODO: Replace with your Firebase config
         const firebaseConfig = {
-  apiKey: "AIzaSyB-2_DMuUGVgckSMGMrdUaKVVQQ7hhCTvU",
-  authDomain: "bogsnup2026.firebaseapp.com",
-  databaseURL: "https://bogsnup2026-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "bogsnup2026",
-  storageBucket: "bogsnup2026.firebasestorage.app",
-  messagingSenderId: "751291661929",
-  appId: "1:751291661929:web:40a3ab1793184d6718acf8",
-  measurementId: "G-3L1D4R8HXT"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
 
         // Initialize Firebase
@@ -212,19 +213,30 @@
         // FIREBASE DATA MANAGEMENT
         // ============================================
         function setupFirebaseListeners() {
-            if (!isFirebaseReady) return;
+            if (!isFirebaseReady) {
+                console.warn('Firebase not ready, skipping listeners');
+                return;
+            }
+            
+            console.log('Setting up Firebase listeners...');
             
             // Listen for all book changes in real-time
             database.ref('books').on('value', (snapshot) => {
                 const data = snapshot.val();
+                console.log('Firebase data updated:', data);
+                
                 if (data) {
                     books = Object.keys(data).map(key => ({
                         firebaseKey: key,
                         ...data[key]
                     }));
+                    console.log(`Loaded ${books.length} books from Firebase`);
                 } else {
                     books = [];
+                    console.log('No books in Firebase');
                 }
+                
+                // Force UI update
                 renderBooks();
                 
                 // Update modal if open
@@ -234,7 +246,12 @@
                         updateModalContent(book);
                     }
                 }
+            }, (error) => {
+                console.error('Firebase listener error:', error);
+                showError('Firebase fejl: ' + error.message);
             });
+            
+            console.log('✅ Firebase listeners active');
         }
 
         async function saveBookToFirebase(book) {
@@ -260,11 +277,14 @@
 
         async function saveAllBooksToFirebase(booksArray) {
             if (!isFirebaseReady) {
-                showError('Firebase ikke klar');
-                return;
+                showError('Firebase ikke klar - tjek konfiguration');
+                console.error('Firebase not initialized');
+                return false;
             }
             
             try {
+                console.log(`Saving ${booksArray.length} books to Firebase...`);
+                
                 const updates = {};
                 booksArray.forEach(book => {
                     const key = book.firebaseKey || database.ref('books').push().key;
@@ -272,11 +292,15 @@
                     delete bookData.firebaseKey;
                     updates['/books/' + key] = bookData;
                 });
+                
                 await database.ref().update(updates);
-                showError('Alle bøger gemt til Firebase', 'success');
+                console.log(`✅ Successfully saved ${booksArray.length} books to Firebase`);
+                showError(`✅ ${booksArray.length} bøger gemt til Firebase`, 'success');
+                return true;
             } catch (error) {
                 console.error('Firebase batch save error:', error);
                 showError('Kunne ikke gemme til Firebase: ' + error.message);
+                return false;
             }
         }
 
@@ -297,9 +321,31 @@
         // INITIALIZATION
         // ============================================
         function init() {
+            console.log('Initializing Bogsnup...');
             loadUserName();
             setupEventListeners();
-            setupFirebaseListeners();
+            
+            // Wait a bit for Firebase to be ready, then setup listeners
+            if (isFirebaseReady) {
+                console.log('Firebase ready immediately, setting up listeners');
+                setupFirebaseListeners();
+            } else {
+                console.log('Waiting for Firebase...');
+                // Check Firebase status every 100ms for up to 5 seconds
+                let attempts = 0;
+                const checkInterval = setInterval(() => {
+                    attempts++;
+                    if (isFirebaseReady) {
+                        console.log('Firebase ready after', attempts * 100, 'ms');
+                        clearInterval(checkInterval);
+                        setupFirebaseListeners();
+                    } else if (attempts >= 50) {
+                        console.error('Firebase failed to initialize after 5 seconds');
+                        clearInterval(checkInterval);
+                        showError('Firebase forbindelse fejlede - tjek konfiguration');
+                    }
+                }, 100);
+            }
         }
 
         function setupEventListeners() {
@@ -366,10 +412,13 @@
             const file = event.target.files[0];
             if (!file) return;
 
+            console.log('CSV file selected:', file.name);
+            
             const reader = new FileReader();
             reader.onload = async (e) => {
                 try {
                     const lines = e.target.result.split('\n').filter(l => l.trim());
+                    console.log(`CSV has ${lines.length} lines (including header)`);
                     
                     if (lines.length < 2) {
                         showError('CSV-filen skal indeholde mindst en overskrift og en bog');
@@ -393,16 +442,26 @@
                         };
                     });
                     
-                    await saveAllBooksToFirebase(newBooks);
-                    showError(`${newBooks.length} bøger uploadet til Firebase`, 'success');
+                    console.log('Parsed books:', newBooks);
+                    console.log(`Uploading ${newBooks.length} books to Firebase...`);
+                    
+                    const success = await saveAllBooksToFirebase(newBooks);
+                    
+                    if (success) {
+                        console.log('✅ CSV upload complete!');
+                    } else {
+                        console.error('❌ CSV upload failed');
+                    }
+                    
                 } catch (error) {
                     console.error('CSV parsing error:', error);
-                    showError('Fejl ved indlæsning af CSV-fil');
+                    showError('Fejl ved indlæsning af CSV-fil: ' + error.message);
                 }
             };
             
             reader.onerror = () => {
                 showError('Kunne ikke læse filen');
+                console.error('FileReader error');
             };
             
             reader.readAsText(file);
@@ -622,6 +681,125 @@
             errorReport += `Klik på en bog og upload billede/beskrivelse via admin-panelet.\n`;
             
             alert(errorReport);
+        }
+
+        async function debugFirebase() {
+            let debugReport = '🔍 FIREBASE DEBUG INFORMATION\n';
+            debugReport += '═'.repeat(60) + '\n\n';
+            
+            // Check Firebase initialization
+            debugReport += '1. FIREBASE INITIALISERING:\n';
+            debugReport += `   Status: ${isFirebaseReady ? '✅ Initialiseret' : '❌ IKKE initialiseret'}\n`;
+            debugReport += `   Config loaded: ${typeof firebaseConfig !== 'undefined' ? '✅ Ja' : '❌ Nej'}\n\n`;
+            
+            // Check database reference
+            debugReport += '2. DATABASE REFERENCE:\n';
+            debugReport += `   Database object: ${database ? '✅ Findes' : '❌ Mangler'}\n`;
+            if (firebaseConfig && firebaseConfig.databaseURL) {
+                debugReport += `   Database URL: ${firebaseConfig.databaseURL}\n`;
+            } else {
+                debugReport += `   Database URL: ❌ MANGLER I CONFIG\n`;
+            }
+            debugReport += '\n';
+            
+            // Check current data
+            debugReport += '3. NUVÆRENDE DATA:\n';
+            debugReport += `   Bøger i lokal array: ${books.length}\n`;
+            
+            if (isFirebaseReady) {
+                try {
+                    const snapshot = await database.ref('books').once('value');
+                    const firebaseBooks = snapshot.val();
+                    const firebaseCount = firebaseBooks ? Object.keys(firebaseBooks).length : 0;
+                    debugReport += `   Bøger i Firebase: ${firebaseCount}\n`;
+                    
+                    if (firebaseCount === 0) {
+                        debugReport += `   ⚠️ Firebase database er TOM\n`;
+                        debugReport += `   → Upload en CSV-fil for at tilføje bøger\n`;
+                    } else if (firebaseCount !== books.length) {
+                        debugReport += `   ⚠️ UOVERENSSTEMMELSE!\n`;
+                        debugReport += `   → Klik "🔄 Genindlæs" for at synkronisere\n`;
+                    }
+                } catch (error) {
+                    debugReport += `   ❌ Fejl ved læsning fra Firebase: ${error.message}\n`;
+                }
+            } else {
+                debugReport += `   ❌ Kan ikke tjekke Firebase (ikke forbundet)\n`;
+            }
+            debugReport += '\n';
+            
+            // Check permissions
+            debugReport += '4. FIREBASE SIKKERHEDSREGLER:\n';
+            if (isFirebaseReady) {
+                try {
+                    // Try to write a test value
+                    await database.ref('test').set({ timestamp: Date.now() });
+                    debugReport += `   Skrive-adgang: ✅ OK\n`;
+                    await database.ref('test').remove();
+                    
+                    // Try to read
+                    await database.ref('books').once('value');
+                    debugReport += `   Læse-adgang: ✅ OK\n`;
+                } catch (error) {
+                    debugReport += `   ❌ Adgangsfejl: ${error.message}\n`;
+                    debugReport += `   → Tjek sikkerhedsregler i Firebase Console\n`;
+                }
+            }
+            debugReport += '\n';
+            
+            // Troubleshooting steps
+            debugReport += '5. FEJLFINDING:\n';
+            debugReport += '─'.repeat(60) + '\n';
+            
+            if (!isFirebaseReady) {
+                debugReport += '❌ Firebase ikke forbundet:\n';
+                debugReport += '   1. Åbn browser console (F12)\n';
+                debugReport += '   2. Kig efter fejlbeskeder\n';
+                debugReport += '   3. Verificer firebaseConfig er korrekt\n';
+                debugReport += '   4. Tjek om databaseURL er sat\n';
+            } else if (books.length === 0) {
+                debugReport += '⚠️ Ingen bøger fundet:\n';
+                debugReport += '   1. Upload en CSV-fil først\n';
+                debugReport += '   2. Tjek browser console for fejl\n';
+                debugReport += '   3. Verificer CSV format (titel,forfatter)\n';
+                debugReport += '   4. Prøv at klikke "🔄 Genindlæs"\n';
+            } else {
+                debugReport += '✅ Alt ser godt ud!\n';
+                debugReport += `   Du har ${books.length} bøger klar til at hente info for.\n`;
+            }
+            
+            console.log(debugReport);
+            alert(debugReport);
+        }
+
+        async function manualRefresh() {
+            if (!isFirebaseReady) {
+                showError('Firebase ikke forbundet');
+                return;
+            }
+            
+            try {
+                console.log('Manual refresh triggered...');
+                const snapshot = await database.ref('books').once('value');
+                const data = snapshot.val();
+                
+                if (data) {
+                    books = Object.keys(data).map(key => ({
+                        firebaseKey: key,
+                        ...data[key]
+                    }));
+                    console.log(`Refreshed: ${books.length} books loaded`);
+                    renderBooks();
+                    showError(`✅ ${books.length} bøger genindlæst fra Firebase`, 'success');
+                } else {
+                    books = [];
+                    renderBooks();
+                    showError('Ingen bøger fundet i Firebase', 'error');
+                }
+            } catch (error) {
+                console.error('Refresh error:', error);
+                showError('Kunne ikke genindlæse: ' + error.message);
+            }
         }
 
         async function runSmartLottery() {
