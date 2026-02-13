@@ -73,7 +73,8 @@
             <h1>📚 Bogsnup</h1>
             <div class="guide">
                 <strong>Vejledning:</strong> 1. Skriv dit navn & GEM. 2. Klik på bogen for info. 3. Klik "Jeg ønsker mig bogen her".<br>
-                <em>Regel: Man kan vinde flere bøger, hvis man er den eneste der har ønsket dem, men kun én bog hvor der er flere om buddet.</em>
+                <em>Regel: Man kan vinde flere bøger, hvis man er den eneste der har ønsket dem, men kun én bog hvor der er flere om buddet.</em><br>
+                <small style="color: #666; margin-top: 5px; display: block;">💡 Siden henter automatisk opdateret boginfo fra GitHub. Tryk F5 for at genindlæse.</small>
             </div>
         </header>
 
@@ -82,6 +83,7 @@
                 <input type="text" id="userName" placeholder="Dit navn">
                 <button class="btn-gem" id="saveNameBtn" onclick="saveUserName()">GEM</button>
             </div>
+            <button class="btn-gem" onclick="manualSync()" style="background: #5856d6;">🔄 Synkroniser</button>
             <div id="adminArea">
                 <input type="password" id="adminPass" placeholder="Kode">
                 <button class="admin-btn" onclick="toggleAdmin()">🔓</button>
@@ -90,6 +92,9 @@
                 <button class="admin-btn btn-ai" onclick="fetchAllInfo()" id="btnFetch" disabled>✨ Hent info</button>
                 <button class="admin-btn" onclick="showFetchErrors()" id="btnErrors" disabled>⚠️ Vis fejl</button>
                 <button class="admin-btn" onclick="showDebugInfo()" id="btnDebug" disabled style="background: #5856d6;">🔍 Debug</button>
+                <button class="admin-btn" style="background: #34c759;" onclick="exportData()" id="btnExport" disabled>📥 Eksporter</button>
+                <button class="admin-btn" style="background: #ff9500;" onclick="document.getElementById('importFileInput').click()" id="btnImport" disabled>📤 Importer</button>
+                <input type="file" id="importFileInput" accept=".json" style="display: none;" onchange="importData(event)">
                 <button class="admin-btn" onclick="runSmartLottery()" id="btnLottery" disabled>🎲 Lodtrækning</button>
                 <button class="admin-btn" style="background:#ff3b30" onclick="clearAllData()" id="btnReset" disabled>🔄 Slet Alt</button>
             </div>
@@ -170,6 +175,13 @@
             loadUserName();
             renderBooks();
             setupEventListeners();
+            
+            // Load shared data from GitHub Pages (async)
+            loadSharedData().then(loaded => {
+                if (loaded) {
+                    console.log('✅ Delt data indlæst fra GitHub Pages');
+                }
+            });
         }
 
         function setupEventListeners() {
@@ -607,6 +619,179 @@
             
             console.log(debugReport);
             alert(debugReport);
+        }
+
+        // ============================================
+        // DATA SHARING (EXPORT/IMPORT) - GITHUB PAGES
+        // ============================================
+        function exportData() {
+            if (books.length === 0) {
+                showError('Ingen data at eksportere');
+                return;
+            }
+            
+            const dataToExport = {
+                version: '1.0',
+                exportDate: new Date().toISOString(),
+                books: books
+            };
+            
+            const jsonString = JSON.stringify(dataToExport, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `data.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            const booksWithDesc = books.filter(b => b.desc && !b.desc.includes('Brug "Hent info"')).length;
+            const booksWithCover = books.filter(b => b.cover).length;
+            
+            showError(`✅ data.json eksporteret! ${books.length} bøger`, 'success');
+            
+            // Show GitHub instructions
+            setTimeout(() => {
+                const instructions = `📤 DATA EKSPORTERET SOM: data.json\n\n` +
+                      `═══════════════════════════════════════\n` +
+                      `SÅDAN DELER DU DATA MED ALLE BRUGERE:\n` +
+                      `═══════════════════════════════════════\n\n` +
+                      `1. Åbn din GitHub repository:\n` +
+                      `   https://github.com/avioh1211/Bogsnup2026\n\n` +
+                      `2. Upload data.json:\n` +
+                      `   • Klik "Add file" → "Upload files"\n` +
+                      `   • Træk data.json filen ind\n` +
+                      `   • Skriv commit besked: "Opdater bogdata"\n` +
+                      `   • Klik "Commit changes"\n\n` +
+                      `3. Vent 1-2 minutter på GitHub Pages deployment\n\n` +
+                      `4. FÆRDIG! Alle brugere får automatisk:\n` +
+                      `   • Alle ${books.length} bøger\n` +
+                      `   • ${booksWithCover} forsidebilleder\n` +
+                      `   • ${booksWithDesc} beskrivelser\n\n` +
+                      `Brugernes ønsker bliver BEVARET når data opdateres!\n\n` +
+                      `TIP: Hver gang du ændrer noget som admin,\n` +
+                      `eksporter data.json igen og upload til GitHub.`;
+                
+                alert(instructions);
+            }, 500);
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (!data.books || !Array.isArray(data.books)) {
+                        throw new Error('Ugyldig data format');
+                    }
+                    
+                    mergeImportedData(data.books);
+                    
+                } catch (error) {
+                    console.error('Import error:', error);
+                    showError('Kunne ikke importere data: ' + error.message);
+                }
+            };
+            
+            reader.onerror = () => {
+                showError('Kunne ikke læse filen');
+            };
+            
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        async function loadSharedData() {
+            // Try to load shared data from GitHub Pages
+            const dataURL = './data.json?' + Date.now(); // Add cache buster
+            
+            try {
+                const response = await fetch(dataURL);
+                
+                if (!response.ok) {
+                    // No shared data file exists yet
+                    console.log('No shared data.json found - using local data only');
+                    return false;
+                }
+                
+                const data = await response.json();
+                
+                if (!data.books || !Array.isArray(data.books)) {
+                    throw new Error('Ugyldig data format');
+                }
+                
+                console.log(`Loaded ${data.books.length} books from shared data.json`);
+                mergeImportedData(data.books, true);
+                
+                return true;
+                
+            } catch (error) {
+                if (error.message.includes('JSON')) {
+                    console.error('Invalid JSON in data.json:', error);
+                    showError('data.json indeholder fejl - kontakt admin');
+                } else {
+                    // File doesn't exist or network error - this is OK
+                    console.log('Shared data not available:', error.message);
+                }
+                return false;
+            }
+        }
+
+        function mergeImportedData(importedBooks, silent = false) {
+            const oldBooks = books;
+            
+            // Merge: Keep user claims, update book info
+            books = importedBooks.map(importedBook => {
+                const existingBook = oldBooks.find(b => 
+                    b.title === importedBook.title && b.author === importedBook.author
+                );
+                
+                if (existingBook) {
+                    // Preserve user's claims and winner
+                    return {
+                        ...importedBook,
+                        claims: existingBook.claims || [],
+                        winner: existingBook.winner || null
+                    };
+                }
+                
+                return importedBook;
+            });
+            
+            saveData();
+            renderBooks();
+            
+            if (!silent) {
+                const booksWithDesc = books.filter(b => b.desc && !b.desc.includes('Brug "Hent info"')).length;
+                const booksWithCover = books.filter(b => b.cover).length;
+                
+                showError(
+                    `✅ Data opdateret!\n${books.length} bøger | ${booksWithCover} forsider | ${booksWithDesc} beskrivelser`,
+                    'success'
+                );
+            }
+        }
+
+        async function manualSync() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = '⏳ Synkroniserer...';
+            
+            const loaded = await loadSharedData();
+            
+            btn.disabled = false;
+            btn.textContent = '🔄 Synkroniser';
+            
+            if (!loaded) {
+                showError('Ingen opdateringer fundet på serveren');
+            }
         }
 
         function runSmartLottery() {
