@@ -708,9 +708,11 @@ function createBookCard(book, user) {
         return `<div class="slot${c ? ' taken' : ''}${w ? ' winner' : ''}">${c ? c.split(' ')[0] : '–'}${w ? ' 🏆' : ''}</div>`;
     }).join('');
 
+    const lotteryDone = books.some(b => b.winner);
+
     let btnCls = 'btn-claim', btnTxt = 'Jeg ønsker mig bogen her', dis = false;
-    if (!user)                         { btnTxt = 'Skriv navn først'; dis = true; }
-    else if (isClaimed)                { btnCls += ' claimed'; btnTxt = 'Fjern ønske'; }
+    if (!user)                            { btnTxt = 'Skriv navn først'; dis = true; }
+    else if (isClaimed)                   { btnCls += ' claimed'; btnTxt = 'Fjern ønske'; }
     else if (claims.length >= MAX_CLAIMS) { btnTxt = `Fuld (${MAX_CLAIMS}/${MAX_CLAIMS})`; dis = true; }
 
     card.innerHTML = `
@@ -724,7 +726,7 @@ function createBookCard(book, user) {
             <div class="card-author">${esc(book.author)}</div>
             <div class="card-hint">ℹ️ Klik for beskrivelse</div>
             <div class="claim-slots">${slots}</div>
-            <button class="${btnCls}" ${dis ? 'disabled' : ''} onclick="event.stopPropagation();toggleClaim('${book.id}')">${btnTxt}</button>
+            ${lotteryDone ? '' : `<button class="${btnCls}" ${dis ? 'disabled' : ''} onclick="event.stopPropagation();toggleClaim('${book.id}')">${btnTxt}</button>`}
         </div>`;
     return card;
 }
@@ -757,10 +759,16 @@ function updateModalContent(book) {
 
     const btn = document.getElementById('modalActionButton');
     const isClaimed = user && claims.includes(user);
-    if (!user)                            { btn.textContent = 'Skriv dit navn først'; btn.disabled = true; btn.className = 'btn-ma'; }
-    else if (isClaimed)                   { btn.textContent = 'Fjern ønske'; btn.disabled = false; btn.className = 'btn-ma claimed'; }
-    else if (claims.length >= MAX_CLAIMS) { btn.textContent = `Fuld (${MAX_CLAIMS}/${MAX_CLAIMS})`; btn.disabled = true; btn.className = 'btn-ma'; }
-    else                                  { btn.textContent = 'Jeg ønsker mig bogen her'; btn.disabled = false; btn.className = 'btn-ma'; }
+    const lotteryDone2 = books.some(b => b.winner);
+    if (lotteryDone2) {
+        btn.style.display = 'none';
+    } else {
+        btn.style.display = '';
+        if (!user)                            { btn.textContent = 'Skriv dit navn først'; btn.disabled = true; btn.className = 'btn-ma'; }
+        else if (isClaimed)                   { btn.textContent = 'Fjern ønske'; btn.disabled = false; btn.className = 'btn-ma claimed'; }
+        else if (claims.length >= MAX_CLAIMS) { btn.textContent = `Fuld (${MAX_CLAIMS}/${MAX_CLAIMS})`; btn.disabled = true; btn.className = 'btn-ma'; }
+        else                                  { btn.textContent = 'Jeg ønsker mig bogen her'; btn.disabled = false; btn.className = 'btn-ma'; }
+    }
 
     const adm = document.getElementById('adminImageUpload');
     if (isAdminMode) {
