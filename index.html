@@ -291,8 +291,14 @@
             <em style="color:var(--muted)">Regel: Du kan vinde flere bøger hvis du er den eneste der ønsker dem, men kun én bog hvor der er konkurrence.</em>
         </div>
         <div class="name-row">
-            <input type="text" id="userName" placeholder="Dit navn" autocomplete="given-name">
-            <button class="btn-save" id="saveNameBtn" onclick="saveUserName()">GEM</button>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <input type="text" id="userName" placeholder="Dit navn" autocomplete="given-name"
+                        onkeydown="if(event.key==='Enter') saveUserName()">
+                    <button class="btn-save" id="saveNameBtn" onclick="saveUserName()">GEM</button>
+                </div>
+                <div id="nameWarning" style="display:none;font-size:12px;color:var(--red);font-weight:500;max-width:360px;line-height:1.4;"></div>
+            </div>
         </div>
     </div>
 </header>
@@ -412,14 +418,67 @@ let books = [], currentBookId = null, isAdminMode = false;
 // ── NAME ────────────────────────────────────────────────────
 function getUser() { return document.getElementById('userName').value.trim(); }
 
-function saveUserName() {
-    const v = getUser();
-    if (!v) { toast('Skriv dit navn', 'err'); return; }
-    localStorage.setItem(USER_KEY, v);
+function normalizeName(name) {
+    // Trim, collapse spaces, capitalize each word
+    return name.trim()
+        .replace(/\s+/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function getAllClaimedNames() {
+    const names = new Set();
+    books.forEach(b => (b.claims || []).forEach(n => names.add(n.toLowerCase())));
+    return names;
+}
+
+async function saveUserName() {
+    const raw = document.getElementById('userName').value.trim();
+    if (!raw) { toast('Skriv dit navn', 'err'); return; }
+
+    const normalized = normalizeName(raw);
+    const existing = getAllClaimedNames();
+    const currentUser = localStorage.getItem(USER_KEY);
+
+    // If this name is already in use by someone else, block it
+    if (existing.has(normalized.toLowerCase()) && normalized !== currentUser) {
+        document.getElementById('userName').value = normalized;
+        document.getElementById('nameWarning').style.display = 'block';
+        document.getElementById('nameWarning').textContent =
+            `"${normalized}" er allerede i brug — tilføj første bogstav i dit efternavn, f.eks. "${normalized} ${getNextInitialHint(normalized)}".`;
+        return;
+    }
+
+    document.getElementById('nameWarning').style.display = 'none';
+    document.getElementById('userName').value = normalized;
+    localStorage.setItem(USER_KEY, normalized);
+
+    // If user changed their name, update all their existing claims
+    if (currentUser && currentUser !== normalized) {
+        let updated = false;
+        for (const book of books) {
+            if (!book.claims) continue;
+            const idx = book.claims.indexOf(currentUser);
+            if (idx > -1) {
+                book.claims[idx] = normalized;
+                if (book.winner === currentUser) book.winner = normalized;
+                await saveBookToFirebase(book);
+                updated = true;
+            }
+        }
+        if (updated) toast(`Navn opdateret fra "${currentUser}" til "${normalized}"`, 'ok');
+    }
+
     const btn = document.getElementById('saveNameBtn');
     btn.textContent = '✓ Gemt'; btn.classList.add('saved');
     setTimeout(() => { btn.textContent = 'GEM'; btn.classList.remove('saved'); }, 2000);
     renderBooks();
+}
+
+function getNextInitialHint(name) {
+    // Suggest a placeholder initial
+    const parts = name.trim().split(' ');
+    if (parts.length === 1) return 'A'; // just show a letter as example
+    return '?'; // they already have an initial, suggest changing it
 }
 
 // ── FIREBASE ─────────────────────────────────────────────────
