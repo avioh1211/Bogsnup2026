@@ -20,137 +20,56 @@
             --r:      12px;
             --sh:     0 2px 12px rgba(0,0,0,.08);
         }
-
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg); color: var(--text); min-height: 100vh;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-        /* ── HEADER ─────────────────────────────────────────── */
-        header {
-            background: var(--card); border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; z-index: 200;
-            box-shadow: 0 2px 8px rgba(0,0,0,.07);
-        }
-        .header-inner {
-            display: flex; align-items: center; gap: 16px;
-            padding: 16px 30px; max-width: 1600px; margin: 0 auto;
-        }
+        header { background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+        .header-inner { display: flex; align-items: center; gap: 16px; padding: 16px 30px; max-width: 1600px; margin: 0 auto; }
         .logo { font-size: 22px; font-weight: 800; letter-spacing: -.4px; white-space: nowrap; }
         .logo small { font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 6px; }
 
-        .status-pill {
-            display: flex; align-items: center; gap: 5px;
-            font-size: 12px; font-weight: 600; padding: 5px 12px;
-            border-radius: 20px; background: var(--green); color: #fff;
-        }
-        .status-pill::before {
-            content: ''; width: 6px; height: 6px; border-radius: 50%;
-            background: rgba(255,255,255,.8); animation: blink 2s infinite;
-        }
+        .status-pill { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 20px; background: var(--green); color: #fff; }
+        .status-pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.8); animation: blink 2s infinite; }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
         .status-pill.offline { background: var(--red); }
 
-        .guide-text {
-            font-size: 13px; color: #555; line-height: 1.5;
-            border-left: 3px solid var(--blue); padding-left: 10px;
-        }
+        .guide-text { font-size: 13px; color: #555; line-height: 1.5; border-left: 3px solid var(--blue); padding-left: 10px; }
 
-        .name-row {
-            display: flex; gap: 8px; align-items: center; margin-left: auto;
-        }
-        .name-row input {
-            padding: 9px 14px; border: 1.5px solid var(--border);
-            border-radius: 9px; font-size: 14px; width: 200px;
-            outline: none; transition: border-color .15s;
-        }
+        .name-row { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+        .name-row input { padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 9px; font-size: 14px; width: 200px; outline: none; transition: border-color .15s; }
         .name-row input:focus { border-color: var(--blue); }
-        .btn-save {
-            padding: 9px 20px; background: var(--blue); color: #fff;
-            border: none; border-radius: 9px; font-size: 14px; font-weight: 600;
-            cursor: pointer; transition: background .15s, transform .1s;
-        }
+        .btn-save { padding: 9px 20px; background: var(--blue); color: #fff; border: none; border-radius: 9px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s, transform .1s; }
         .btn-save:hover { background: #0062cc; }
         .btn-save:active { transform: scale(.96); }
         .btn-save.saved { background: var(--green); }
 
-        /* ── CONTROLS BAR ───────────────────────────────────── */
-        .controls-bar {
-            background: var(--card); border-bottom: 1px solid var(--border);
-            padding: 10px 30px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
-            max-width: 1600px; margin: 0 auto;
-        }
-        .btn-refresh {
-            padding: 8px 18px; height: 40px; background: var(--purple); color: #fff;
-            border: none; border-radius: 9px; font-size: 13px; font-weight: 600;
-            cursor: pointer; transition: opacity .15s;
-        }
+        .controls-bar { background: var(--card); border-bottom: 1px solid var(--border); padding: 10px 30px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; max-width: 1600px; margin: 0 auto; }
+        .btn-refresh { padding: 8px 18px; height: 40px; background: var(--purple); color: #fff; border: none; border-radius: 9px; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
         .btn-refresh:hover { opacity: .85; }
 
-        #adminArea {
-            display: none; align-items: center; gap: 8px;
-            border-left: 2px solid var(--border); padding-left: 14px;
-        }
-        #adminArea input[type="password"] {
-            padding: 8px 12px; border: 1.5px solid var(--border);
-            border-radius: 8px; font-size: 13px; height: 40px; width: 120px;
-        }
-        .admin-btn {
-            height: 40px; padding: 0 14px; background: var(--blue); color: #fff;
-            border: none; border-radius: 8px; font-size: 13px; font-weight: 600;
-            cursor: pointer; white-space: nowrap; transition: opacity .15s;
-        }
+        #adminArea { display: none; align-items: center; gap: 8px; border-left: 2px solid var(--border); padding-left: 14px; }
+        #adminArea input[type="password"] { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; height: 40px; width: 120px; }
+        .admin-btn { height: 40px; padding: 0 14px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: opacity .15s; }
         .admin-btn:disabled { opacity: .4; pointer-events: none; }
         .admin-btn:hover:not(:disabled) { opacity: .85; }
         .btn-ai { background: var(--purple); }
 
-        /* Progress */
-        .progress-wrap {
-            display: none; padding: 8px 30px;
-            background: var(--card); border-bottom: 1px solid var(--border);
-        }
+        .progress-wrap { display: none; padding: 8px 30px; background: var(--card); border-bottom: 1px solid var(--border); }
         .progress-track { height: 28px; background: #eee; border-radius: 8px; overflow: hidden; }
-        .progress-fill {
-            height: 100%; background: linear-gradient(90deg, var(--blue), var(--purple));
-            transition: width .3s; display: flex; align-items: center;
-            justify-content: center; color: #fff; font-size: 12px; font-weight: 700;
-            min-width: 40px;
-        }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--purple)); transition: width .3s; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; min-width: 40px; }
 
-        /* Toast */
-        .toast {
-            position: fixed; top: 80px; left: 50%;
-            transform: translateX(-50%) translateY(-10px);
-            background: #222; color: #fff; padding: 11px 22px; border-radius: 10px;
-            font-size: 14px; font-weight: 500; z-index: 900; opacity: 0; pointer-events: none;
-            transition: opacity .2s, transform .2s; box-shadow: 0 4px 20px rgba(0,0,0,.25);
-            white-space: nowrap;
-        }
+        .toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-10px); background: #222; color: #fff; padding: 11px 22px; border-radius: 10px; font-size: 14px; font-weight: 500; z-index: 900; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; box-shadow: 0 4px 20px rgba(0,0,0,.25); white-space: nowrap; }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         .toast.ok  { background: var(--green); }
         .toast.err { background: var(--red); }
 
-        /* ── BOOK GRID ──────────────────────────────────────── */
         .page-wrap { max-width: 1600px; margin: 0 auto; }
-        .book-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px; padding: 24px 30px;
-        }
+        .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 24px 30px; }
 
-        .book-card {
-            background: var(--card); border-radius: var(--r); box-shadow: var(--sh);
-            display: flex; flex-direction: column; overflow: hidden; cursor: pointer;
-            transition: transform .18s, box-shadow .18s;
-        }
+        .book-card { background: var(--card); border-radius: var(--r); box-shadow: var(--sh); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; transition: transform .18s, box-shadow .18s; }
         .book-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.13); }
 
-        .card-cover {
-            aspect-ratio: 2/3;
-            background: linear-gradient(135deg, #e8eaf6, #c5cae9);
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
-        }
+        .card-cover { aspect-ratio: 2/3; background: linear-gradient(135deg, #e8eaf6, #c5cae9); display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .card-cover-ph { font-size: 44px; opacity: .3; }
 
@@ -159,118 +78,54 @@
         .card-author { font-size: 12px; color: var(--muted); margin-bottom: 6px; flex: 1; }
         .card-hint   { font-size: 11px; color: var(--blue); font-style: italic; margin-bottom: 8px; }
 
-        /* 6-slot grid: 3 columns × 2 rows */
-        .claim-slots {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 4px; margin-bottom: 10px;
-        }
-        .slot {
-            padding: 4px 3px; background: var(--bg); border: 1px solid var(--border);
-            border-radius: 5px; font-size: 10px; text-align: center;
-            overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted);
-        }
+        .claim-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 10px; }
+        .slot { padding: 4px 3px; background: var(--bg); border: 1px solid var(--border); border-radius: 5px; font-size: 10px; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); }
         .slot.taken  { color: var(--text); font-weight: 600; background: #f0f4ff; border-color: #c5cfe8; }
         .slot.winner { background: var(--gold); border-color: #d4aa00; color: #000; font-weight: 700; }
 
-        .btn-claim {
-            width: 100%; padding: 9px; background: var(--blue); color: #fff;
-            border: none; border-radius: 8px; font-size: 12px; font-weight: 600;
-            cursor: pointer; transition: background .15s;
-        }
+        .btn-claim { width: 100%; padding: 9px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background .15s; }
         .btn-claim:hover:not(:disabled) { background: #0062cc; }
         .btn-claim.claimed { background: var(--red); }
         .btn-claim.claimed:hover { background: #cc2a1f; }
         .btn-claim:disabled { background: var(--border); color: var(--muted); cursor: default; }
 
-        .win-badge {
-            display: inline-block; background: var(--green); color: #fff;
-            padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 700;
-            margin-left: 4px; vertical-align: middle;
-        }
+        .win-badge { display: inline-block; background: var(--green); color: #fff; padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; margin-left: 4px; vertical-align: middle; }
 
-        /* Empty state */
         .empty-state { grid-column: 1/-1; text-align: center; padding: 80px 20px; color: var(--muted); }
         .empty-state .icon { font-size: 56px; margin-bottom: 14px; }
         .empty-state p { font-size: 16px; }
 
-        /* ── MODAL ──────────────────────────────────────────── */
-        .modal-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,.5); z-index: 500;
-            align-items: center; justify-content: center; padding: 20px;
-        }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
-
-        .modal-box {
-            background: var(--card); border-radius: var(--r);
-            width: 100%; max-width: 520px; max-height: 88vh;
-            overflow-y: auto; animation: fadeUp .2s ease;
-            box-shadow: 0 20px 60px rgba(0,0,0,.2);
-        }
+        .modal-box { background: var(--card); border-radius: var(--r); width: 100%; max-width: 520px; max-height: 88vh; overflow-y: auto; animation: fadeUp .2s ease; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
         @keyframes fadeUp { from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none} }
 
-        .modal-cover {
-            width: 100%; max-height: 280px; object-fit: contain; display: block;
-            background: linear-gradient(135deg, #e8eaf6, #c5cae9);
-        }
+        .modal-cover { width: 100%; max-height: 280px; object-fit: contain; display: block; background: linear-gradient(135deg, #e8eaf6, #c5cae9); }
         .modal-body { padding: 24px; }
         .modal-title  { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
         .modal-author { font-size: 14px; color: var(--muted); margin-bottom: 18px; }
-        .modal-desc {
-            font-size: 14px; line-height: 1.65; color: #444;
-            background: var(--bg); padding: 14px; border-radius: 10px;
-            border: 1px solid var(--border); margin-bottom: 18px;
-        }
-        .modal-claims-lbl {
-            font-size: 11px; font-weight: 700; text-transform: uppercase;
-            letter-spacing: .6px; color: var(--muted); margin-bottom: 8px;
-        }
-        .claim-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 14px; background: var(--bg); border-radius: 8px;
-            margin-bottom: 6px; font-size: 14px; border: 1px solid var(--border);
-        }
+        .modal-desc { font-size: 14px; line-height: 1.65; color: #444; background: var(--bg); padding: 14px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 18px; }
+        .modal-claims-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin-bottom: 8px; }
+        .claim-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--bg); border-radius: 8px; margin-bottom: 6px; font-size: 14px; border: 1px solid var(--border); }
         .claim-item.win { background: var(--gold); border-color: #d4aa00; font-weight: 700; }
 
-        /* Admin section */
-        .modal-admin {
-            display: none; margin: 0 24px 24px; background: var(--bg);
-            border-radius: 10px; border: 2px dashed var(--blue); padding: 18px;
-        }
+        .modal-admin { display: none; margin: 0 24px 24px; background: var(--bg); border-radius: 10px; border: 2px dashed var(--blue); padding: 18px; }
         .modal-admin.active { display: block; }
         .modal-admin h4 { font-size: 13px; color: var(--blue); margin-bottom: 10px; font-weight: 700; }
-        .modal-admin a { font-size: 13px; color: var(--blue); display: block; margin-bottom: 10px; text-decoration: none; }
+        .modal-admin a { font-size: 13px; color: var(--blue); display: block; margin-bottom: 8px; text-decoration: none; }
         .modal-admin a:hover { text-decoration: underline; }
-        .modal-admin input[type="url"],
-        .modal-admin textarea {
-            width: 100%; padding: 9px 12px; border: 1.5px solid var(--border);
-            border-radius: 8px; font-size: 13px; margin-bottom: 8px;
-            font-family: inherit; resize: vertical; outline: none;
-            transition: border-color .15s;
-        }
-        .modal-admin input[type="url"]:focus,
-        .modal-admin textarea:focus { border-color: var(--blue); }
+        .modal-admin input[type="url"], .modal-admin textarea { width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; margin-bottom: 8px; font-family: inherit; resize: vertical; outline: none; transition: border-color .15s; }
+        .modal-admin input[type="url"]:focus, .modal-admin textarea:focus { border-color: var(--blue); }
         .modal-admin input[type="file"] { font-size: 13px; margin-bottom: 10px; display: block; }
         .adm-row { display: flex; gap: 8px; margin-bottom: 8px; }
-        .adm-btn {
-            flex: 1; padding: 9px 12px; background: var(--blue); color: #fff;
-            border: none; border-radius: 8px; font-size: 13px; font-weight: 600;
-            cursor: pointer; transition: opacity .15s;
-        }
+        .adm-btn { flex: 1; padding: 9px 12px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
         .adm-btn:hover { opacity: .85; }
         .adm-btn.red { background: var(--red); }
         .adm-btn.ora { background: var(--orange); }
         .modal-sep { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
-        .modal-footer {
-            display: flex; gap: 10px; padding: 18px 24px;
-            border-top: 1px solid var(--border);
-            position: sticky; bottom: 0; background: var(--card);
-        }
-        .modal-footer button {
-            flex: 1; padding: 13px; border: none; border-radius: 10px;
-            font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity .15s;
-        }
+        .modal-footer { display: flex; gap: 10px; padding: 18px 24px; border-top: 1px solid var(--border); position: sticky; bottom: 0; background: var(--card); }
+        .modal-footer button { flex: 1; padding: 13px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
         .modal-footer button:hover { opacity: .85; }
         .btn-ma { background: var(--blue); color: #fff; }
         .btn-ma.claimed { background: var(--red); }
@@ -279,7 +134,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
     <div class="header-inner">
         <div class="logo">📚 Bogsnup <small>⚡ Real-time</small></div>
@@ -303,7 +157,6 @@
     </div>
 </header>
 
-<!-- CONTROLS -->
 <div class="controls-bar">
     <button class="btn-refresh" onclick="manualRefresh()">🔄 Genindlæs</button>
     <div id="adminArea">
@@ -319,22 +172,18 @@
     </div>
 </div>
 
-<!-- Progress -->
 <div class="progress-wrap" id="progressContainer">
     <div class="progress-track">
         <div class="progress-fill" id="progressBar" style="width:0%">0%</div>
     </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<!-- GRID -->
 <div class="page-wrap">
     <div class="book-grid" id="bookGrid"></div>
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="bookModal">
     <div class="modal-box">
         <img id="modalImg" class="modal-cover" src="" alt="" style="display:none">
@@ -345,10 +194,14 @@
             <div class="modal-claims-lbl">Ønsker (maks 6)</div>
             <div id="modalClaims"></div>
         </div>
-
         <div class="modal-admin" id="adminImageUpload">
+            <h4>🔗 Find bogen</h4>
+            <a id="lrSearchLink"      href="#" target="_blank">🔍 Lindhardt og Ringhof</a>
+            <a id="carlsenSearchLink" href="#" target="_blank">🔍 Carlsen</a>
+            <a id="googleImagesLink"  href="#" target="_blank">🔍 Google Images (forside)</a>
+            <a id="pageUrlLink"       href="#" target="_blank" style="display:none;color:var(--green)">📖 Åbn bogside (fundet automatisk)</a>
+            <hr class="modal-sep">
             <h4>📸 Forside (Admin)</h4>
-            <a id="googleImagesLink" href="#" target="_blank">🔍 Søg på Google Images</a>
             <input type="url" id="imageUrlInput" placeholder="Billede-URL (https://…)">
             <div class="adm-row">
                 <button class="adm-btn" onclick="uploadImageFromUrl()">Gem URL</button>
@@ -364,7 +217,6 @@
                 <button class="adm-btn ora" onclick="clearDescription()">Nulstil</button>
             </div>
         </div>
-
         <div class="modal-footer">
             <button class="btn-ma" id="modalActionButton" onclick="handleModalClaim()"></button>
             <button class="btn-mc" onclick="closeModal()">Luk</button>
@@ -372,11 +224,10 @@
     </div>
 </div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script>
-// ── CONFIG ──────────────────────────────────────────────────
+// ── FIREBASE CONFIG ──────────────────────────────────────────
 const firebaseConfig = {
     apiKey: "AIzaSyB-2_DMuUGVgckSMGMrdUaKVVQQ7hhCTvU",
     authDomain: "bogsnup2026.firebaseapp.com",
@@ -384,8 +235,7 @@ const firebaseConfig = {
     projectId: "bogsnup2026",
     storageBucket: "bogsnup2026.firebasestorage.app",
     messagingSenderId: "751291661929",
-    appId: "1:751291661929:web:40a3ab1793184d6718acf8",
-    measurementId: "G-3L1D4R8HXT"
+    appId: "1:751291661929:web:40a3ab1793184d6718acf8"
 };
 
 let database, isFirebaseReady = false;
@@ -395,11 +245,7 @@ try {
     isFirebaseReady = true;
     setStatus(true);
     database.ref('.info/connected').on('value', s => setStatus(s.val() === true));
-} catch(e) {
-    console.error(e);
-    setStatus(false);
-    alert('⚠️ Firebase fejl: ' + e.message);
-}
+} catch(e) { console.error(e); setStatus(false); alert('⚠️ Firebase fejl: ' + e.message); }
 
 function setStatus(ok) {
     const el = document.getElementById('firebaseStatus');
@@ -410,519 +256,479 @@ function setStatus(ok) {
 // ── STATE ────────────────────────────────────────────────────
 const USER_KEY   = 'shufflerUserName';
 const ADMIN_PW   = 'Bogsnup2026';
-const MAX_CLAIMS = 6;   // ← 6 slots
-const API_DELAY  = 500;
+const MAX_CLAIMS = 6;
+const API_DELAY  = 1200;
 
 let books = [], currentBookId = null, isAdminMode = false;
 
-// ── NAME ────────────────────────────────────────────────────
+// ── NAME ─────────────────────────────────────────────────────
 function getUser() { return document.getElementById('userName').value.trim(); }
-
-function normalizeName(name) {
-    // Trim, collapse spaces, capitalize each word
-    return name.trim()
-        .replace(/\s+/g, ' ')
-        .replace(/\b\w/g, c => c.toUpperCase());
-}
-
-function getAllClaimedNames() {
-    const names = new Set();
-    books.forEach(b => (b.claims || []).forEach(n => names.add(n.toLowerCase())));
-    return names;
-}
+function normalizeName(n) { return n.trim().replace(/\s+/g,' ').replace(/\b\w/g,c=>c.toUpperCase()); }
+function getAllClaimedNames() { const s=new Set(); books.forEach(b=>(b.claims||[]).forEach(n=>s.add(n.toLowerCase()))); return s; }
 
 async function saveUserName() {
     const raw = document.getElementById('userName').value.trim();
-    if (!raw) { toast('Skriv dit navn', 'err'); return; }
-
+    if (!raw) { toast('Skriv dit navn','err'); return; }
     const normalized = normalizeName(raw);
     const existing = getAllClaimedNames();
     const currentUser = localStorage.getItem(USER_KEY);
-
-    // If this name is already in use by someone else, block it
     if (existing.has(normalized.toLowerCase()) && normalized !== currentUser) {
         document.getElementById('userName').value = normalized;
         document.getElementById('nameWarning').style.display = 'block';
-        document.getElementById('nameWarning').textContent =
-            `"${normalized}" er allerede i brug — tilføj første bogstav i dit efternavn, f.eks. "${normalized} ${getNextInitialHint(normalized)}".`;
+        document.getElementById('nameWarning').textContent = `"${normalized}" er allerede i brug — tilføj første bogstav i dit efternavn.`;
         return;
     }
-
     document.getElementById('nameWarning').style.display = 'none';
     document.getElementById('userName').value = normalized;
     localStorage.setItem(USER_KEY, normalized);
-
-    // If user changed their name, update all their existing claims
     if (currentUser && currentUser !== normalized) {
         let updated = false;
         for (const book of books) {
             if (!book.claims) continue;
             const idx = book.claims.indexOf(currentUser);
-            if (idx > -1) {
-                book.claims[idx] = normalized;
-                if (book.winner === currentUser) book.winner = normalized;
-                await saveBookToFirebase(book);
-                updated = true;
-            }
+            if (idx > -1) { book.claims[idx] = normalized; if (book.winner===currentUser) book.winner=normalized; await saveBookToFirebase(book); updated=true; }
         }
         if (updated) toast(`Navn opdateret fra "${currentUser}" til "${normalized}"`, 'ok');
     }
-
     const btn = document.getElementById('saveNameBtn');
-    btn.textContent = '✓ Gemt'; btn.classList.add('saved');
-    setTimeout(() => { btn.textContent = 'GEM'; btn.classList.remove('saved'); }, 2000);
+    btn.textContent='✓ Gemt'; btn.classList.add('saved');
+    setTimeout(()=>{ btn.textContent='GEM'; btn.classList.remove('saved'); }, 2000);
     renderBooks();
-}
-
-function getNextInitialHint(name) {
-    // Suggest a placeholder initial
-    const parts = name.trim().split(' ');
-    if (parts.length === 1) return 'A'; // just show a letter as example
-    return '?'; // they already have an initial, suggest changing it
 }
 
 // ── FIREBASE ─────────────────────────────────────────────────
 function setupFirebaseListeners() {
     database.ref('books').on('value', snap => {
         const data = snap.val();
-        books = data ? Object.keys(data).map(k => ({ firebaseKey: k, ...data[k] })) : [];
+        books = data ? Object.keys(data).map(k=>({firebaseKey:k,...data[k]})) : [];
         renderBooks();
-        if (currentBookId) {
-            const b = books.find(b => b.id === currentBookId);
-            if (b) updateModalContent(b);
-        }
+        if (currentBookId) { const b=books.find(b=>b.id===currentBookId); if(b) updateModalContent(b); }
     });
 }
 
 async function saveBookToFirebase(book) {
     if (!isFirebaseReady) return;
     try {
-        if (book.firebaseKey) {
-            await database.ref('books/' + book.firebaseKey).set(book);
-        } else {
-            const r = await database.ref('books').push(book);
-            book.firebaseKey = r.key;
-        }
-    } catch(e) { toast('Gemningsfejl: ' + e.message, 'err'); }
+        if (book.firebaseKey) { await database.ref('books/'+book.firebaseKey).set(book); }
+        else { const r=await database.ref('books').push(book); book.firebaseKey=r.key; }
+    } catch(e) { toast('Gemningsfejl: '+e.message,'err'); }
 }
 
 async function saveAllBooksToFirebase(arr) {
-    if (!isFirebaseReady) { toast('Firebase ikke klar', 'err'); return false; }
+    if (!isFirebaseReady) { toast('Firebase ikke klar','err'); return false; }
     try {
-        const upd = {};
-        arr.forEach(book => {
-            const key = book.firebaseKey || database.ref('books').push().key;
-            const d = { ...book }; delete d.firebaseKey;
-            upd['/books/' + key] = d;
-        });
+        const upd={};
+        arr.forEach(book=>{ const key=book.firebaseKey||database.ref('books').push().key; const d={...book}; delete d.firebaseKey; upd['/books/'+key]=d; });
         await database.ref().update(upd);
-        toast(`✅ ${arr.length} bøger gemt`, 'ok');
-        return true;
-    } catch(e) { toast('Fejl: ' + e.message, 'err'); return false; }
+        toast(`✅ ${arr.length} bøger gemt`,'ok'); return true;
+    } catch(e) { toast('Fejl: '+e.message,'err'); return false; }
 }
 
-async function deleteAllBooksFromFirebase() {
-    await database.ref('books').remove();
-    books = []; renderBooks();
-}
+async function deleteAllBooksFromFirebase() { await database.ref('books').remove(); books=[]; renderBooks(); }
 
 // ── INIT ─────────────────────────────────────────────────────
 function init() {
     const saved = localStorage.getItem(USER_KEY);
     if (saved) document.getElementById('userName').value = saved;
-
-    document.addEventListener('keydown', e => {
-        if (e.shiftKey && e.key === 'L')
-            document.getElementById('adminArea').style.display = 'flex';
-    });
-    document.getElementById('bookModal').addEventListener('click', e => {
-        if (e.target.id === 'bookModal') closeModal();
-    });
-
-    if (isFirebaseReady) {
-        setupFirebaseListeners();
-    } else {
-        let n = 0;
-        const iv = setInterval(() => {
-            if (isFirebaseReady) { clearInterval(iv); setupFirebaseListeners(); }
-            else if (++n >= 50)  { clearInterval(iv); toast('Firebase timeout', 'err'); }
-        }, 100);
+    document.addEventListener('keydown', e => { if(e.shiftKey && e.key==='L') document.getElementById('adminArea').style.display='flex'; });
+    document.getElementById('bookModal').addEventListener('click', e => { if(e.target.id==='bookModal') closeModal(); });
+    if (isFirebaseReady) { setupFirebaseListeners(); }
+    else {
+        let n=0;
+        const iv=setInterval(()=>{ if(isFirebaseReady){clearInterval(iv);setupFirebaseListeners();} else if(++n>=50){clearInterval(iv);toast('Firebase timeout','err');} },100);
     }
 }
 
-// ── ADMIN ────────────────────────────────────────────────────
+// ── ADMIN ─────────────────────────────────────────────────────
 function toggleAdmin() {
     if (document.getElementById('adminPass').value === ADMIN_PW) {
         isAdminMode = true;
-        document.querySelectorAll('.admin-btn').forEach(b => b.disabled = false);
-        toast('Admin aktiveret ✅', 'ok');
-    } else { toast('Forkert adgangskode', 'err'); }
+        document.querySelectorAll('.admin-btn').forEach(b=>b.disabled=false);
+        toast('Admin aktiveret ✅','ok');
+    } else { toast('Forkert adgangskode','err'); }
 }
 
 function handleCSVUpload(event) {
-    const file = event.target.files[0]; if (!file) return;
+    const file = event.target.files[0]; if(!file) return;
     const reader = new FileReader();
     reader.onload = async e => {
         try {
-            const lines = e.target.result.split('\n').filter(l => l.trim());
-            if (lines.length < 2) { toast('CSV skal have mindst 2 linjer', 'err'); return; }
-            const newBooks = lines.slice(1).map((line, i) => {
-                const p = line.split(/[;,]/).map(s => s.trim());
-                return {
-                    id: 'b-' + Date.now() + '-' + i,
-                    title: p[0] || 'Ingen titel',
-                    author: p[1] || 'Ukendt forfatter',
-                    desc: 'Brug "Hent info" for at hente beskrivelse fra Google Books.',
-                    cover: '', claims: [], winner: null,
-                    fetchAttempted: false, fetchSuccess: false,
-                    manualCover: false, manualDesc: false
-                };
+            const lines = e.target.result.split('\n').filter(l=>l.trim());
+            if (lines.length < 2) { toast('CSV skal have mindst 2 linjer','err'); return; }
+            const newBooks = lines.slice(1).map((line,i)=>{
+                const p = line.split(/[;,]/).map(s=>s.trim());
+                return { id:'b-'+Date.now()+'-'+i, title:p[0]||'Ingen titel', author:p[1]||'Ukendt forfatter',
+                    desc:'Tryk "Hent info" for at hente beskrivelse.', cover:'', claims:[], winner:null,
+                    fetchAttempted:false, fetchSuccess:false, manualCover:false, manualDesc:false };
             });
             await saveAllBooksToFirebase(newBooks);
-        } catch(err) { toast('CSV fejl: ' + err.message, 'err'); }
+        } catch(err) { toast('CSV fejl: '+err.message,'err'); }
     };
     reader.readAsText(file);
-    event.target.value = '';
+    event.target.value='';
 }
 
+// ── FETCH: CLAUDE API + WEB SEARCH (primary) ─────────────────
+// Uses Anthropic's web_search tool to find books on the Danish publisher sites.
+async function fetchFromPublishers(title, author) {
+    const prompt =
+`Search for the Danish book titled "${title}" by ${author} on lindhardtogringhof.dk or carlsen.dk.
+Find the actual product page, then respond with ONLY a raw JSON object — no markdown, no backticks:
+{"desc":"full book description in Danish","cover":"absolute https:// cover image URL from the publisher","pageUrl":"absolute https:// URL of the product page"}
+Rules:
+- cover must start with https://www.lindhardtogringhof.dk/ or https://www.carlsen.dk/
+- cover must end with .jpg or .png
+- desc should be the publisher's own description (not a summary you write)
+- If not found on either site, return: {"desc":null,"cover":null,"pageUrl":null}`;
+
+    try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                model: 'claude-sonnet-4-20250514',
+                max_tokens: 1024,
+                tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+                system: 'You are a book data extraction assistant. Always search the web, then return ONLY raw JSON. No markdown. No prose. No backticks.',
+                messages: [{ role: 'user', content: prompt }]
+            })
+        });
+
+        if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
+        const data = await res.json();
+
+        // Gather all text blocks — web search results are embedded server-side
+        const text = (data.content || []).filter(b=>b.type==='text').map(b=>b.text).join('');
+
+        // Pull JSON object out of the response
+        const match = text.match(/\{[\s\S]*?\}/);
+        if (!match) throw new Error('No JSON in response');
+
+        const info = JSON.parse(match[0]);
+        // Validate cover URL is from the right domain
+        if (info.cover && !info.cover.startsWith('https://www.lindhardtogringhof.dk') && !info.cover.startsWith('https://www.carlsen.dk')) {
+            info.cover = null;
+        }
+        return info;
+    } catch(e) {
+        console.warn('Publisher lookup failed for', title, '—', e.message);
+        return { desc: null, cover: null, pageUrl: null, _error: e.message };
+    }
+}
+
+// ── FETCH: Google Books API (fallback) ───────────────────────
+async function fetchFromGoogle(title, author) {
+    const queries = [`intitle:"${title}" inauthor:"${author}"`, `${title} ${author}`, `intitle:"${title}"`];
+    for (const q of queries) {
+        try {
+            const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&maxResults=5`);
+            if (!res.ok) continue;
+            const data = await res.json();
+            if (!data.items?.length) continue;
+            const tl = title.toLowerCase();
+            let best = data.items[0];
+            for (const item of data.items) { const t=(item.volumeInfo.title||'').toLowerCase(); if(t===tl||t.startsWith(tl)){best=item;break;} }
+            const info = best.volumeInfo;
+            const links = info.imageLinks || {};
+            const cover = (links.large||links.medium||links.small||links.thumbnail||'').replace('http:','https:');
+            return { desc: info.description||info.subtitle||null, cover: cover||null, author: info.authors?.join(', ')||null };
+        } catch {}
+    }
+    return null;
+}
+
+// ── MAIN FETCH LOOP ──────────────────────────────────────────
 async function fetchAllInfo() {
-    if (!books.length) { toast('Upload en CSV-fil først', 'err'); return; }
+    if (!books.length) { toast('Upload en CSV-fil først','err'); return; }
     const btn  = document.getElementById('btnFetch');
     const wrap = document.getElementById('progressContainer');
     const bar  = document.getElementById('progressBar');
-    btn.disabled = true; btn.textContent = '⏳ Henter…';
-    wrap.style.display = 'block';
-    let ok = 0, fail = 0;
-    for (let i = 0; i < books.length; i++) {
+    btn.disabled=true; btn.textContent='⏳ Henter…';
+    wrap.style.display='block';
+    let ok=0, fail=0;
+
+    for (let i=0; i<books.length; i++) {
         const book = books[i];
-        const pct = Math.round(((i + 1) / books.length) * 100);
-        bar.style.width = pct + '%';
-        bar.textContent = `${i + 1}/${books.length} – ${book.title}`;
-        if (book.manualCover && book.manualDesc) { await delay(100); continue; }
-        try {
-            const queries = [
-                `intitle:"${book.title}" inauthor:"${book.author}"`,
-                `${book.title} ${book.author}`,
-                book.title
-            ];
-            let found = false;
-            for (const q of queries) {
-                if (found) break;
-                try {
-                    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&langRestrict=da&maxResults=3`);
-                    if (!res.ok) throw new Error('HTTP ' + res.status);
-                    const data = await res.json();
-                    if (data.items?.length) {
-                        let best = data.items[0];
-                        for (const item of data.items)
-                            if (item.volumeInfo.title?.toLowerCase().includes(book.title.toLowerCase())) { best = item; break; }
-                        const info = best.volumeInfo;
-                        if (!book.manualDesc) book.desc = info.description || info.subtitle || 'Ingen beskrivelse fra Google Books.';
-                        if (!book.manualCover && info.imageLinks)
-                            book.cover = (info.imageLinks.large || info.imageLinks.medium || info.imageLinks.thumbnail || '').replace('http:', 'https:');
-                        if (info.authors?.length) book.author = info.authors.join(', ');
-                        book.fetchSuccess = true; found = true; ok++;
-                    }
-                } catch {}
-            }
-            if (!found) { book.fetchError = 'Ikke fundet'; fail++; }
-            book.fetchAttempted = true;
-            await saveBookToFirebase(book);
-            if (i < books.length - 1) await delay(API_DELAY);
-        } catch(err) {
-            book.fetchError = err.message; book.fetchAttempted = true; fail++;
-            await saveBookToFirebase(book); await delay(800);
+        bar.style.width = Math.round(((i+1)/books.length)*100)+'%';
+        bar.textContent = `${i+1}/${books.length} – ${book.title}`;
+
+        if (book.manualCover && book.manualDesc) { await delay(50); continue; }
+
+        // Step 1: Danish publisher sites via Claude web search
+        const pub = await fetchFromPublishers(book.title, book.author);
+        let found = false;
+
+        if (pub && (pub.desc || pub.cover)) {
+            if (!book.manualDesc  && pub.desc)    book.desc    = pub.desc;
+            if (!book.manualCover && pub.cover)   book.cover   = pub.cover;
+            if (pub.pageUrl)                      book.pageUrl = pub.pageUrl;
+            book.fetchSuccess = true;
+            found = true;
+            ok++;
         }
+
+        // Step 2: Google Books fallback
+        if (!found) {
+            const goog = await fetchFromGoogle(book.title, book.author);
+            if (goog && (goog.desc || goog.cover)) {
+                if (!book.manualDesc  && goog.desc)   book.desc   = goog.desc;
+                if (!book.manualCover && goog.cover)  book.cover  = goog.cover;
+                if (goog.author)                      book.author = goog.author;
+                book.fetchSuccess = true;
+                found = true;
+                ok++;
+            }
+        }
+
+        if (!found) { book.fetchError = pub?._error || 'Ikke fundet'; fail++; }
+        book.fetchAttempted = true;
+        await saveBookToFirebase(book);
+        if (i < books.length-1) await delay(API_DELAY);
     }
-    btn.disabled = false; btn.textContent = '✨ Hent info';
-    wrap.style.display = 'none';
-    toast(fail ? `✅ ${ok} ok — ❌ ${fail} fejlede` : `🎉 Alle ${ok} bøger hentet!`, fail && ok === 0 ? 'err' : 'ok');
+
+    btn.disabled=false; btn.textContent='✨ Hent info';
+    wrap.style.display='none';
+    if (fail===0)      toast(`🎉 Alle ${ok} bøger hentet!`,'ok');
+    else if (ok===0)   toast(`❌ Ingen bøger fundet — tjek fejl-knappen`,'err');
+    else               toast(`✅ ${ok} ok — ❌ ${fail} fejlede`,'ok');
 }
 
 function showFetchErrors() {
-    const failed = books.filter(b => b.fetchAttempted && !b.fetchSuccess);
-    if (!failed.length) { toast('Ingen fejl!', 'ok'); return; }
-    alert(`❌ ${failed.length} fejlede:\n\n` + failed.map(b => `• "${b.title}"\n  ${b.fetchError || 'Ikke fundet'}`).join('\n\n'));
+    const failed = books.filter(b=>b.fetchAttempted&&!b.fetchSuccess);
+    if (!failed.length) { toast('Ingen fejl!','ok'); return; }
+    alert(`❌ ${failed.length} fejlede:\n\n`+failed.map(b=>`• "${b.title}" af ${b.author}\n  → ${b.fetchError||'Ikke fundet'}`).join('\n\n'));
 }
 
 async function debugFirebase() {
-    let r = '🔍 Firebase Debug\n═══════════════\n';
-    r += `Init: ${isFirebaseReady ? '✅' : '❌'}\nLokale bøger: ${books.length}\n`;
+    let r='🔍 Firebase Debug\n═══════════════\n';
+    r+=`Init: ${isFirebaseReady?'✅':'❌'}\nLokale bøger: ${books.length}\n`;
     if (isFirebaseReady) {
         try {
-            const snap = await database.ref('books').once('value');
-            r += `Firebase bøger: ${snap.val() ? Object.keys(snap.val()).length : 0}\n`;
-            await database.ref('test').set({ ts: Date.now() });
-            r += 'Skriveadgang: ✅\n';
-            await database.ref('test').remove();
-        } catch(e) { r += 'Fejl: ' + e.message + '\n'; }
+            const snap=await database.ref('books').once('value');
+            r+=`Firebase bøger: ${snap.val()?Object.keys(snap.val()).length:0}\n`;
+            await database.ref('test').set({ts:Date.now()}); r+='Skriveadgang: ✅\n'; await database.ref('test').remove();
+        } catch(e) { r+='Fejl: '+e.message+'\n'; }
     }
     alert(r);
 }
 
 async function manualRefresh() {
-    if (!isFirebaseReady) { toast('Firebase ikke forbundet', 'err'); return; }
-    const snap = await database.ref('books').once('value');
-    const data = snap.val();
-    books = data ? Object.keys(data).map(k => ({ firebaseKey: k, ...data[k] })) : [];
-    renderBooks();
-    toast(`✅ ${books.length} bøger genindlæst`, 'ok');
+    if (!isFirebaseReady) { toast('Firebase ikke forbundet','err'); return; }
+    const snap=await database.ref('books').once('value');
+    const data=snap.val();
+    books=data?Object.keys(data).map(k=>({firebaseKey:k,...data[k]})):[];
+    renderBooks(); toast(`✅ ${books.length} bøger genindlæst`,'ok');
 }
 
 async function runSmartLottery() {
-    if (!books.length) { toast('Ingen bøger', 'err'); return; }
-    const total = books.reduce((s, b) => s + (b.claims?.length || 0), 0);
-    if (!total) { toast('Ingen ønsker endnu', 'err'); return; }
+    if (!books.length) { toast('Ingen bøger','err'); return; }
+    const total=books.reduce((s,b)=>s+(b.claims?.length||0),0);
+    if (!total) { toast('Ingen ønsker endnu','err'); return; }
     if (!confirm(`Kør lodtrækning for ${books.length} bøger (${total} ønsker i alt)?`)) return;
-
-    books.forEach(b => b.winner = null);
-
-    // Step 1: Solo books — only one person wants them, they win automatically
-    books.forEach(b => { if (b.claims?.length === 1) b.winner = b.claims[0]; });
-
-    // Step 2: Competitive books (2+ claimants), processed in random order
-    const popular = books.filter(b => b.claims?.length > 1);
+    books.forEach(b=>b.winner=null);
+    books.forEach(b=>{ if(b.claims?.length===1) b.winner=b.claims[0]; });
+    const popular=books.filter(b=>b.claims?.length>1);
     shuffleArray(popular);
-
-    // Track who has won a competitive book (for the primary rule)
-    const wonCompetitive = new Set();
-
-    popular.forEach(b => {
-        // Primary rule: prefer people who haven't won a competitive book yet
-        const eligible = b.claims.filter(u => !wonCompetitive.has(u));
-
-        if (eligible.length > 0) {
-            // Happy path — pick randomly among those without a competitive win
-            const win = eligible[Math.floor(Math.random() * eligible.length)];
-            b.winner = win;
-            wonCompetitive.add(win);
-        } else {
-            // Fallback: everyone here has already won a competitive book.
-            // Be fair by preferring whoever has won the fewest books in total
-            // (solo wins + competitive wins combined).
-            const totalWins = user => books.filter(bk => bk.winner === user).length;
-            const minWins = Math.min(...b.claims.map(totalWins));
-            const leastWinners = b.claims.filter(u => totalWins(u) === minWins);
-            const win = leastWinners[Math.floor(Math.random() * leastWinners.length)];
-            b.winner = win;
-            wonCompetitive.add(win);
+    const wonCompetitive=new Set();
+    popular.forEach(b=>{
+        const eligible=b.claims.filter(u=>!wonCompetitive.has(u));
+        if (eligible.length>0) { const win=eligible[Math.floor(Math.random()*eligible.length)]; b.winner=win; wonCompetitive.add(win); }
+        else {
+            const totalWins=u=>books.filter(bk=>bk.winner===u).length;
+            const minWins=Math.min(...b.claims.map(totalWins));
+            const least=b.claims.filter(u=>totalWins(u)===minWins);
+            const win=least[Math.floor(Math.random()*least.length)]; b.winner=win; wonCompetitive.add(win);
         }
     });
-
     await saveAllBooksToFirebase(books);
-    const winners = new Set(books.filter(b => b.winner).map(b => b.winner));
-    toast(`🎉 ${books.filter(b => b.winner).length} bøger tildelt til ${winners.size} vindere`, 'ok');
+    const winners=new Set(books.filter(b=>b.winner).map(b=>b.winner));
+    toast(`🎉 ${books.filter(b=>b.winner).length} bøger tildelt til ${winners.size} vindere`,'ok');
 }
 
 async function clearAllData() {
     if (!confirm('Slet ALLE data? Kan ikke fortrydes!')) return;
     if (!confirm('Bekræft: slet alt permanent')) return;
-    await deleteAllBooksFromFirebase();
-    toast('Alle data slettet', 'ok');
+    await deleteAllBooksFromFirebase(); toast('Alle data slettet','ok');
 }
 
-// ── CLAIMS ──────────────────────────────────────────────────
+// ── CLAIMS ───────────────────────────────────────────────────
 async function toggleClaim(bookId) {
-    const user = getUser();
-    if (!user) { toast('Skriv og GEM dit navn først', 'err'); return; }
-    const book = books.find(b => b.id === bookId); if (!book) return;
-    if (!book.claims) book.claims = [];
-    const idx = book.claims.indexOf(user);
-    if (idx > -1) {
-        book.claims.splice(idx, 1);
-        if (book.winner === user) book.winner = null;
-    } else {
-        if (book.claims.length >= MAX_CLAIMS) { toast(`Bogen har allerede ${MAX_CLAIMS} ønsker`, 'err'); return; }
+    const user=getUser();
+    if (!user) { toast('Skriv og GEM dit navn først','err'); return; }
+    const book=books.find(b=>b.id===bookId); if(!book) return;
+    if (!book.claims) book.claims=[];
+    const idx=book.claims.indexOf(user);
+    if (idx>-1) { book.claims.splice(idx,1); if(book.winner===user) book.winner=null; }
+    else {
+        if (book.claims.length>=MAX_CLAIMS) { toast(`Bogen har allerede ${MAX_CLAIMS} ønsker`,'err'); return; }
         book.claims.push(user);
     }
     await saveBookToFirebase(book);
 }
-function handleModalClaim() { if (currentBookId) toggleClaim(currentBookId); }
+function handleModalClaim() { if(currentBookId) toggleClaim(currentBookId); }
 
-// ── RENDER ───────────────────────────────────────────────────
+// ── RENDER ────────────────────────────────────────────────────
 function renderBooks() {
-    const grid = document.getElementById('bookGrid');
-    const user = getUser();
-    if (!books.length) {
-        grid.innerHTML = '<div class="empty-state"><div class="icon">📚</div><p>Ingen bøger endnu — upload en CSV-fil (admin) for at starte.</p></div>';
-        return;
-    }
-    grid.innerHTML = '';
-    books.forEach(book => grid.appendChild(createBookCard(book, user)));
+    const grid=document.getElementById('bookGrid');
+    const user=getUser();
+    if (!books.length) { grid.innerHTML='<div class="empty-state"><div class="icon">📚</div><p>Ingen bøger endnu — upload en CSV-fil (admin) for at starte.</p></div>'; return; }
+    grid.innerHTML='';
+    books.forEach(book=>grid.appendChild(createBookCard(book,user)));
 }
 
 function createBookCard(book, user) {
-    const card = document.createElement('div');
-    card.className = 'book-card';
-    card.onclick = () => openModal(book.id);
-
-    const claims    = book.claims || [];
-    const isClaimed = user && claims.includes(user);
-    const isWinner  = book.winner === user;
-
-    // 6 slots in a 3×2 grid
-    const slots = Array(MAX_CLAIMS).fill(0).map((_, i) => {
-        const c = claims[i];
-        const w = book.winner === c && c;
-        return `<div class="slot${c ? ' taken' : ''}${w ? ' winner' : ''}">${c ? c.split(' ')[0] : '–'}${w ? ' 🏆' : ''}</div>`;
+    const card=document.createElement('div');
+    card.className='book-card';
+    card.onclick=()=>openModal(book.id);
+    const claims=book.claims||[];
+    const isClaimed=user&&claims.includes(user);
+    const isWinner=book.winner===user;
+    const slots=Array(MAX_CLAIMS).fill(0).map((_,i)=>{
+        const c=claims[i]; const w=book.winner===c&&c;
+        return `<div class="slot${c?' taken':''}${w?' winner':''}">${c?c.split(' ')[0]:'–'}${w?' 🏆':''}</div>`;
     }).join('');
-
-    const lotteryDone = books.some(b => b.winner);
-
-    let btnCls = 'btn-claim', btnTxt = 'Jeg ønsker mig bogen her', dis = false;
-    if (!user)                            { btnTxt = 'Skriv navn først'; dis = true; }
-    else if (isClaimed)                   { btnCls += ' claimed'; btnTxt = 'Fjern ønske'; }
-    else if (claims.length >= MAX_CLAIMS) { btnTxt = `Fuld (${MAX_CLAIMS}/${MAX_CLAIMS})`; dis = true; }
-
-    card.innerHTML = `
+    const lotteryDone=books.some(b=>b.winner);
+    let btnCls='btn-claim', btnTxt='Jeg ønsker mig bogen her', dis=false;
+    if (!user)                            { btnTxt='Skriv navn først'; dis=true; }
+    else if (isClaimed)                   { btnCls+=' claimed'; btnTxt='Fjern ønske'; }
+    else if (claims.length>=MAX_CLAIMS)   { btnTxt=`Fuld (${MAX_CLAIMS}/${MAX_CLAIMS})`; dis=true; }
+    card.innerHTML=`
         <div class="card-cover">
-            ${book.cover
-                ? `<img src="${esc(book.cover)}" alt="${esc(book.title)}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=card-cover-ph>📖</div>'">`
-                : `<div class="card-cover-ph">📖</div>`}
+            ${book.cover?`<img src="${esc(book.cover)}" alt="${esc(book.title)}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=card-cover-ph>📖</div>'">`:`<div class="card-cover-ph">📖</div>`}
         </div>
         <div class="card-body">
-            <div class="card-title">${esc(book.title)}${isWinner ? '<span class="win-badge">🏆 DIN</span>' : ''}</div>
+            <div class="card-title">${esc(book.title)}${isWinner?'<span class="win-badge">🏆 DIN</span>':''}</div>
             <div class="card-author">${esc(book.author)}</div>
             <div class="card-hint">ℹ️ Klik for beskrivelse</div>
             <div class="claim-slots">${slots}</div>
-            ${lotteryDone ? '' : `<button class="${btnCls}" ${dis ? 'disabled' : ''} onclick="event.stopPropagation();toggleClaim('${book.id}')">${btnTxt}</button>`}
+            ${lotteryDone?'':`<button class="${btnCls}" ${dis?'disabled':''} onclick="event.stopPropagation();toggleClaim('${book.id}')">${btnTxt}</button>`}
         </div>`;
     return card;
 }
 
-// ── MODAL ────────────────────────────────────────────────────
+// ── MODAL ─────────────────────────────────────────────────────
 function openModal(bookId) {
-    currentBookId = bookId;
-    const book = books.find(b => b.id === bookId); if (!book) return;
+    currentBookId=bookId;
+    const book=books.find(b=>b.id===bookId); if(!book) return;
     updateModalContent(book);
     document.getElementById('bookModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow='hidden';
 }
 
 function updateModalContent(book) {
-    const user = getUser();
-    const img  = document.getElementById('modalImg');
-    img.src = book.cover || ''; img.style.display = book.cover ? 'block' : 'none';
-    document.getElementById('modalTitle').textContent  = book.title;
-    document.getElementById('modalAuthor').textContent = book.author;
-    document.getElementById('modalDesc').textContent   = book.desc || 'Ingen beskrivelse.';
+    const user=getUser();
+    const img=document.getElementById('modalImg');
+    img.src=book.cover||''; img.style.display=book.cover?'block':'none';
+    document.getElementById('modalTitle').textContent=book.title;
+    document.getElementById('modalAuthor').textContent=book.author;
+    document.getElementById('modalDesc').textContent=book.desc||'Ingen beskrivelse.';
 
-    const claims = book.claims || [];
-    document.getElementById('modalClaims').innerHTML = claims.length
-        ? claims.map(c => `
-            <div class="claim-item${book.winner === c ? ' win' : ''}">
-                <span>${esc(c)}</span>
-                ${book.winner === c ? '<span>🏆 VINDER</span>' : ''}
-            </div>`).join('')
-        : '<p style="color:var(--muted);font-style:italic;font-size:14px;padding:6px 0">Ingen ønsker endnu</p>';
+    const claims=book.claims||[];
+    document.getElementById('modalClaims').innerHTML=claims.length
+        ?claims.map(c=>`<div class="claim-item${book.winner===c?' win':''}"><span>${esc(c)}</span>${book.winner===c?'<span>🏆 VINDER</span>':''}</div>`).join('')
+        :'<p style="color:var(--muted);font-style:italic;font-size:14px;padding:6px 0">Ingen ønsker endnu</p>';
 
-    const btn = document.getElementById('modalActionButton');
-    const isClaimed = user && claims.includes(user);
-    const lotteryDone2 = books.some(b => b.winner);
-    if (lotteryDone2) {
-        btn.style.display = 'none';
-    } else {
-        btn.style.display = '';
-        if (!user)                            { btn.textContent = 'Skriv dit navn først'; btn.disabled = true; btn.className = 'btn-ma'; }
-        else if (isClaimed)                   { btn.textContent = 'Fjern ønske'; btn.disabled = false; btn.className = 'btn-ma claimed'; }
-        else if (claims.length >= MAX_CLAIMS) { btn.textContent = `Fuld (${MAX_CLAIMS}/${MAX_CLAIMS})`; btn.disabled = true; btn.className = 'btn-ma'; }
-        else                                  { btn.textContent = 'Jeg ønsker mig bogen her'; btn.disabled = false; btn.className = 'btn-ma'; }
+    const btn=document.getElementById('modalActionButton');
+    const isClaimed=user&&claims.includes(user);
+    const lotteryDone=books.some(b=>b.winner);
+    if (lotteryDone) { btn.style.display='none'; }
+    else {
+        btn.style.display='';
+        if (!user)                          { btn.textContent='Skriv dit navn først'; btn.disabled=true; btn.className='btn-ma'; }
+        else if (isClaimed)                 { btn.textContent='Fjern ønske'; btn.disabled=false; btn.className='btn-ma claimed'; }
+        else if (claims.length>=MAX_CLAIMS) { btn.textContent=`Fuld (${MAX_CLAIMS}/${MAX_CLAIMS})`; btn.disabled=true; btn.className='btn-ma'; }
+        else                                { btn.textContent='Jeg ønsker mig bogen her'; btn.disabled=false; btn.className='btn-ma'; }
     }
 
-    const adm = document.getElementById('adminImageUpload');
+    const adm=document.getElementById('adminImageUpload');
     if (isAdminMode) {
         adm.classList.add('active');
-        document.getElementById('imageUrlInput').value = '';
-        document.getElementById('imageFileInput').value = '';
-        document.getElementById('descriptionTextarea').value = book.desc || '';
-        const q = encodeURIComponent(`${book.title} ${book.author} bog forside`);
-        document.getElementById('googleImagesLink').href = `https://www.google.com/search?tbm=isch&q=${q}`;
+        document.getElementById('imageUrlInput').value='';
+        document.getElementById('imageFileInput').value='';
+        document.getElementById('descriptionTextarea').value=book.desc||'';
+        const q=encodeURIComponent(book.title);
+        document.getElementById('lrSearchLink').href     = `https://www.lindhardtogringhof.dk/soeg/${q}`;
+        document.getElementById('carlsenSearchLink').href= `https://www.carlsen.dk/soeg/${q}`;
+        document.getElementById('googleImagesLink').href = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(book.title+' '+book.author+' bog forside')}`;
+        const pageLink=document.getElementById('pageUrlLink');
+        if (book.pageUrl) { pageLink.href=book.pageUrl; pageLink.style.display='block'; }
+        else { pageLink.style.display='none'; }
     } else { adm.classList.remove('active'); }
 }
 
 function closeModal() {
     document.getElementById('bookModal').classList.remove('active');
-    document.body.style.overflow = '';
-    currentBookId = null;
+    document.body.style.overflow='';
+    currentBookId=null;
 }
 
-// ── ADMIN IMAGE / DESC ───────────────────────────────────────
+// ── ADMIN IMAGE / DESC ────────────────────────────────────────
 async function uploadImageFromUrl() {
     if (!currentBookId) return;
-    const url = document.getElementById('imageUrlInput').value.trim();
-    if (!url.startsWith('http')) { toast('Ugyldig URL', 'err'); return; }
-    const book = books.find(b => b.id === currentBookId);
-    book.cover = url; book.manualCover = true;
+    const url=document.getElementById('imageUrlInput').value.trim();
+    if (!url.startsWith('http')) { toast('Ugyldig URL','err'); return; }
+    const book=books.find(b=>b.id===currentBookId);
+    book.cover=url; book.manualCover=true;
     await saveBookToFirebase(book);
-    const img = document.getElementById('modalImg');
-    img.src = url; img.style.display = 'block';
-    document.getElementById('imageUrlInput').value = '';
-    toast('Forside opdateret!', 'ok');
+    const img=document.getElementById('modalImg'); img.src=url; img.style.display='block';
+    document.getElementById('imageUrlInput').value='';
+    toast('Forside opdateret!','ok');
 }
 async function uploadImageFromFile() {
     if (!currentBookId) return;
-    const file = document.getElementById('imageFileInput').files[0];
-    if (!file) { toast('Vælg en fil', 'err'); return; }
-    if (file.size > 2 * 1024 * 1024) { toast('Maks 2MB', 'err'); return; }
-    const reader = new FileReader();
-    reader.onload = async e => {
-        const book = books.find(b => b.id === currentBookId);
-        book.cover = e.target.result; book.manualCover = true;
+    const file=document.getElementById('imageFileInput').files[0];
+    if (!file) { toast('Vælg en fil','err'); return; }
+    if (file.size>2*1024*1024) { toast('Maks 2MB','err'); return; }
+    const reader=new FileReader();
+    reader.onload=async e=>{
+        const book=books.find(b=>b.id===currentBookId);
+        book.cover=e.target.result; book.manualCover=true;
         await saveBookToFirebase(book);
-        const img = document.getElementById('modalImg');
-        img.src = e.target.result; img.style.display = 'block';
-        toast('Billede uploadet!', 'ok');
+        const img=document.getElementById('modalImg'); img.src=e.target.result; img.style.display='block';
+        toast('Billede uploadet!','ok');
     };
     reader.readAsDataURL(file);
 }
 async function removeBookCover() {
-    if (!currentBookId || !confirm('Fjern forsidebillede?')) return;
-    const book = books.find(b => b.id === currentBookId);
-    book.cover = ''; book.manualCover = false;
+    if (!currentBookId||!confirm('Fjern forsidebillede?')) return;
+    const book=books.find(b=>b.id===currentBookId);
+    book.cover=''; book.manualCover=false;
     await saveBookToFirebase(book);
-    document.getElementById('modalImg').style.display = 'none';
-    toast('Forside fjernet', 'ok');
+    document.getElementById('modalImg').style.display='none';
+    toast('Forside fjernet','ok');
 }
 async function saveManualDescription() {
     if (!currentBookId) return;
-    const desc = document.getElementById('descriptionTextarea').value.trim();
-    if (!desc) { toast('Skriv en beskrivelse', 'err'); return; }
-    const book = books.find(b => b.id === currentBookId);
-    book.desc = desc; book.manualDesc = true;
+    const desc=document.getElementById('descriptionTextarea').value.trim();
+    if (!desc) { toast('Skriv en beskrivelse','err'); return; }
+    const book=books.find(b=>b.id===currentBookId);
+    book.desc=desc; book.manualDesc=true;
     await saveBookToFirebase(book);
-    document.getElementById('modalDesc').textContent = desc;
-    toast('Beskrivelse gemt!', 'ok');
+    document.getElementById('modalDesc').textContent=desc;
+    toast('Beskrivelse gemt!','ok');
 }
 async function clearDescription() {
-    if (!currentBookId || !confirm('Nulstil beskrivelse?')) return;
-    const book = books.find(b => b.id === currentBookId);
-    book.desc = 'Brug "Hent info" for at hente beskrivelse fra Google Books.';
-    book.manualDesc = false;
+    if (!currentBookId||!confirm('Nulstil beskrivelse?')) return;
+    const book=books.find(b=>b.id===currentBookId);
+    book.desc='Tryk "Hent info" for at hente beskrivelse.'; book.manualDesc=false;
     await saveBookToFirebase(book);
-    document.getElementById('modalDesc').textContent = book.desc;
-    document.getElementById('descriptionTextarea').value = book.desc;
-    toast('Nulstillet', 'ok');
+    document.getElementById('modalDesc').textContent=book.desc;
+    document.getElementById('descriptionTextarea').value=book.desc;
+    toast('Nulstillet','ok');
 }
 
-// ── UTILS ────────────────────────────────────────────────────
+// ── UTILS ─────────────────────────────────────────────────────
 let toastTimer;
-function toast(msg, type = '') {
-    const el = document.getElementById('toast');
-    el.textContent = msg;
-    el.className = 'toast show' + (type ? ' ' + type : '');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+function toast(msg,type='') {
+    const el=document.getElementById('toast'); el.textContent=msg;
+    el.className='toast show'+(type?' '+type:'');
+    clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),3500);
 }
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
-function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-}
-function esc(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+function delay(ms) { return new Promise(r=>setTimeout(r,ms)); }
+function shuffleArray(arr) { for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} }
+function esc(t) { const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
 
-window.onload = init;
+window.onload=init;
 </script>
 </body>
 </html>
