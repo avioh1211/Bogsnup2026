@@ -198,6 +198,7 @@
             <h4>🔗 Find bogen</h4>
             <a id="lrSearchLink"      href="#" target="_blank">🔍 Lindhardt og Ringhof</a>
             <a id="carlsenSearchLink" href="#" target="_blank">🔍 Carlsen</a>
+            <a id="saxoSearchLink"    href="#" target="_blank">🔍 Saxo.com</a>
             <a id="googleImagesLink"  href="#" target="_blank">🔍 Google Images (forside)</a>
             <a id="pageUrlLink"       href="#" target="_blank" style="display:none;color:var(--green)">📖 Åbn bogside (fundet automatisk)</a>
             <hr class="modal-sep">
@@ -257,7 +258,13 @@ function setStatus(ok) {
 const USER_KEY   = 'shufflerUserName';
 const ADMIN_PW   = 'Bogsnup2026';
 const MAX_CLAIMS = 6;
-const API_DELAY  = 700;
+const API_DELAY  = 800;
+
+// Two public CORS proxies tried in sequence
+const PROXIES = [
+    url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+    url => `https://corsproxy.io/?${encodeURIComponent(url)}`
+];
 
 let books = [], currentBookId = null, isAdminMode = false;
 
@@ -369,11 +376,233 @@ function handleCSVUpload(event) {
 }
 
 // ════════════════════════════════════════════════════════════
-// FETCH FUNCTIONS — three cascading sources, no API key needed
+// CORS PROXY HELPER
+// Tries two public CORS proxies in sequence.
+// Returns the HTML string on success, or null if both fail.
 // ════════════════════════════════════════════════════════════
+async function proxyFetch(targetUrl, timeoutMs = 9000) {
+    for (const makeProxy of PROXIES) {
+        try {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), timeoutMs);
+            const res = await fetch(makeProxy(targetUrl), { signal: controller.signal });
+            clearTimeout(timer);
+            if (!res.ok) continue;
+            // allorigins returns { contents: "..." }; corsproxy returns raw text
+            let html;
+            const ct = res.headers.get('content-type') || '';
+            if (ct.includes('application/json')) {
+                const data = await res.json();
+                html = data.contents || null;
+            } else {
+                html = await res.text();
+            }
+            if (html && html.length > 200) return html;
+        } catch(e) {
+            console.warn('Proxy attempt failed:', e.message);
+        }
+        await delay(300);
+    }
+    return null;
+}
 
-// ── Source 1: Google Books API ───────────────────────────────
-// Good coverage of international books; English descriptions.
+// ── Parse OG / meta tags from an HTML string ────────────────
+function parseMeta(html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const get = sel => doc.querySelector(sel)?.getAttribute('content')?.trim() || null;
+    const desc = get('meta[property="og:description"]')
+               || get('meta[name="description"]')
+               || get('meta[name="twitter:description"]');
+    const cover = get('meta[property="og:image"]')
+                || get('meta[name="twitter:image"]');
+    return {
+        desc:  desc  && desc.length  > 10  ? desc  : null,
+        cover: cover && cover.startsWith('http') ? cover : null
+    };
+}
+
+// ── Extract Next.js __NEXT_DATA__ JSON ──────────────────────
+function parseNextData(html) {
+    try {
+        const m = html.match(/<script[^>]+id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+        if (m) return JSON.parse(m[1]);
+    } catch {}
+    return null;
+}
+
+// ── Trim description to max length ──────────────────────────
+function trimDesc(d, max = 800) {
+    if (!d || typeof d !== 'string') return null;
+    d = d.trim().replace(/\s+/g, ' ');
+    return d.length > max ? d.slice(0, max - 1) + '…' : d;
+}
+
+// ════════════════════════════════════════════════════════════
+// SOURCE 1 — Saxo.com  (largest Danish book retailer)
+// a) Search page → parse __NEXT_DATA__ for product list
+// b) Follow first product URL → parse __NEXT_DATA__ + OG tags
+// c) Fallback: OG meta tags on the search page itself
+// ════════════════════════════════════════════════════════════
+async function fetchFromSaxo(title, author) {
+    try {
+        const q = encodeURIComponent(title + (author && author !== 'Ukendt forfatter' ? ' ' + author : ''));
+        const searchUrl = `https://www.saxo.com/dk/search?query=${q}`;
+        const html = await proxyFetch(searchUrl);
+        if (!html) return null;
+
+        // ── a) __NEXT_DATA__ on search page ──────────────────
+        const nd = parseNextData(html);
+        if (nd) {
+            const tryPaths = [
+                nd?.props?.pageProps?.searchResult?.products,
+                nd?.props?.pageProps?.products,
+                nd?.props?.pageProps?.data?.products,
+                nd?.props?.pageProps?.initialData?.products,
+                nd?.props?.pageProps?.initialProps?.searchResult?.products,
+            ];
+            for (const products of tryPaths) {
+                if (!Array.isArray(products) || !products.length) continue;
+                const p     = products[0];
+                const desc  = trimDesc(p.description || p.teaser || p.shortDescription || p.blurb);
+                const cover = p.coverUrl || p.coverImageUrl || p.imageUrl
+                           || p.media?.[0]?.url || p.images?.[0]?.url || null;
+                const slug  = p.productUrl || p.url || null;
+                if (desc) {
+                    return { desc, cover: cover || null,
+                             pageUrl: slug ? 'https://www.saxo.com' + slug : null,
+                             source: 'Saxo.com' };
+                }
+                // Have cover + product URL → try fetching the product page
+                if (slug) {
+                    const pHtml = await proxyFetch('https://www.saxo.com' + slug);
+                    if (pHtml) {
+                        const pnd  = parseNextData(pHtml);
+                        const book = pnd?.props?.pageProps?.product
+                                  || pnd?.props?.pageProps?.data?.product
+                                  || pnd?.props?.pageProps?.data || {};
+                        const d2   = trimDesc(book.description || book.blurb || book.teaser) || parseMeta(pHtml).desc;
+                        const c2   = cover || parseMeta(pHtml).cover;
+                        if (d2 || c2) {
+                            return { desc: d2, cover: c2,
+                                     pageUrl: 'https://www.saxo.com' + slug, source: 'Saxo.com' };
+                        }
+                    }
+                }
+            }
+        }
+
+        // ── b) Find first product link in raw HTML, fetch it ──
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const anchors = [...doc.querySelectorAll('a[href*="/dk/"]')];
+        const link = anchors.find(a => {
+            const h = a.getAttribute('href') || '';
+            return h.includes('/dk/') && !h.includes('search') && !h.includes('login')
+                && !h.includes('konto') && !h.includes('kurv') && h.length > 10;
+        });
+        if (link) {
+            const href = link.getAttribute('href');
+            const full = href.startsWith('http') ? href : 'https://www.saxo.com' + href;
+            const pHtml = await proxyFetch(full);
+            if (pHtml) {
+                const pnd  = parseNextData(pHtml);
+                const book = pnd?.props?.pageProps?.product
+                          || pnd?.props?.pageProps?.data?.product
+                          || pnd?.props?.pageProps || {};
+                const d = trimDesc(book.description || book.blurb || book.shortDescription);
+                const c = book.coverUrl || book.imageUrl || parseMeta(pHtml).cover;
+                if (d || c) return { desc: d || parseMeta(pHtml).desc, cover: c || null, pageUrl: full, source: 'Saxo.com' };
+                const m = parseMeta(pHtml);
+                if (m.desc || m.cover) return { ...m, pageUrl: full, source: 'Saxo.com (meta)' };
+            }
+        }
+
+        // ── c) OG tags on search page ─────────────────────────
+        const meta = parseMeta(html);
+        if (meta.desc || meta.cover) return { ...meta, source: 'Saxo.com (meta)' };
+
+    } catch(e) { console.warn('Saxo error for "' + title + '":', e.message); }
+    return null;
+}
+
+// ════════════════════════════════════════════════════════════
+// SOURCE 2 — Lindhardt og Ringhof
+// ════════════════════════════════════════════════════════════
+async function fetchFromLindhardt(title, author) {
+    try {
+        const searchUrl = `https://www.lindhardtogringhof.dk/soeg/${encodeURIComponent(title)}`;
+        const html = await proxyFetch(searchUrl);
+        if (!html) return null;
+
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const selectors = ['a[href*="/bog/"]','.product-item a','.search-result-item a','article a','.product a'];
+        let productUrl = null;
+        for (const sel of selectors) {
+            const el = doc.querySelector(sel);
+            if (el && el.getAttribute('href')) { productUrl = el.getAttribute('href'); break; }
+        }
+
+        if (productUrl) {
+            const full = productUrl.startsWith('http') ? productUrl : 'https://www.lindhardtogringhof.dk' + productUrl;
+            const bHtml = await proxyFetch(full);
+            if (bHtml) {
+                const bd = new DOMParser().parseFromString(bHtml, 'text/html');
+                const descEl = bd.querySelector('.product-description,.description,.book-description,.blurb,[class*="description"],[class*="blurb"],[class*="synopsis"]');
+                const rawDesc = descEl?.innerText?.trim() || descEl?.textContent?.trim() || null;
+                const meta = parseMeta(bHtml);
+                const desc = trimDesc((rawDesc && rawDesc.length > 20 ? rawDesc : null) || meta.desc);
+                const imgEl = bd.querySelector('.product-cover img,.book-cover img,.cover img,img[class*="cover"]');
+                const cover = imgEl?.src || imgEl?.getAttribute('data-src') || meta.cover;
+                if (desc || cover) return { desc, cover: cover||null, pageUrl: full, source: 'Lindhardt og Ringhof' };
+            }
+        }
+
+        const meta = parseMeta(html);
+        if (meta.desc || meta.cover) return { ...meta, source: 'Lindhardt og Ringhof (meta)' };
+    } catch(e) { console.warn('LR error for "' + title + '":', e.message); }
+    return null;
+}
+
+// ════════════════════════════════════════════════════════════
+// SOURCE 3 — Carlsen Forlag
+// ════════════════════════════════════════════════════════════
+async function fetchFromCarlsen(title, author) {
+    try {
+        const searchUrl = `https://www.carlsen.dk/soeg/${encodeURIComponent(title)}`;
+        const html = await proxyFetch(searchUrl);
+        if (!html) return null;
+
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const selectors = ['a[href*="/bog/"]','a[href*="/product/"]','.product-item a','article a','.product a'];
+        let productUrl = null;
+        for (const sel of selectors) {
+            const el = doc.querySelector(sel);
+            if (el && el.getAttribute('href')) { productUrl = el.getAttribute('href'); break; }
+        }
+
+        if (productUrl) {
+            const full = productUrl.startsWith('http') ? productUrl : 'https://www.carlsen.dk' + productUrl;
+            const bHtml = await proxyFetch(full);
+            if (bHtml) {
+                const bd = new DOMParser().parseFromString(bHtml, 'text/html');
+                const descEl = bd.querySelector('.product-description,.description,.blurb,[class*="description"],[class*="blurb"],[class*="synopsis"]');
+                const rawDesc = descEl?.innerText?.trim() || descEl?.textContent?.trim() || null;
+                const meta = parseMeta(bHtml);
+                const desc = trimDesc((rawDesc && rawDesc.length > 20 ? rawDesc : null) || meta.desc);
+                const imgEl = bd.querySelector('.product-cover img,.book-cover img,.cover img,img[class*="cover"]');
+                const cover = imgEl?.src || imgEl?.getAttribute('data-src') || meta.cover;
+                if (desc || cover) return { desc, cover: cover||null, pageUrl: full, source: 'Carlsen' };
+            }
+        }
+
+        const meta = parseMeta(html);
+        if (meta.desc || meta.cover) return { ...meta, source: 'Carlsen (meta)' };
+    } catch(e) { console.warn('Carlsen error for "' + title + '":', e.message); }
+    return null;
+}
+
+// ════════════════════════════════════════════════════════════
+// SOURCE 4 — Google Books API (good for translated/intl books)
+// ════════════════════════════════════════════════════════════
 async function fetchFromGoogle(title, author) {
     const queries = [
         `intitle:"${title}" inauthor:"${author}"`,
@@ -383,45 +612,30 @@ async function fetchFromGoogle(title, author) {
     ];
     for (const q of queries) {
         try {
-            const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&maxResults=8&langRestrict=da`;
-            let res = await fetch(url);
+            const res  = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&maxResults=8`);
             if (!res.ok) continue;
-            let data = await res.json();
-            // If no Danish results, retry without language filter
-            if (!data.items?.length) {
-                res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&maxResults=8`);
-                if (!res.ok) continue;
-                data = await res.json();
-            }
+            const data = await res.json();
             if (!data.items?.length) continue;
-
-            // Pick best title match
             const tl = title.toLowerCase();
             let best = data.items[0];
             for (const item of data.items) {
                 const t = (item.volumeInfo.title || '').toLowerCase();
                 if (t === tl || t.startsWith(tl)) { best = item; break; }
             }
-
             const info  = best.volumeInfo;
             const links = info.imageLinks || {};
-            // Get highest-res cover and upgrade to HTTPS, remove curl artifact
             let cover = (links.extraLarge || links.large || links.medium || links.small || links.thumbnail || '')
-                .replace('http:', 'https:')
-                .replace('&edge=curl', '')
-                .replace('zoom=1', 'zoom=3');
-
+                .replace('http:', 'https:').replace('&edge=curl', '').replace('zoom=1', 'zoom=3');
             const desc = info.description || info.subtitle || null;
-            if (desc || cover) {
-                return { desc, cover: cover || null, author: info.authors?.join(', ') || null, source: 'Google Books' };
-            }
+            if (desc || cover) return { desc: trimDesc(desc), cover: cover || null, author: info.authors?.join(', ') || null, source: 'Google Books' };
         } catch(e) { console.warn('Google Books error for "' + title + '":', e.message); }
     }
     return null;
 }
 
-// ── Source 2: Open Library — full search (title + author) ────
-// Excellent for Scandinavian and Danish titles. Free, no key.
+// ════════════════════════════════════════════════════════════
+// SOURCE 5 — Open Library (title + author)
+// ════════════════════════════════════════════════════════════
 async function fetchFromOpenLibrary(title, author) {
     try {
         const q   = encodeURIComponent(title + ' ' + author);
@@ -429,62 +643,52 @@ async function fetchFromOpenLibrary(title, author) {
         if (!res.ok) return null;
         const data = await res.json();
         if (!data.docs?.length) return null;
-
-        // Find best title match
         const tl = title.toLowerCase();
         let best = data.docs[0];
         for (const doc of data.docs) {
             const t = (doc.title || '').toLowerCase();
             if (t === tl || t.startsWith(tl)) { best = doc; break; }
         }
-
-        const cover = best.cover_i
-            ? `https://covers.openlibrary.org/b/id/${best.cover_i}-L.jpg`
-            : null;
-
-        // Fetch the work page for a description (secondary call)
+        const cover = best.cover_i ? `https://covers.openlibrary.org/b/id/${best.cover_i}-L.jpg` : null;
         let desc = null;
         if (best.key) {
             try {
-                const workRes = await fetch(`https://openlibrary.org${best.key}.json`);
-                if (workRes.ok) {
-                    const work = await workRes.json();
-                    const raw  = typeof work.description === 'string'
-                        ? work.description
-                        : (work.description?.value || null);
-                    if (raw) desc = raw.length > 700 ? raw.slice(0, 697) + '…' : raw;
+                const wr = await fetch(`https://openlibrary.org${best.key}.json`);
+                if (wr.ok) {
+                    const w = await wr.json();
+                    const raw = typeof w.description === 'string' ? w.description : (w.description?.value || null);
+                    if (raw) desc = trimDesc(raw);
                 }
             } catch {}
         }
-
-        if (cover || desc) {
-            return { desc, cover, author: best.author_name?.join(', ') || null, source: 'Open Library' };
-        }
+        if (cover || desc) return { desc, cover, author: best.author_name?.join(', ') || null, source: 'Open Library' };
     } catch(e) { console.warn('Open Library error for "' + title + '":', e.message); }
     return null;
 }
 
-// ── Source 3: Open Library — title-only fallback ─────────────
-// Last resort: just grab a cover if one exists.
+// ════════════════════════════════════════════════════════════
+// SOURCE 6 — Open Library title-only cover rescue
+// ════════════════════════════════════════════════════════════
 async function fetchFromOpenLibraryTitleOnly(title) {
     try {
-        const res = await fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&limit=5&fields=key,title,author_name,cover_i`);
+        const res  = await fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&limit=5&fields=key,title,author_name,cover_i`);
         if (!res.ok) return null;
         const data = await res.json();
         if (!data.docs?.length) return null;
-
         const best  = data.docs[0];
-        const cover = best.cover_i
-            ? `https://covers.openlibrary.org/b/id/${best.cover_i}-L.jpg`
-            : null;
-        if (cover) {
-            return { desc: null, cover, author: best.author_name?.join(', ') || null, source: 'Open Library (titel)' };
-        }
+        const cover = best.cover_i ? `https://covers.openlibrary.org/b/id/${best.cover_i}-L.jpg` : null;
+        if (cover) return { desc: null, cover, author: best.author_name?.join(', ') || null, source: 'Open Library (titel)' };
     } catch(e) { console.warn('Open Library title-only error:', e.message); }
     return null;
 }
 
-// ── MAIN FETCH LOOP ──────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+// MAIN FETCH LOOP
+// Priority: Saxo → Lindhardt og Ringhof → Carlsen →
+//           Google Books → Open Library → Open Library (titel)
+// Danish retailers are first because Google/OL have very poor
+// coverage of Danish-language titles.
+// ════════════════════════════════════════════════════════════
 async function fetchAllInfo() {
     if (!books.length) { toast('Upload en CSV-fil først','err'); return; }
     const btn  = document.getElementById('btnFetch');
@@ -499,54 +703,49 @@ async function fetchAllInfo() {
         bar.style.width  = Math.round(((i + 1) / books.length) * 100) + '%';
         bar.textContent  = `${i + 1}/${books.length} – ${book.title}`;
 
-        // Skip if admin manually set both fields
         if (book.manualCover && book.manualDesc) { await delay(20); continue; }
 
-        let found = false;
+        const needDesc  = !book.manualDesc;
+        const needCover = !book.manualCover;
 
-        // ── 1. Google Books ────────────────────────────────
-        const goog = await fetchFromGoogle(book.title, book.author);
-        if (goog && (goog.desc || goog.cover)) {
-            if (!book.manualDesc  && goog.desc)   book.desc   = goog.desc;
-            if (!book.manualCover && goog.cover)  book.cover  = goog.cover;
-            if (goog.author && book.author === 'Ukendt forfatter') book.author = goog.author;
-            book.fetchSuccess = true;
-            book.fetchSource  = goog.source;
-            found = true; ok++;
-        }
+        // Apply result; returns true if any field was updated
+        const apply = (result) => {
+            if (!result) return false;
+            let changed = false;
+            if (needDesc  && result.desc  && result.desc.length  > 10) { book.desc  = result.desc;  changed = true; }
+            if (needCover && result.cover && result.cover.startsWith('http')) { book.cover = result.cover; changed = true; }
+            if (result.pageUrl && !book.pageUrl) book.pageUrl = result.pageUrl;
+            if (result.author && book.author === 'Ukendt forfatter') book.author = result.author;
+            if (changed) { book.fetchSuccess = true; book.fetchSource = result.source; }
+            return changed;
+        };
 
-        // ── 2. Open Library (title + author) ──────────────
-        if (!found) {
-            await delay(300);
-            const ol = await fetchFromOpenLibrary(book.title, book.author);
-            if (ol && (ol.desc || ol.cover)) {
-                if (!book.manualDesc  && ol.desc)   book.desc   = ol.desc;
-                if (!book.manualCover && ol.cover)  book.cover  = ol.cover;
-                if (ol.author && book.author === 'Ukendt forfatter') book.author = ol.author;
-                book.fetchSuccess = true;
-                book.fetchSource  = ol.source;
-                found = true; ok++;
-            }
-        }
+        const stillNeedDesc  = () => needDesc  && (!book.desc  || book.desc.startsWith('Tryk'));
+        const stillNeedCover = () => needCover && !book.cover;
+        const stillNeedAny   = () => stillNeedDesc() || stillNeedCover();
 
-        // ── 3. Open Library (title only — cover rescue) ───
-        if (!found) {
-            await delay(200);
-            const olT = await fetchFromOpenLibraryTitleOnly(book.title);
-            if (olT?.cover) {
-                if (!book.manualCover) book.cover = olT.cover;
-                if (!book.manualDesc)  book.desc  = 'Ingen beskrivelse fundet — brug admin-panelet til at tilføje en manuelt.';
-                if (olT.author && book.author === 'Ukendt forfatter') book.author = olT.author;
-                book.fetchSuccess = true;
-                book.fetchSource  = olT.source;
-                found = true; ok++;
-            }
-        }
+        // 1. Saxo
+        apply(await fetchFromSaxo(book.title, book.author));
 
-        if (!found) {
-            book.fetchError = 'Ikke fundet i Google Books eller Open Library';
+        // 2. Lindhardt og Ringhof
+        if (stillNeedAny()) { await delay(400); apply(await fetchFromLindhardt(book.title, book.author)); }
+
+        // 3. Carlsen
+        if (stillNeedAny()) { await delay(400); apply(await fetchFromCarlsen(book.title, book.author)); }
+
+        // 4. Google Books
+        if (stillNeedAny()) { await delay(300); apply(await fetchFromGoogle(book.title, book.author)); }
+
+        // 5. Open Library (title + author)
+        if (stillNeedAny()) { await delay(300); apply(await fetchFromOpenLibrary(book.title, book.author)); }
+
+        // 6. Open Library — cover only, last resort
+        if (stillNeedCover()) { await delay(200); apply(await fetchFromOpenLibraryTitleOnly(book.title)); }
+
+        if (!book.fetchSuccess) {
+            book.fetchError = 'Ikke fundet i Saxo, Lindhardt & Ringhof, Carlsen, Google Books eller Open Library';
             fail++;
-        }
+        } else { ok++; }
 
         book.fetchAttempted = true;
         await saveBookToFirebase(book);
@@ -555,9 +754,9 @@ async function fetchAllInfo() {
 
     btn.disabled = false; btn.textContent = '✨ Hent info';
     wrap.style.display = 'none';
-    if (fail === 0)      toast(`🎉 Alle ${ok} bøger hentet!`, 'ok');
-    else if (ok === 0)   toast(`❌ Ingen bøger fundet — tjek fejl-knappen`, 'err');
-    else                 toast(`✅ ${ok} ok — ❌ ${fail} fejlede`, 'ok');
+    if (fail === 0)    toast(`🎉 Alle ${ok} bøger hentet!`, 'ok');
+    else if (ok === 0) toast(`❌ Ingen bøger fundet — tjek fejl-knappen`, 'err');
+    else               toast(`✅ ${ok} ok — ❌ ${fail} fejlede`, 'ok');
 }
 
 function showFetchErrors() {
@@ -579,7 +778,7 @@ async function debugFirebase() {
     }
     const sources = [...new Set(books.filter(b=>b.fetchSource).map(b=>b.fetchSource))];
     r += '\nKilder brugt:\n' + (sources.length ? sources.map(s=>'• '+s).join('\n') : '(ingen endnu)');
-    r += '\n\nFetch-rækkefølge:\n1. Google Books API\n2. Open Library (titel + forfatter)\n3. Open Library (kun titel)';
+    r += '\n\nFetch-rækkefølge:\n1. Saxo.com\n2. Lindhardt og Ringhof\n3. Carlsen\n4. Google Books\n5. Open Library (titel + forfatter)\n6. Open Library (kun titel)';
     alert(r);
 }
 
@@ -717,9 +916,11 @@ function updateModalContent(book) {
         document.getElementById('imageUrlInput').value = '';
         document.getElementById('imageFileInput').value = '';
         document.getElementById('descriptionTextarea').value = book.desc || '';
-        const q = encodeURIComponent(book.title);
+        const q  = encodeURIComponent(book.title);
+        const qa = encodeURIComponent(book.title + ' ' + book.author);
         document.getElementById('lrSearchLink').href      = `https://www.lindhardtogringhof.dk/soeg/${q}`;
-        document.getElementById('carlsenSearchLink').href = `https://www.carlsen.dk/soeg/${q}`;
+        document.getElementById('carlsenSearchLink').href  = `https://www.carlsen.dk/soeg/${q}`;
+        document.getElementById('saxoSearchLink').href     = `https://www.saxo.com/dk/search?query=${qa}`;
         document.getElementById('googleImagesLink').href  = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(book.title + ' ' + book.author + ' bog forside')}`;
         const pageLink = document.getElementById('pageUrlLink');
         if (book.pageUrl) { pageLink.href = book.pageUrl; pageLink.style.display = 'block'; }
