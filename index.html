@@ -198,7 +198,6 @@
             <h4>🔗 Find bogen</h4>
             <a id="lrSearchLink"      href="#" target="_blank">🔍 Lindhardt og Ringhof</a>
             <a id="carlsenSearchLink" href="#" target="_blank">🔍 Carlsen</a>
-            <a id="saxoSearchLink"    href="#" target="_blank">🔍 Saxo.com</a>
             <a id="googleImagesLink"  href="#" target="_blank">🔍 Google Images (forside)</a>
             <a id="pageUrlLink"       href="#" target="_blank" style="display:none;color:var(--green)">📖 Åbn bogside (fundet automatisk)</a>
             <hr class="modal-sep">
@@ -260,7 +259,7 @@ const ADMIN_PW   = 'Bogsnup2026';
 const MAX_CLAIMS = 6;
 const API_DELAY  = 800;
 
-// Two public CORS proxies tried in sequence
+// Two public CORS proxies tried in sequence (used by LR and Carlsen fetchers)
 const PROXIES = [
     url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
     url => `https://corsproxy.io/?${encodeURIComponent(url)}`
@@ -438,94 +437,7 @@ function trimDesc(d, max = 800) {
 }
 
 // ════════════════════════════════════════════════════════════
-// SOURCE 1 — Saxo.com  (largest Danish book retailer)
-// a) Search page → parse __NEXT_DATA__ for product list
-// b) Follow first product URL → parse __NEXT_DATA__ + OG tags
-// c) Fallback: OG meta tags on the search page itself
-// ════════════════════════════════════════════════════════════
-async function fetchFromSaxo(title, author) {
-    try {
-        const q = encodeURIComponent(title + (author && author !== 'Ukendt forfatter' ? ' ' + author : ''));
-        const searchUrl = `https://www.saxo.com/dk/search?query=${q}`;
-        const html = await proxyFetch(searchUrl);
-        if (!html) return null;
-
-        // ── a) __NEXT_DATA__ on search page ──────────────────
-        const nd = parseNextData(html);
-        if (nd) {
-            const tryPaths = [
-                nd?.props?.pageProps?.searchResult?.products,
-                nd?.props?.pageProps?.products,
-                nd?.props?.pageProps?.data?.products,
-                nd?.props?.pageProps?.initialData?.products,
-                nd?.props?.pageProps?.initialProps?.searchResult?.products,
-            ];
-            for (const products of tryPaths) {
-                if (!Array.isArray(products) || !products.length) continue;
-                const p     = products[0];
-                const desc  = trimDesc(p.description || p.teaser || p.shortDescription || p.blurb);
-                const cover = p.coverUrl || p.coverImageUrl || p.imageUrl
-                           || p.media?.[0]?.url || p.images?.[0]?.url || null;
-                const slug  = p.productUrl || p.url || null;
-                if (desc) {
-                    return { desc, cover: cover || null,
-                             pageUrl: slug ? 'https://www.saxo.com' + slug : null,
-                             source: 'Saxo.com' };
-                }
-                // Have cover + product URL → try fetching the product page
-                if (slug) {
-                    const pHtml = await proxyFetch('https://www.saxo.com' + slug);
-                    if (pHtml) {
-                        const pnd  = parseNextData(pHtml);
-                        const book = pnd?.props?.pageProps?.product
-                                  || pnd?.props?.pageProps?.data?.product
-                                  || pnd?.props?.pageProps?.data || {};
-                        const d2   = trimDesc(book.description || book.blurb || book.teaser) || parseMeta(pHtml).desc;
-                        const c2   = cover || parseMeta(pHtml).cover;
-                        if (d2 || c2) {
-                            return { desc: d2, cover: c2,
-                                     pageUrl: 'https://www.saxo.com' + slug, source: 'Saxo.com' };
-                        }
-                    }
-                }
-            }
-        }
-
-        // ── b) Find first product link in raw HTML, fetch it ──
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        const anchors = [...doc.querySelectorAll('a[href*="/dk/"]')];
-        const link = anchors.find(a => {
-            const h = a.getAttribute('href') || '';
-            return h.includes('/dk/') && !h.includes('search') && !h.includes('login')
-                && !h.includes('konto') && !h.includes('kurv') && h.length > 10;
-        });
-        if (link) {
-            const href = link.getAttribute('href');
-            const full = href.startsWith('http') ? href : 'https://www.saxo.com' + href;
-            const pHtml = await proxyFetch(full);
-            if (pHtml) {
-                const pnd  = parseNextData(pHtml);
-                const book = pnd?.props?.pageProps?.product
-                          || pnd?.props?.pageProps?.data?.product
-                          || pnd?.props?.pageProps || {};
-                const d = trimDesc(book.description || book.blurb || book.shortDescription);
-                const c = book.coverUrl || book.imageUrl || parseMeta(pHtml).cover;
-                if (d || c) return { desc: d || parseMeta(pHtml).desc, cover: c || null, pageUrl: full, source: 'Saxo.com' };
-                const m = parseMeta(pHtml);
-                if (m.desc || m.cover) return { ...m, pageUrl: full, source: 'Saxo.com (meta)' };
-            }
-        }
-
-        // ── c) OG tags on search page ─────────────────────────
-        const meta = parseMeta(html);
-        if (meta.desc || meta.cover) return { ...meta, source: 'Saxo.com (meta)' };
-
-    } catch(e) { console.warn('Saxo error for "' + title + '":', e.message); }
-    return null;
-}
-
-// ════════════════════════════════════════════════════════════
-// SOURCE 2 — Lindhardt og Ringhof
+// SOURCE 1 — Lindhardt og Ringhof
 // ════════════════════════════════════════════════════════════
 async function fetchFromLindhardt(title, author) {
     try {
@@ -563,7 +475,7 @@ async function fetchFromLindhardt(title, author) {
 }
 
 // ════════════════════════════════════════════════════════════
-// SOURCE 3 — Carlsen Forlag
+// SOURCE 2 — Carlsen Forlag
 // ════════════════════════════════════════════════════════════
 async function fetchFromCarlsen(title, author) {
     try {
@@ -601,7 +513,7 @@ async function fetchFromCarlsen(title, author) {
 }
 
 // ════════════════════════════════════════════════════════════
-// SOURCE 4 — Google Books API (good for translated/intl books)
+// SOURCE 3 — Google Books API (good for translated/intl books)
 // ════════════════════════════════════════════════════════════
 async function fetchFromGoogle(title, author) {
     const queries = [
@@ -634,7 +546,7 @@ async function fetchFromGoogle(title, author) {
 }
 
 // ════════════════════════════════════════════════════════════
-// SOURCE 5 — Open Library (title + author)
+// SOURCE 4 — Open Library (title + author)
 // ════════════════════════════════════════════════════════════
 async function fetchFromOpenLibrary(title, author) {
     try {
@@ -667,7 +579,7 @@ async function fetchFromOpenLibrary(title, author) {
 }
 
 // ════════════════════════════════════════════════════════════
-// SOURCE 6 — Open Library title-only cover rescue
+// SOURCE 5 — Open Library title-only cover rescue
 // ════════════════════════════════════════════════════════════
 async function fetchFromOpenLibraryTitleOnly(title) {
     try {
@@ -684,10 +596,8 @@ async function fetchFromOpenLibraryTitleOnly(title) {
 
 // ════════════════════════════════════════════════════════════
 // MAIN FETCH LOOP
-// Priority: Saxo → Lindhardt og Ringhof → Carlsen →
+// Priority: Lindhardt og Ringhof → Carlsen →
 //           Google Books → Open Library → Open Library (titel)
-// Danish retailers are first because Google/OL have very poor
-// coverage of Danish-language titles.
 // ════════════════════════════════════════════════════════════
 async function fetchAllInfo() {
     if (!books.length) { toast('Upload en CSV-fil først','err'); return; }
@@ -724,10 +634,7 @@ async function fetchAllInfo() {
         const stillNeedCover = () => needCover && !book.cover;
         const stillNeedAny   = () => stillNeedDesc() || stillNeedCover();
 
-        // 1. Saxo
-        apply(await fetchFromSaxo(book.title, book.author));
-
-        // 2. Lindhardt og Ringhof
+        // 1. Lindhardt og Ringhof
         if (stillNeedAny()) { await delay(400); apply(await fetchFromLindhardt(book.title, book.author)); }
 
         // 3. Carlsen
@@ -743,7 +650,7 @@ async function fetchAllInfo() {
         if (stillNeedCover()) { await delay(200); apply(await fetchFromOpenLibraryTitleOnly(book.title)); }
 
         if (!book.fetchSuccess) {
-            book.fetchError = 'Ikke fundet i Saxo, Lindhardt & Ringhof, Carlsen, Google Books eller Open Library';
+            book.fetchError = 'Ikke fundet i Lindhardt & Ringhof, Carlsen, Google Books eller Open Library';
             fail++;
         } else { ok++; }
 
@@ -778,7 +685,7 @@ async function debugFirebase() {
     }
     const sources = [...new Set(books.filter(b=>b.fetchSource).map(b=>b.fetchSource))];
     r += '\nKilder brugt:\n' + (sources.length ? sources.map(s=>'• '+s).join('\n') : '(ingen endnu)');
-    r += '\n\nFetch-rækkefølge:\n1. Saxo.com\n2. Lindhardt og Ringhof\n3. Carlsen\n4. Google Books\n5. Open Library (titel + forfatter)\n6. Open Library (kun titel)';
+    r += '\n\nFetch-rækkefølge:\n1. Lindhardt og Ringhof\n2. Carlsen\n3. Google Books\n4. Open Library (titel + forfatter)\n5. Open Library (kun titel)';
     alert(r);
 }
 
@@ -917,10 +824,8 @@ function updateModalContent(book) {
         document.getElementById('imageFileInput').value = '';
         document.getElementById('descriptionTextarea').value = book.desc || '';
         const q  = encodeURIComponent(book.title);
-        const qa = encodeURIComponent(book.title + ' ' + book.author);
         document.getElementById('lrSearchLink').href      = `https://www.lindhardtogringhof.dk/soeg/${q}`;
         document.getElementById('carlsenSearchLink').href  = `https://www.carlsen.dk/soeg/${q}`;
-        document.getElementById('saxoSearchLink').href     = `https://www.saxo.com/dk/search?query=${qa}`;
         document.getElementById('googleImagesLink').href  = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(book.title + ' ' + book.author + ' bog forside')}`;
         const pageLink = document.getElementById('pageUrlLink');
         if (book.pageUrl) { pageLink.href = book.pageUrl; pageLink.style.display = 'block'; }
