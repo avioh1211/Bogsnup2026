@@ -1,19 +1,4 @@
-
-                        <!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-							<style>
-								body {
-									background-color: white; /* Ensure the iframe has a white background */
-								}
-
-								
-							</style>
-                        </head>
-                        <body>
-                            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="da">
 <head>
     <meta charset="UTF-8">
@@ -35,340 +20,199 @@
             --r:      12px;
             --sh:     0 2px 12px rgba(0,0,0,.08);
         }
-        *,*::before,*::after { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-        /* ── HEADER ── */
-        header { background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
-        .header-inner { display: flex; align-items: center; gap: 16px; padding: 14px 30px; max-width: 1600px; margin: 0 auto; flex-wrap: wrap; }
-        .logo { font-size: 22px; font-weight: 800; letter-spacing: -.4px; white-space: nowrap; }
-        .logo small { font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 6px; }
-        .status-pill { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 20px; background: var(--green); color: #fff; white-space: nowrap; }
-        .status-pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.8); animation: blink 2s infinite; }
+        *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+        /* HEADER */
+        header { background:var(--card); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:200; box-shadow:0 2px 8px rgba(0,0,0,.07); }
+        .header-inner { display:flex; align-items:center; gap:16px; padding:14px 30px; max-width:1600px; margin:0 auto; flex-wrap:wrap; }
+        .logo { font-size:22px; font-weight:800; letter-spacing:-.4px; white-space:nowrap; }
+        .logo small { font-size:13px; font-weight:400; color:var(--muted); margin-left:6px; }
+        .status-pill { display:flex; align-items:center; gap:5px; font-size:12px; font-weight:600; padding:5px 12px; border-radius:20px; background:var(--green); color:#fff; white-space:nowrap; }
+        .status-pill::before { content:''; width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.8); animation:blink 2s infinite; }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-        .status-pill.offline { background: var(--red); }
-        .guide-text { font-size: 13px; color: #555; line-height: 1.5; border-left: 3px solid var(--blue); padding-left: 10px; }
-        /* ── NAME BANNER ── */
-        .name-banner {
-            background: linear-gradient(135deg, #fff8e1, #fffde7);
-            border-bottom: 2px solid #ffe082;
-            position: sticky;
-            top: 57px;
-            z-index: 190;
-            transition: all .4s ease;
-            overflow: hidden;
+        .status-pill.offline { background:var(--red); }
+        .guide-text { font-size:13px; color:#555; line-height:1.5; border-left:3px solid var(--blue); padding-left:10px; }
+
+        /* NAME BANNER */
+        .name-banner { background:linear-gradient(135deg,#fff8e1,#fffde7); border-bottom:2px solid #ffe082; position:sticky; top:57px; z-index:190; transition:all .4s ease; overflow:hidden; }
+        .name-banner.hidden { max-height:0; border-bottom-color:transparent; padding:0; }
+        .name-banner-inner { max-width:1600px; margin:0 auto; padding:14px 30px; display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap; }
+        .name-banner-label { display:flex; align-items:center; gap:10px; font-size:15px; font-weight:700; color:#5d4037; white-space:nowrap; padding-top:26px; }
+        .name-banner-label .step-badge { background:var(--orange); color:#fff; font-size:12px; font-weight:800; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .name-banner-label .arrow { font-size:20px; animation:bounceRight .8s infinite; }
+        @keyframes bounceRight { 0%,100%{transform:translateX(0)} 50%{transform:translateX(5px)} }
+
+        /* TWO NAME FIELDS */
+        .name-input-wrap { display:flex; flex-direction:column; gap:6px; flex:1; max-width:580px; }
+        .name-fields-row { display:flex; gap:10px; align-items:flex-end; }
+        .name-field-group { display:flex; flex-direction:column; gap:4px; flex:1; }
+        .name-field-label { font-size:11px; font-weight:700; color:#795548; text-transform:uppercase; letter-spacing:.5px; padding-left:2px; }
+        .name-field-group input {
+            width:100%; padding:11px 16px; border:2px solid #ffb300; border-radius:10px;
+            font-size:15px; outline:none; background:#fff;
+            transition:border-color .2s, box-shadow .2s;
+            animation:glowPulse 2s infinite;
         }
-        .name-banner.hidden {
-            max-height: 0;
-            border-bottom-color: transparent;
-            padding: 0;
-        }
-        .name-banner-inner {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 14px 30px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        .name-banner-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 15px;
-            font-weight: 700;
-            color: #5d4037;
-            white-space: nowrap;
-        }
-        .name-banner-label .step-badge {
-            background: var(--orange);
-            color: #fff;
-            font-size: 12px;
-            font-weight: 800;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .name-banner-label .arrow {
-            font-size: 20px;
-            animation: bounceRight .8s infinite;
-        }
-        @keyframes bounceRight {
-            0%,100% { transform: translateX(0); }
-            50%      { transform: translateX(5px); }
-        }
-        .name-input-wrap {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            flex: 1;
-            max-width: 460px;
-        }
-        .name-input-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .name-input-row input {
-            flex: 1;
-            padding: 11px 16px;
-            border: 2px solid #ffb300;
-            border-radius: 10px;
-            font-size: 15px;
-            outline: none;
-            background: #fff;
-            transition: border-color .2s, box-shadow .2s;
-            animation: glowPulse 2s infinite;
-        }
-        .name-input-row input:focus {
-            border-color: var(--blue);
-            box-shadow: 0 0 0 3px rgba(0,122,255,.15);
-            animation: none;
-        }
-        @keyframes glowPulse {
-            0%,100% { box-shadow: 0 0 0 0 rgba(255,179,0,.5); }
-            50%      { box-shadow: 0 0 0 6px rgba(255,179,0,0); }
-        }
-        .btn-save {
-            padding: 11px 22px;
-            background: var(--orange);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background .15s, transform .1s;
-            white-space: nowrap;
-        }
-        .btn-save:hover  { background: #e68900; }
-        .btn-save:active { transform: scale(.96); }
-        .btn-save.saved  { background: var(--green); }
-        .name-hint {
-            font-size: 12px;
-            color: #795548;
-            padding-left: 2px;
-        }
+        .name-field-group input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,122,255,.15); animation:none; }
+        @keyframes glowPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,179,0,.5)} 50%{box-shadow:0 0 0 6px rgba(255,179,0,0)} }
+
+        .btn-save { padding:11px 22px; background:var(--orange); color:#fff; border:none; border-radius:10px; font-size:15px; font-weight:700; cursor:pointer; transition:background .15s,transform .1s; white-space:nowrap; flex-shrink:0; }
+        .btn-save:hover  { background:#e68900; }
+        .btn-save:active { transform:scale(.96); }
+        .btn-save.saved  { background:var(--green); }
+        .name-hint { font-size:12px; color:#795548; padding-left:2px; }
         #nameWarning { display:none; font-size:12px; color:var(--red); font-weight:500; line-height:1.4; }
-        .name-confirmed {
-            display: none;
-            align-items: center;
-            gap: 8px;
-            background: #f0fdf4;
-            border: 1.5px solid #86efac;
-            border-radius: 10px;
-            padding: 8px 14px;
-            margin-left: auto;
-            font-size: 14px;
-            font-weight: 600;
-            color: #166534;
-            cursor: pointer;
-            transition: background .15s;
-        }
-        .name-confirmed:hover { background: #dcfce7; }
-        .name-confirmed.visible { display: flex; }
-        .name-confirmed .edit-hint { font-size: 11px; font-weight: 400; color: #4ade80; }
-        /* ── CONTROLS BAR ── */
-        .controls-bar-wrap { background: var(--card); border-bottom: 1px solid var(--border); }
-        .controls-bar { padding: 10px 30px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; max-width: 1600px; margin: 0 auto; }
-        .btn-refresh { padding: 8px 18px; height: 40px; background: var(--purple); color: #fff; border: none; border-radius: 9px; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s; white-space: nowrap; }
-        .btn-refresh:hover { opacity: .85; }
-        #adminArea { display: none; align-items: center; gap: 8px; border-left: 2px solid var(--border); padding-left: 14px; flex-wrap: wrap; }
-        #adminArea input[type="password"] { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; height: 40px; width: 120px; }
-        .admin-btn { height: 40px; padding: 0 14px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: opacity .15s; }
-        .admin-btn:disabled { opacity: .4; pointer-events: none; }
-        .admin-btn:hover:not(:disabled) { opacity: .85; }
-        .btn-ai { background: var(--purple); }
-        /* ── PROGRESS ── */
-        .progress-wrap { display: none; padding: 8px 30px; background: var(--card); border-bottom: 1px solid var(--border); }
-        .progress-track { height: 28px; background: #eee; border-radius: 8px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--purple)); transition: width .3s; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; min-width: 40px; }
-        /* ── TOAST ── */
-        .toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-10px); background: #222; color: #fff; padding: 11px 22px; border-radius: 10px; font-size: 14px; font-weight: 500; z-index: 900; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; box-shadow: 0 4px 20px rgba(0,0,0,.25); white-space: nowrap; }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .toast.ok  { background: var(--green); }
-        .toast.err { background: var(--red); }
-        /* ── MAIN LAYOUT ── */
-        .main-layout { display: flex; align-items: flex-start; max-width: 1600px; margin: 0 auto; }
-        /* ── BOOK GRID ── */
-        .book-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 24px 30px; min-width: 0; }
-        /* ── BOOK CARDS ── */
-        .book-card { background: var(--card); border-radius: var(--r); box-shadow: var(--sh); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; transition: transform .18s, box-shadow .18s; }
-        .book-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.13); }
-        .card-cover { aspect-ratio: 2/3; background: linear-gradient(135deg, #e8eaf6, #c5cae9); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .card-cover-ph { font-size: 44px; opacity: .3; }
-        .card-body { padding: 12px; flex: 1; display: flex; flex-direction: column; }
-        .card-title  { font-size: 13px; font-weight: 700; line-height: 1.3; margin-bottom: 3px; }
-        .card-author { font-size: 12px; color: var(--muted); margin-bottom: 6px; flex: 1; }
-        .card-hint   { font-size: 11px; color: var(--blue); font-style: italic; margin-bottom: 8px; }
-        .claim-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 10px; }
-        .slot { padding: 4px 3px; background: var(--bg); border: 1px solid var(--border); border-radius: 5px; font-size: 10px; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); }
-        .slot.taken  { color: var(--text); font-weight: 600; background: #f0f4ff; border-color: #c5cfe8; }
-        .slot.winner { background: var(--gold); border-color: #d4aa00; color: #000; font-weight: 700; }
-        .btn-claim { width: 100%; padding: 9px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background .15s; }
-        .btn-claim:hover:not(:disabled) { background: #0062cc; }
-        .btn-claim.claimed { background: var(--red); }
-        .btn-claim.claimed:hover { background: #cc2a1f; }
-        .btn-claim:disabled { background: var(--border); color: var(--muted); cursor: default; }
-        .win-badge { display: inline-block; background: var(--green); color: #fff; padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; margin-left: 4px; vertical-align: middle; }
-        .empty-state { grid-column: 1/-1; text-align: center; padding: 80px 20px; color: var(--muted); }
-        .empty-state .icon { font-size: 56px; margin-bottom: 14px; }
-        .empty-state p { font-size: 16px; }
-        /* ── USER PANEL ── */
-        .user-panel { width: 240px; flex-shrink: 0; padding: 24px 20px 24px 0; position: sticky; top: 130px; max-height: calc(100vh - 150px); overflow-y: auto; }
-        .user-panel-inner { background: var(--card); border-radius: var(--r); box-shadow: var(--sh); padding: 16px; }
-        .user-panel-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--muted); margin-bottom: 4px; }
-        .user-panel-count { font-size: 13px; color: var(--text); margin-bottom: 12px; font-weight: 500; }
-        .user-panel-count strong { color: var(--green); font-size: 15px; }
-        .user-item { display: flex; justify-content: space-between; align-items: center; padding: 7px 9px; border-radius: 8px; margin-bottom: 4px; gap: 6px; }
-        .user-item.has-chosen { background: #f0fdf4; }
-        .user-item.missing    { background: #fff8f0; }
-        .user-name { font-size: 11.5px; font-weight: 500; color: var(--text); flex: 1; line-height: 1.3; }
-        .user-status { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
-        .user-status.ok-badge      { background: var(--green);  color: #fff; }
-        .user-status.missing-badge { background: var(--orange); color: #fff; }
-        /* ── WON BOOKS PANEL ── */
-        .won-books-divider {
-            border: none;
-            border-top: 1.5px solid var(--border);
-            margin: 14px 0;
-        }
-        .won-book-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 10px;
-            background: linear-gradient(135deg, #fffde7, #fff8e1);
-            border: 1.5px solid var(--gold);
-            border-radius: 9px;
-            margin-bottom: 6px;
-            cursor: pointer;
-            transition: transform .15s, box-shadow .15s;
-        }
-        .won-book-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255,215,0,.25);
-        }
-        .won-book-cover {
-            width: 36px;
-            height: 54px;
-            object-fit: cover;
-            border-radius: 4px;
-            flex-shrink: 0;
-        }
-        .won-book-cover-ph {
-            width: 36px;
-            height: 54px;
-            background: #e8eaf6;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-        .won-book-info { flex: 1; min-width: 0; }
-        .won-book-title {
-            font-size: 12px;
-            font-weight: 700;
-            line-height: 1.3;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .won-book-author {
-            font-size: 11px;
-            color: var(--muted);
-            margin-top: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .won-book-badge {
-            font-size: 10px;
-            font-weight: 700;
-            color: #b8860b;
-            margin-top: 3px;
-        }
-        .won-books-empty {
-            font-size: 12px;
-            color: var(--muted);
-            font-style: italic;
-            text-align: center;
-            padding: 8px 0;
-        }
-        /* ── MODAL ── */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
-        .modal-overlay.active { display: flex; }
-        .modal-box { background: var(--card); border-radius: var(--r); width: 100%; max-width: 520px; max-height: 88vh; overflow-y: auto; animation: fadeUp .2s ease; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
+
+        .name-confirmed { display:none; align-items:center; gap:8px; background:#f0fdf4; border:1.5px solid #86efac; border-radius:10px; padding:8px 14px; margin-left:auto; font-size:14px; font-weight:600; color:#166534; cursor:pointer; transition:background .15s; }
+        .name-confirmed:hover { background:#dcfce7; }
+        .name-confirmed.visible { display:flex; }
+        .name-confirmed .edit-hint { font-size:11px; font-weight:400; color:#4ade80; }
+
+        /* CONTROLS BAR */
+        .controls-bar-wrap { background:var(--card); border-bottom:1px solid var(--border); }
+        .controls-bar { padding:10px 30px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; max-width:1600px; margin:0 auto; }
+        .btn-refresh { padding:8px 18px; height:40px; background:var(--purple); color:#fff; border:none; border-radius:9px; font-size:13px; font-weight:600; cursor:pointer; transition:opacity .15s; white-space:nowrap; }
+        .btn-refresh:hover { opacity:.85; }
+        #adminArea { display:none; align-items:center; gap:8px; border-left:2px solid var(--border); padding-left:14px; flex-wrap:wrap; }
+        #adminArea input[type="password"] { padding:8px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:13px; height:40px; width:120px; }
+        .admin-btn { height:40px; padding:0 14px; background:var(--blue); color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap; transition:opacity .15s; }
+        .admin-btn:disabled { opacity:.4; pointer-events:none; }
+        .admin-btn:hover:not(:disabled) { opacity:.85; }
+        .btn-ai { background:var(--purple); }
+
+        /* PROGRESS */
+        .progress-wrap { display:none; padding:8px 30px; background:var(--card); border-bottom:1px solid var(--border); }
+        .progress-track { height:28px; background:#eee; border-radius:8px; overflow:hidden; }
+        .progress-fill { height:100%; background:linear-gradient(90deg,var(--blue),var(--purple)); transition:width .3s; display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px; font-weight:700; min-width:40px; }
+
+        /* TOAST */
+        .toast { position:fixed; top:80px; left:50%; transform:translateX(-50%) translateY(-10px); background:#222; color:#fff; padding:11px 22px; border-radius:10px; font-size:14px; font-weight:500; z-index:900; opacity:0; pointer-events:none; transition:opacity .2s,transform .2s; box-shadow:0 4px 20px rgba(0,0,0,.25); white-space:nowrap; }
+        .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+        .toast.ok  { background:var(--green); }
+        .toast.err { background:var(--red); }
+
+        /* MAIN LAYOUT */
+        .main-layout { display:flex; align-items:flex-start; max-width:1600px; margin:0 auto; }
+
+        /* BOOK GRID */
+        .book-grid { flex:1; display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:20px; padding:24px 30px; min-width:0; }
+
+        /* BOOK CARDS */
+        .book-card { background:var(--card); border-radius:var(--r); box-shadow:var(--sh); display:flex; flex-direction:column; overflow:hidden; cursor:pointer; transition:transform .18s,box-shadow .18s; }
+        .book-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,.13); }
+        .card-cover { aspect-ratio:2/3; background:linear-gradient(135deg,#e8eaf6,#c5cae9); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+        .card-cover img { width:100%; height:100%; object-fit:cover; display:block; }
+        .card-cover-ph { font-size:44px; opacity:.3; }
+        .card-body { padding:12px; flex:1; display:flex; flex-direction:column; }
+        .card-title  { font-size:13px; font-weight:700; line-height:1.3; margin-bottom:3px; }
+        .card-author { font-size:12px; color:var(--muted); margin-bottom:6px; flex:1; }
+        .card-hint   { font-size:11px; color:var(--blue); font-style:italic; margin-bottom:8px; }
+        .claim-slots { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-bottom:10px; }
+        .slot { padding:4px 3px; background:var(--bg); border:1px solid var(--border); border-radius:5px; font-size:10px; text-align:center; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color:var(--muted); }
+        .slot.taken  { color:var(--text); font-weight:600; background:#f0f4ff; border-color:#c5cfe8; }
+        .slot.winner { background:var(--gold); border-color:#d4aa00; color:#000; font-weight:700; }
+        .btn-claim { width:100%; padding:9px; background:var(--blue); color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s; }
+        .btn-claim:hover:not(:disabled) { background:#0062cc; }
+        .btn-claim.claimed { background:var(--red); }
+        .btn-claim.claimed:hover { background:#cc2a1f; }
+        .btn-claim:disabled { background:var(--border); color:var(--muted); cursor:default; }
+        .win-badge { display:inline-block; background:var(--green); color:#fff; padding:1px 6px; border-radius:4px; font-size:10px; font-weight:700; margin-left:4px; vertical-align:middle; }
+        .empty-state { grid-column:1/-1; text-align:center; padding:80px 20px; color:var(--muted); }
+        .empty-state .icon { font-size:56px; margin-bottom:14px; }
+        .empty-state p { font-size:16px; }
+
+        /* USER PANEL */
+        .user-panel { width:240px; flex-shrink:0; padding:24px 20px 24px 0; position:sticky; top:130px; max-height:calc(100vh - 150px); overflow-y:auto; }
+        .user-panel-inner { background:var(--card); border-radius:var(--r); box-shadow:var(--sh); padding:16px; }
+        .user-panel-title { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; color:var(--muted); margin-bottom:4px; }
+        .user-panel-count { font-size:13px; color:var(--text); margin-bottom:12px; font-weight:500; }
+        .user-panel-count strong { color:var(--green); font-size:15px; }
+        .user-item { display:flex; justify-content:space-between; align-items:center; padding:7px 9px; border-radius:8px; margin-bottom:4px; gap:6px; }
+        .user-item.has-chosen { background:#f0fdf4; }
+        .user-item.missing    { background:#fff8f0; }
+        .user-name { font-size:11.5px; font-weight:500; color:var(--text); flex:1; line-height:1.3; }
+        .user-status { font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; white-space:nowrap; flex-shrink:0; }
+        .user-status.ok-badge      { background:var(--green); color:#fff; }
+        .user-status.missing-badge { background:var(--orange); color:#fff; }
+
+        /* WON BOOKS PANEL */
+        .won-books-divider { border:none; border-top:1.5px solid var(--border); margin:14px 0; }
+        .won-book-item { display:flex; align-items:center; gap:10px; padding:8px 10px; background:linear-gradient(135deg,#fffde7,#fff8e1); border:1.5px solid var(--gold); border-radius:9px; margin-bottom:6px; cursor:pointer; transition:transform .15s,box-shadow .15s; }
+        .won-book-item:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(255,215,0,.25); }
+        .won-book-cover { width:36px; height:54px; object-fit:cover; border-radius:4px; flex-shrink:0; }
+        .won-book-cover-ph { width:36px; height:54px; background:#e8eaf6; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+        .won-book-info { flex:1; min-width:0; }
+        .won-book-title { font-size:12px; font-weight:700; line-height:1.3; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .won-book-author { font-size:11px; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .won-book-badge { font-size:10px; font-weight:700; color:#b8860b; margin-top:3px; }
+        .won-books-empty { font-size:12px; color:var(--muted); font-style:italic; text-align:center; padding:8px 0; }
+
+        /* MODAL */
+        .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:500; align-items:center; justify-content:center; padding:20px; }
+        .modal-overlay.active { display:flex; }
+        .modal-box { background:var(--card); border-radius:var(--r); width:100%; max-width:520px; max-height:88vh; overflow-y:auto; animation:fadeUp .2s ease; box-shadow:0 20px 60px rgba(0,0,0,.2); }
         @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
-        .modal-cover { width: 100%; max-height: 280px; object-fit: contain; display: block; background: linear-gradient(135deg, #e8eaf6, #c5cae9); }
-        .modal-body { padding: 24px; }
-        .modal-title  { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-        .modal-author { font-size: 14px; color: var(--muted); margin-bottom: 18px; }
-        .modal-desc { font-size: 14px; line-height: 1.65; color: #444; background: var(--bg); padding: 14px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 18px; }
-        .modal-claims-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin-bottom: 8px; }
-        .claim-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--bg); border-radius: 8px; margin-bottom: 6px; font-size: 14px; border: 1px solid var(--border); }
-        .claim-item.win { background: var(--gold); border-color: #d4aa00; font-weight: 700; }
-        /* ── MODAL ADMIN ── */
-        .modal-admin { display: none; margin: 0 24px 24px; background: var(--bg); border-radius: 10px; border: 2px dashed var(--blue); padding: 18px; }
-        .modal-admin.active { display: block; }
-        .modal-admin h4 { font-size: 13px; color: var(--blue); margin-bottom: 10px; font-weight: 700; }
-        .modal-admin a { font-size: 13px; color: var(--blue); display: block; margin-bottom: 8px; text-decoration: none; }
-        .modal-admin a:hover { text-decoration: underline; }
+        .modal-cover { width:100%; max-height:280px; object-fit:contain; display:block; background:linear-gradient(135deg,#e8eaf6,#c5cae9); }
+        .modal-body { padding:24px; }
+        .modal-title  { font-size:22px; font-weight:800; margin-bottom:4px; }
+        .modal-author { font-size:14px; color:var(--muted); margin-bottom:18px; }
+        .modal-desc { font-size:14px; line-height:1.65; color:#444; background:var(--bg); padding:14px; border-radius:10px; border:1px solid var(--border); margin-bottom:18px; }
+        .modal-claims-lbl { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:8px; }
+        .claim-item { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg); border-radius:8px; margin-bottom:6px; font-size:14px; border:1px solid var(--border); }
+        .claim-item.win { background:var(--gold); border-color:#d4aa00; font-weight:700; }
+
+        /* MODAL ADMIN */
+        .modal-admin { display:none; margin:0 24px 24px; background:var(--bg); border-radius:10px; border:2px dashed var(--blue); padding:18px; }
+        .modal-admin.active { display:block; }
+        .modal-admin h4 { font-size:13px; color:var(--blue); margin-bottom:10px; font-weight:700; }
+        .modal-admin a { font-size:13px; color:var(--blue); display:block; margin-bottom:8px; text-decoration:none; }
+        .modal-admin a:hover { text-decoration:underline; }
         .modal-admin input[type="url"],
         .modal-admin input[type="text"],
-        .modal-admin textarea {
-            width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 8px;
-            font-size: 13px; margin-bottom: 8px; font-family: inherit; resize: vertical;
-            outline: none; transition: border-color .15s; background: #fff;
-        }
+        .modal-admin textarea { width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:13px; margin-bottom:8px; font-family:inherit; resize:vertical; outline:none; transition:border-color .15s; background:#fff; }
         .modal-admin input[type="url"]:focus,
         .modal-admin input[type="text"]:focus,
-        .modal-admin textarea:focus { border-color: var(--blue); }
-        .modal-admin input[type="file"] { font-size: 13px; margin-bottom: 10px; display: block; }
-        .adm-row { display: flex; gap: 8px; margin-bottom: 8px; }
-        .adm-btn { flex: 1; padding: 9px 12px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
-        .adm-btn:hover { opacity: .85; }
-        .adm-btn.red   { background: var(--red); }
-        .adm-btn.ora   { background: var(--orange); }
-        .adm-btn.green { background: var(--green); }
-        .modal-sep { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
-        .modal-footer { display: flex; gap: 10px; padding: 18px 24px; border-top: 1px solid var(--border); position: sticky; bottom: 0; background: var(--card); }
-        .modal-footer button { flex: 1; padding: 13px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
-        .modal-footer button:hover { opacity: .85; }
-        .btn-ma { background: var(--blue); color: #fff; }
-        .btn-ma.claimed { background: var(--red); }
-        .btn-mc { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
-        /* ── RESPONSIVE ── */
-        @media (max-width: 960px) {
-            .main-layout { flex-direction: column; }
-            .user-panel { width: 100%; position: static; max-height: none; overflow-y: visible; padding: 20px 20px 0; }
-            .user-panel-inner { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 4px; }
-            .user-panel-title, .user-panel-count { grid-column: 1 / -1; }
-            #myWonBooks { grid-column: 1 / -1; }
-            .book-grid { padding: 20px; }
+        .modal-admin textarea:focus { border-color:var(--blue); }
+        .modal-admin input[type="file"] { font-size:13px; margin-bottom:10px; display:block; }
+        .adm-row { display:flex; gap:8px; margin-bottom:8px; }
+        .adm-btn { flex:1; padding:9px 12px; background:var(--blue); color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; transition:opacity .15s; }
+        .adm-btn:hover { opacity:.85; }
+        .adm-btn.red   { background:var(--red); }
+        .adm-btn.ora   { background:var(--orange); }
+        .adm-btn.green { background:var(--green); }
+        .modal-sep { border:none; border-top:1px solid var(--border); margin:16px 0; }
+        .modal-footer { display:flex; gap:10px; padding:18px 24px; border-top:1px solid var(--border); position:sticky; bottom:0; background:var(--card); }
+        .modal-footer button { flex:1; padding:13px; border:none; border-radius:10px; font-size:15px; font-weight:600; cursor:pointer; transition:opacity .15s; }
+        .modal-footer button:hover { opacity:.85; }
+        .btn-ma { background:var(--blue); color:#fff; }
+        .btn-ma.claimed { background:var(--red); }
+        .btn-mc { background:var(--bg); color:var(--text); border:1px solid var(--border); }
+
+        /* RESPONSIVE */
+        @media (max-width:960px) {
+            .main-layout { flex-direction:column; }
+            .user-panel { width:100%; position:static; max-height:none; overflow-y:visible; padding:20px 20px 0; }
+            .user-panel-inner { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:4px; }
+            .user-panel-title,.user-panel-count { grid-column:1/-1; }
+            #myWonBooks { grid-column:1/-1; }
+            .book-grid { padding:20px; }
         }
-        @media (max-width: 600px) {
-            .header-inner { padding: 12px 16px; }
-            .guide-text { display: none; }
-            .controls-bar { padding: 10px 16px; }
-            .book-grid { padding: 16px; gap: 14px; }
-            .user-panel { padding: 14px 14px 0; }
-            .name-banner-inner { padding: 12px 16px; }
-            .name-banner-label span:last-child { display: none; }
+        @media (max-width:600px) {
+            .header-inner { padding:12px 16px; }
+            .guide-text { display:none; }
+            .controls-bar { padding:10px 16px; }
+            .book-grid { padding:16px; gap:14px; }
+            .user-panel { padding:14px 14px 0; }
+            .name-banner-inner { padding:12px 16px; }
+            .name-fields-row { flex-direction:column; }
+            .name-banner-label { padding-top:0; }
         }
     </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
+<!-- HEADER -->
 <header>
     <div class="header-inner">
         <div class="logo">📚 Bogsnup <small>⚡ Real-time</small></div>
@@ -385,30 +229,41 @@
     </div>
 </header>
 
-<!-- ── NAME BANNER ── -->
+<!-- NAME BANNER -->
 <div class="name-banner" id="nameBanner">
     <div class="name-banner-inner">
         <div class="name-banner-label">
             <div class="step-badge">1</div>
-            <span>Start her — skriv dit navn:</span>
+            <span>Skriv dit fulde navn:</span>
             <span class="arrow">👉</span>
         </div>
         <div class="name-input-wrap">
-            <div class="name-input-row">
-                <input type="text"
-                       id="userName"
-                       placeholder="Dit fulde navn…"
-                       autocomplete="given-name"
-                       onkeydown="if(event.key==='Enter') saveUserName()">
+            <div class="name-fields-row">
+                <div class="name-field-group">
+                    <label class="name-field-label">Fornavn</label>
+                    <input type="text"
+                           id="userFirstName"
+                           placeholder="Fornavn…"
+                           autocomplete="given-name"
+                           onkeydown="if(event.key==='Enter') document.getElementById('userLastName').focus()">
+                </div>
+                <div class="name-field-group">
+                    <label class="name-field-label">Efternavn</label>
+                    <input type="text"
+                           id="userLastName"
+                           placeholder="Efternavn…"
+                           autocomplete="family-name"
+                           onkeydown="if(event.key==='Enter') saveUserName()">
+                </div>
                 <button class="btn-save" id="saveNameBtn" onclick="saveUserName()">GEM NAVN</button>
             </div>
             <div id="nameWarning"></div>
-            <div class="name-hint">Skriv dit fulde navn — tryk derefter GEM NAVN.</div>
+            <div class="name-hint">Skriv dit fornavn og efternavn — tryk derefter GEM NAVN.</div>
         </div>
     </div>
 </div>
 
-<!-- ── CONTROLS BAR ── -->
+<!-- CONTROLS BAR -->
 <div class="controls-bar-wrap">
     <div class="controls-bar">
         <button class="btn-refresh" onclick="manualRefresh()">🔄 Genindlæs</button>
@@ -442,14 +297,11 @@
             <div class="user-panel-title">👥 Deltagere</div>
             <div class="user-panel-count" id="userPanelCount">Indlæser…</div>
             <div id="userList"></div>
-
-            <!-- ── MY WON BOOKS PANEL ── -->
             <div id="myWonBooks" style="display:none;">
                 <hr class="won-books-divider">
                 <div class="user-panel-title">🏆 Dine vundne bøger</div>
                 <div id="myWonBooksList"></div>
             </div>
-
         </div>
     </aside>
 </div>
@@ -511,7 +363,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script>
-// ── FIREBASE CONFIG ──────────────────────────────────────────
+// ── FIREBASE CONFIG ───────────────────────────────────────────
 const firebaseConfig = {
     apiKey: "AIzaSyB-2_DMuUGVgckSMGMrdUaKVVQQ7hhCTvU",
     authDomain: "bogsnup2026.firebaseapp.com",
@@ -539,27 +391,14 @@ function setStatus(ok) {
     el.className = 'status-pill' + (ok ? '' : ' offline');
 }
 
-// ── REGISTERED USERS ─────────────────────────────────────────
+// ── REGISTERED USERS ──────────────────────────────────────────
 const REGISTERED_USERS = [
-    'Elias Alexander Alsing',
-    'Alice Stenild',
-    'Annette Pallesen',
-    'Eva Aarris Späth',
-    'Eva Marianne Stokholm',
-    'Hanne Berit Schmidt Madsen',
-    'Heidi Olsen',
-    'Jeanette Okkels Klein',
-    'Jes Kristian Larsen',
-    'Jesper Kantner Larsen',
-    'Lise Toft',
-    'Magnus Munch Olsen',
-    'Mie Schannong Aagaard',
-    'Morten Rasmussen',
-    'Pernille Christensen',
-    'Pernille Falk-Jensen',
-    'Randi Andersen',
-    'Tarja Maria Kesti',
-    'Louise Grønne'
+    'Alice Stenild','Annette Pallesen',
+    'Eva Aarris Späth','Eva Marianne Stokholm','Hanne Berit Schmidt Madsen',
+    'Heidi Olsen','Jeanette Okkels Klein','Jes Kristian Larsen',
+    'Jesper Kantner Larsen','Lise Toft','Magnus Munch Olsen',
+    'Mie Schannong Aagaard','Morten Rasmussen','Pernille Christensen',
+    'Pernille Falk-Jensen','Randi Andersen','Tarja Maria Kesti','Louise Grønne'
 ];
 
 function userHasClaimed(registeredName) {
@@ -569,10 +408,10 @@ function userHasClaimed(registeredName) {
         for (const claim of (book.claims || [])) {
             const cl          = claim.toLowerCase().trim();
             const clFirstWord = cl.split(' ')[0];
-            if (cl === regLower)                                  return true;
-            if (cl.length > 2 && regLower.startsWith(cl + ' ')) return true;
+            if (cl === regLower)                                   return true;
+            if (cl.length > 2 && regLower.startsWith(cl + ' '))  return true;
             if (clFirstWord.length > 2 && clFirstWord === regFirstWord) return true;
-            if (cl.length > 3 && regLower.startsWith(cl))        return true;
+            if (cl.length > 3 && regLower.startsWith(cl))         return true;
         }
     }
     return false;
@@ -588,7 +427,7 @@ function renderUserList() {
         if (claimed) chosen++;
         return { name, claimed };
     });
-    countEl.innerHTML = `<strong>${chosen}</strong> / ${REGISTERED_USERS.length} har valgt`;
+    countEl.innerHTML = '<strong>' + chosen + '</strong> / ' + REGISTERED_USERS.length + ' har valgt';
     listEl.innerHTML = rows.map(({ name, claimed }) => `
         <div class="user-item ${claimed ? 'has-chosen' : 'missing'}">
             <span class="user-name">${esc(name)}</span>
@@ -596,7 +435,7 @@ function renderUserList() {
         </div>`).join('');
 }
 
-// ── MY WON BOOKS ─────────────────────────────────────────────
+// ── MY WON BOOKS ──────────────────────────────────────────────
 function renderMyWonBooks() {
     const panel = document.getElementById('myWonBooks');
     const list  = document.getElementById('myWonBooksList');
@@ -615,7 +454,7 @@ function renderMyWonBooks() {
         if (!b.winner) return false;
         const winLower     = b.winner.toLowerCase().trim();
         const winFirstWord = winLower.split(' ')[0];
-        if (winLower === userLower)                                      return true;
+        if (winLower === userLower)                                       return true;
         if (winLower.length > 2 && userLower.startsWith(winLower + ' ')) return true;
         if (winFirstWord.length > 2 && winFirstWord === userFirstWord)   return true;
         if (winLower.length > 3 && userLower.startsWith(winLower))       return true;
@@ -625,7 +464,7 @@ function renderMyWonBooks() {
     panel.style.display = 'block';
 
     if (!won.length) {
-        list.innerHTML = `<div class="won-books-empty">Du vandt ingen bøger denne gang 😔</div>`;
+        list.innerHTML = '<div class="won-books-empty">Du vandt ingen bøger denne gang 😔</div>';
         return;
     }
 
@@ -634,15 +473,13 @@ function renderMyWonBooks() {
             ${b.cover
                 ? `<img class="won-book-cover" src="${esc(b.cover)}" alt="${esc(b.title)}"
                        onerror="this.outerHTML='<div class=won-book-cover-ph>📖</div>'">`
-                : `<div class="won-book-cover-ph">📖</div>`
-            }
+                : `<div class="won-book-cover-ph">📖</div>`}
             <div class="won-book-info">
                 <div class="won-book-title">${esc(b.title)}</div>
                 <div class="won-book-author">${esc(b.author)}</div>
                 <div class="won-book-badge">🏆 Du har vundet!</div>
             </div>
-        </div>
-    `).join('');
+        </div>`).join('');
 }
 
 // ── STATE ─────────────────────────────────────────────────────
@@ -670,10 +507,19 @@ function hideBannerShowChip(name) {
 function showNameBanner() {
     document.getElementById('nameBanner').classList.remove('hidden');
     document.getElementById('nameConfirmed').classList.remove('visible');
-    setTimeout(() => document.getElementById('userName').focus(), 200);
+    setTimeout(() => document.getElementById('userFirstName').focus(), 200);
 }
-function getUser() { return document.getElementById('userName').value.trim(); }
-function normalizeName(n) { return n.trim().replace(/\s+/g, ' ').replace(/\b\w/g, c => c.toUpperCase()); }
+
+// Returns full combined name from the two fields
+function getUser() {
+    const first = document.getElementById('userFirstName').value.trim();
+    const last  = document.getElementById('userLastName').value.trim();
+    return (first + ' ' + last).trim();
+}
+
+function normalizeName(n) {
+    return n.trim().replace(/\s+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
 function getAllClaimedNames() {
     const s = new Set();
     books.forEach(b => (b.claims || []).forEach(n => s.add(n.toLowerCase())));
@@ -681,22 +527,28 @@ function getAllClaimedNames() {
 }
 
 async function saveUserName() {
-    const raw = document.getElementById('userName').value.trim();
-    if (!raw) { toast('Skriv dit navn', 'err'); return; }
-    const normalized  = normalizeName(raw);
-    const existing    = getAllClaimedNames();
+    const first = document.getElementById('userFirstName').value.trim();
+    const last  = document.getElementById('userLastName').value.trim();
+
+    if (!first) { toast('Skriv dit fornavn', 'err'); document.getElementById('userFirstName').focus(); return; }
+    if (!last)  { toast('Skriv dit efternavn', 'err'); document.getElementById('userLastName').focus(); return; }
+
+    const raw        = first + ' ' + last;
+    const normalized = normalizeName(raw);
+    const existing   = getAllClaimedNames();
     const currentUser = localStorage.getItem(USER_KEY);
+
     if (existing.has(normalized.toLowerCase()) &&
         normalized.toLowerCase() !== (currentUser || '').toLowerCase()) {
-        document.getElementById('userName').value = normalized;
         const w = document.getElementById('nameWarning');
         w.style.display = 'block';
-        w.textContent = `"${normalized}" er allerede i brug — tilføj første bogstav i dit efternavn.`;
+        w.textContent = '"' + normalized + '" er allerede i brug — tilføj første bogstav i dit efternavn.';
         return;
     }
+
     document.getElementById('nameWarning').style.display = 'none';
-    document.getElementById('userName').value = normalized;
     localStorage.setItem(USER_KEY, normalized);
+
     if (currentUser && currentUser !== normalized) {
         let updated = false;
         for (const book of books) {
@@ -711,6 +563,7 @@ async function saveUserName() {
         }
         if (updated) toast('Navn opdateret fra "' + currentUser + '" til "' + normalized + '"', 'ok');
     }
+
     const btn = document.getElementById('saveNameBtn');
     btn.textContent = '✓ Gemt!'; btn.classList.add('saved');
     setTimeout(() => { btn.textContent = 'GEM NAVN'; btn.classList.remove('saved'); }, 2000);
@@ -769,7 +622,10 @@ async function deleteAllBooksFromFirebase() {
 function init() {
     const saved = localStorage.getItem(USER_KEY);
     if (saved) {
-        document.getElementById('userName').value = saved;
+        const parts = saved.trim().split(' ');
+        const last  = parts.length > 1 ? parts.slice(1).join(' ') : '';
+        document.getElementById('userFirstName').value = parts[0] || '';
+        document.getElementById('userLastName').value  = last;
         hideBannerShowChip(saved);
     }
     document.addEventListener('keydown', e => {
@@ -1075,14 +931,14 @@ async function fetchAllInfo() {
     for (let i = 0; i < books.length; i++) {
         const book = books[i];
         bar.style.width = Math.round(((i + 1) / books.length) * 100) + '%';
-        bar.textContent = `${i + 1}/${books.length} – ${book.title}`;
+        bar.textContent = (i + 1) + '/' + books.length + ' – ' + book.title;
         if (book.manualCover && book.manualDesc) { await delay(20); continue; }
         const needDesc  = !book.manualDesc;
         const needCover = !book.manualCover;
         const apply = result => {
             if (!result) return false;
             let changed = false;
-            if (needDesc  && result.desc  && result.desc.length  > 10) { book.desc  = result.desc;  changed = true; }
+            if (needDesc  && result.desc  && result.desc.length  > 10) { book.desc = result.desc; changed = true; }
             if (needCover && result.cover && result.cover.startsWith('http')) {
                 book.cover = result.cover.replace('http://', 'https://');
                 changed = true;
@@ -1118,15 +974,15 @@ function showFetchErrors() {
     const failed = books.filter(b => b.fetchAttempted && !b.fetchSuccess);
     if (!failed.length) { toast('Ingen fejl!', 'ok'); return; }
     alert('❌ ' + failed.length + ' fejlede:\n\n' +
-        failed.map(b => `• "${b.title}" af ${b.author}\n  → ${b.fetchError || 'Ikke fundet'}`).join('\n\n'));
+        failed.map(b => '• "' + b.title + '" af ' + b.author + '\n  → ' + (b.fetchError || 'Ikke fundet')).join('\n\n'));
 }
 async function debugFirebase() {
     let r = '🔍 Firebase Debug\n═══════════════\n';
-    r += `Init: ${isFirebaseReady ? '✅' : '❌'}\nLokale bøger: ${books.length}\n`;
+    r += 'Init: ' + (isFirebaseReady ? '✅' : '❌') + '\nLokale bøger: ' + books.length + '\n';
     if (isFirebaseReady) {
         try {
             const snap = await database.ref('books').once('value');
-            r += `Firebase bøger: ${snap.val() ? Object.keys(snap.val()).length : 0}\n`;
+            r += 'Firebase bøger: ' + (snap.val() ? Object.keys(snap.val()).length : 0) + '\n';
             await database.ref('test').set({ ts: Date.now() });
             r += 'Skriveadgang: ✅\n';
             await database.ref('test').remove();
@@ -1224,27 +1080,26 @@ function createBookCard(book, user) {
     const slots = Array(MAX_CLAIMS).fill(0).map((_, i) => {
         const c = claims[i];
         const w = book.winner === c && c;
-        return `<div class="slot${c ? ' taken' : ''}${w ? ' winner' : ''}">${c ? c.split(' ')[0] : '–'}${w ? ' 🏆' : ''}</div>`;
+        return '<div class="slot' + (c ? ' taken' : '') + (w ? ' winner' : '') + '">' + (c ? c.split(' ')[0] : '–') + (w ? ' 🏆' : '') + '</div>';
     }).join('');
     const lotteryDone = books.some(b => b.winner);
     let btnCls = 'btn-claim', btnTxt = 'Jeg ønsker mig bogen her', dis = false;
     if (!user)                            { btnTxt = 'Gem dit navn først'; dis = true; }
     else if (isClaimed)                   { btnCls += ' claimed'; btnTxt = 'Fjern ønske'; }
-    else if (claims.length >= MAX_CLAIMS) { btnTxt = `Fuld (${MAX_CLAIMS}/${MAX_CLAIMS})`; dis = true; }
+    else if (claims.length >= MAX_CLAIMS) { btnTxt = 'Fuld (' + MAX_CLAIMS + '/' + MAX_CLAIMS + ')'; dis = true; }
     card.innerHTML = `
         <div class="card-cover">
             ${book.cover
                 ? `<img src="${esc(book.cover)}" alt="${esc(book.title)}" loading="lazy"
                        onerror="this.parentNode.innerHTML='<div class=card-cover-ph>📖</div>'">`
-                : `<div class="card-cover-ph">📖</div>`}
+                : '<div class="card-cover-ph">📖</div>'}
         </div>
         <div class="card-body">
             <div class="card-title">${esc(book.title)}${isWinner ? '<span class="win-badge">🏆 DIN</span>' : ''}</div>
             <div class="card-author">${esc(book.author)}</div>
             <div class="card-hint">ℹ️ Klik for beskrivelse</div>
             <div class="claim-slots">${slots}</div>
-            ${lotteryDone ? '' : `<button class="${btnCls}" ${dis ? 'disabled' : ''}
-                onclick="event.stopPropagation();toggleClaim('${book.id}')">${btnTxt}</button>`}
+            ${lotteryDone ? '' : '<button class="' + btnCls + '" ' + (dis ? 'disabled' : '') + ' onclick="event.stopPropagation();toggleClaim(\'' + book.id + '\')">' + btnTxt + '</button>'}
         </div>`;
     return card;
 }
@@ -1281,10 +1136,10 @@ function updateModalContent(book) {
         btn.style.display = 'none';
     } else {
         btn.style.display = '';
-        if (!user)                            { btn.textContent = 'Gem dit navn først';                  btn.disabled = true;  btn.className = 'btn-ma'; }
-        else if (isClaimed)                   { btn.textContent = 'Fjern ønske';                         btn.disabled = false; btn.className = 'btn-ma claimed'; }
-        else if (claims.length >= MAX_CLAIMS) { btn.textContent = `Fuld (${MAX_CLAIMS}/${MAX_CLAIMS})`;  btn.disabled = true;  btn.className = 'btn-ma'; }
-        else                                  { btn.textContent = 'Jeg ønsker mig bogen her';            btn.disabled = false; btn.className = 'btn-ma'; }
+        if (!user)                            { btn.textContent = 'Gem dit navn først';                            btn.disabled = true;  btn.className = 'btn-ma'; }
+        else if (isClaimed)                   { btn.textContent = 'Fjern ønske';                                   btn.disabled = false; btn.className = 'btn-ma claimed'; }
+        else if (claims.length >= MAX_CLAIMS) { btn.textContent = 'Fuld (' + MAX_CLAIMS + '/' + MAX_CLAIMS + ')'; btn.disabled = true;  btn.className = 'btn-ma'; }
+        else                                  { btn.textContent = 'Jeg ønsker mig bogen her';                      btn.disabled = false; btn.className = 'btn-ma'; }
     }
     document.getElementById('newBookFields').style.display  = 'none';
     document.getElementById('searchLinks').style.display    = '';
@@ -1297,9 +1152,9 @@ function updateModalContent(book) {
         document.getElementById('imageFileInput').value      = '';
         document.getElementById('descriptionTextarea').value = book.desc || '';
         const q = encodeURIComponent(book.title);
-        document.getElementById('lrSearchLink').href      = `https://www.lindhardtogringhof.dk/soeg/${q}`;
-        document.getElementById('carlsenSearchLink').href  = `https://www.carlsen.dk/soeg/${q}`;
-        document.getElementById('googleImagesLink').href  = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(book.title + ' ' + book.author + ' bog forside')}`;
+        document.getElementById('lrSearchLink').href      = 'https://www.lindhardtogringhof.dk/soeg/' + q;
+        document.getElementById('carlsenSearchLink').href = 'https://www.carlsen.dk/soeg/' + q;
+        document.getElementById('googleImagesLink').href  = 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(book.title + ' ' + book.author + ' bog forside');
         const pageLink = document.getElementById('pageUrlLink');
         if (book.pageUrl) { pageLink.href = book.pageUrl; pageLink.style.display = 'block'; }
         else               { pageLink.style.display = 'none'; }
@@ -1411,10 +1266,3 @@ window.onload = init;
 </script>
 </body>
 </html>
-
-							<script>
-                            	
-							</script>
-                        </body>
-                        </html>
-                    
