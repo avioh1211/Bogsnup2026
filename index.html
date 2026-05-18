@@ -56,14 +56,12 @@
         }
         .name-field-group input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,122,255,.15); animation:none; }
         @keyframes glowPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,179,0,.5)} 50%{box-shadow:0 0 0 6px rgba(255,179,0,0)} }
-
         .btn-save { padding:11px 22px; background:var(--orange); color:#fff; border:none; border-radius:10px; font-size:15px; font-weight:700; cursor:pointer; transition:background .15s,transform .1s; white-space:nowrap; flex-shrink:0; }
         .btn-save:hover  { background:#e68900; }
         .btn-save:active { transform:scale(.96); }
         .btn-save.saved  { background:var(--green); }
         .name-hint { font-size:12px; color:#795548; padding-left:2px; }
         #nameWarning { display:none; font-size:12px; color:var(--red); font-weight:500; line-height:1.4; }
-
         .name-confirmed { display:none; align-items:center; gap:8px; background:#f0fdf4; border:1.5px solid #86efac; border-radius:10px; padding:8px 14px; margin-left:auto; font-size:14px; font-weight:600; color:#166534; cursor:pointer; transition:background .15s; }
         .name-confirmed:hover { background:#dcfce7; }
         .name-confirmed.visible { display:flex; }
@@ -189,6 +187,21 @@
         .btn-ma.claimed { background:var(--red); }
         .btn-mc { background:var(--bg); color:var(--text); border:1px solid var(--border); }
 
+        /* MEMBERS MODAL */
+        .members-modal-list { max-height:340px; overflow-y:auto; border:1px solid var(--border); border-radius:10px; background:var(--bg); }
+        .members-modal-list:empty::after { content:'Ingen medlemmer endnu'; display:block; padding:16px; text-align:center; color:var(--muted); font-style:italic; font-size:13px; }
+        .member-row { display:flex; justify-content:space-between; align-items:center; padding:9px 12px; border-bottom:1px solid var(--border); }
+        .member-row:last-child { border-bottom:none; }
+        .member-row:nth-child(even) { background:#fff; }
+        .member-row-name { font-size:14px; font-weight:500; }
+        .member-row-remove { padding:3px 10px; background:var(--red); color:#fff; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:opacity .15s; }
+        .member-row-remove:hover { opacity:.8; }
+        .member-add-row { display:flex; gap:8px; margin-bottom:16px; }
+        .member-add-row input { flex:1; padding:9px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:14px; outline:none; transition:border-color .15s; }
+        .member-add-row input:focus { border-color:var(--blue); }
+        .member-add-btn { padding:9px 16px; background:var(--green); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; transition:opacity .15s; }
+        .member-add-btn:hover { opacity:.85; }
+
         /* RESPONSIVE */
         @media (max-width:960px) {
             .main-layout { flex-direction:column; }
@@ -207,6 +220,7 @@
             .name-banner-inner { padding:12px 16px; }
             .name-fields-row { flex-direction:column; }
             .name-banner-label { padding-top:0; }
+            .member-add-row { flex-wrap:wrap; }
         }
     </style>
 </head>
@@ -271,13 +285,14 @@
             <input type="password" id="adminPass" placeholder="Admin-kode">
             <button class="admin-btn" onclick="toggleAdmin()">🔓 Login</button>
             <input type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="handleCSVUpload(event)">
-            <button class="admin-btn" id="btnUpload"  disabled onclick="document.getElementById('csvFileInput').click()">📁 CSV</button>
-            <button class="admin-btn" id="btnAddBook" disabled onclick="addNewBook()">➕ Tilføj bog</button>
+            <button class="admin-btn" id="btnUpload"   disabled onclick="document.getElementById('csvFileInput').click()">📁 CSV</button>
+            <button class="admin-btn" id="btnAddBook"  disabled onclick="addNewBook()">➕ Tilføj bog</button>
+            <button class="admin-btn" id="btnMembers"  disabled onclick="openMembersModal()">👥 Medlemmer</button>
             <button class="admin-btn btn-ai" id="btnFetch" disabled onclick="fetchAllInfo()">✨ Hent info</button>
-            <button class="admin-btn" id="btnErrors"  disabled onclick="showFetchErrors()">⚠️ Vis fejl</button>
-            <button class="admin-btn" id="btnDebug"   disabled style="background:var(--purple)" onclick="debugFirebase()">🔍 Debug</button>
-            <button class="admin-btn" id="btnLottery" disabled onclick="runSmartLottery()">🎲 Lodtrækning</button>
-            <button class="admin-btn" id="btnReset"   disabled style="background:var(--red)" onclick="clearAllData()">🗑️ Slet Alt</button>
+            <button class="admin-btn" id="btnErrors"   disabled onclick="showFetchErrors()">⚠️ Vis fejl</button>
+            <button class="admin-btn" id="btnDebug"    disabled style="background:var(--purple)" onclick="debugFirebase()">🔍 Debug</button>
+            <button class="admin-btn" id="btnLottery"  disabled onclick="runSmartLottery()">🎲 Lodtrækning</button>
+            <button class="admin-btn" id="btnReset"    disabled style="background:var(--red)" onclick="clearAllData()">🗑️ Slet Alt</button>
         </div>
     </div>
 </div>
@@ -360,6 +375,42 @@
     </div>
 </div>
 
+<!-- MEMBERS MODAL -->
+<div class="modal-overlay" id="membersModal">
+    <div class="modal-box" style="max-width:480px">
+        <div class="modal-body">
+            <div class="modal-title" style="font-size:20px;margin-bottom:6px">👥 Administrer Medlemmer</div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:20px">
+                Tilføj eller fjern deltagere. Ændringer gemmes automatisk i Firebase og vises for alle i realtid.
+            </div>
+
+            <!-- Add new member row -->
+            <div class="member-add-row">
+                <input type="text"
+                       id="newMemberFirst"
+                       placeholder="Fornavn"
+                       onkeydown="if(event.key==='Enter') document.getElementById('newMemberLast').focus()">
+                <input type="text"
+                       id="newMemberLast"
+                       placeholder="Efternavn"
+                       onkeydown="if(event.key==='Enter') addMember()">
+                <button class="member-add-btn" onclick="addMember()">➕ Tilføj</button>
+            </div>
+
+            <!-- Member count label -->
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:8px">
+                Nuværende medlemmer (<span id="memberCount">0</span>)
+            </div>
+
+            <!-- Scrollable member list -->
+            <div class="members-modal-list" id="memberAdminList"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-mc" onclick="closeMembersModal()">Luk</button>
+        </div>
+    </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script>
@@ -392,7 +443,8 @@ function setStatus(ok) {
 }
 
 // ── REGISTERED USERS ──────────────────────────────────────────
-const REGISTERED_USERS = [
+// Default list — only used to seed Firebase if no members node exists yet
+const DEFAULT_MEMBERS = [
     'Alice Stenild','Annette Pallesen',
     'Eva Aarris Späth','Eva Marianne Stokholm','Hanne Berit Schmidt Madsen',
     'Heidi Olsen','Jeanette Okkels Klein','Jes Kristian Larsen',
@@ -400,6 +452,8 @@ const REGISTERED_USERS = [
     'Mie Schannong Aagaard','Morten Rasmussen','Pernille Christensen',
     'Pernille Falk-Jensen','Randi Andersen','Tarja Maria Kesti','Louise Grønne'
 ];
+// Live list — loaded from and synced to Firebase
+let REGISTERED_USERS = [...DEFAULT_MEMBERS];
 
 function userHasClaimed(registeredName) {
     const regLower     = registeredName.toLowerCase().trim();
@@ -440,16 +494,12 @@ function renderMyWonBooks() {
     const panel = document.getElementById('myWonBooks');
     const list  = document.getElementById('myWonBooksList');
     if (!panel || !list) return;
-
     const user = getUser() || localStorage.getItem(USER_KEY) || '';
     if (!user) { panel.style.display = 'none'; return; }
-
     const lotteryDone = books.some(b => b.winner);
     if (!lotteryDone) { panel.style.display = 'none'; return; }
-
     const userLower     = user.toLowerCase().trim();
     const userFirstWord = userLower.split(' ')[0];
-
     const won = books.filter(b => {
         if (!b.winner) return false;
         const winLower     = b.winner.toLowerCase().trim();
@@ -460,14 +510,11 @@ function renderMyWonBooks() {
         if (winLower.length > 3 && userLower.startsWith(winLower))       return true;
         return false;
     });
-
     panel.style.display = 'block';
-
     if (!won.length) {
         list.innerHTML = '<div class="won-books-empty">Du vandt ingen bøger denne gang 😔</div>';
         return;
     }
-
     list.innerHTML = won.map(b => `
         <div class="won-book-item" onclick="openModal('${b.id}')">
             ${b.cover
@@ -509,14 +556,11 @@ function showNameBanner() {
     document.getElementById('nameConfirmed').classList.remove('visible');
     setTimeout(() => document.getElementById('userFirstName').focus(), 200);
 }
-
-// Returns full combined name from the two fields
 function getUser() {
     const first = document.getElementById('userFirstName').value.trim();
     const last  = document.getElementById('userLastName').value.trim();
     return (first + ' ' + last).trim();
 }
-
 function normalizeName(n) {
     return n.trim().replace(/\s+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
@@ -525,19 +569,15 @@ function getAllClaimedNames() {
     books.forEach(b => (b.claims || []).forEach(n => s.add(n.toLowerCase())));
     return s;
 }
-
 async function saveUserName() {
     const first = document.getElementById('userFirstName').value.trim();
     const last  = document.getElementById('userLastName').value.trim();
-
     if (!first) { toast('Skriv dit fornavn', 'err'); document.getElementById('userFirstName').focus(); return; }
     if (!last)  { toast('Skriv dit efternavn', 'err'); document.getElementById('userLastName').focus(); return; }
-
     const raw        = first + ' ' + last;
     const normalized = normalizeName(raw);
     const existing   = getAllClaimedNames();
     const currentUser = localStorage.getItem(USER_KEY);
-
     if (existing.has(normalized.toLowerCase()) &&
         normalized.toLowerCase() !== (currentUser || '').toLowerCase()) {
         const w = document.getElementById('nameWarning');
@@ -545,10 +585,8 @@ async function saveUserName() {
         w.textContent = '"' + normalized + '" er allerede i brug — tilføj første bogstav i dit efternavn.';
         return;
     }
-
     document.getElementById('nameWarning').style.display = 'none';
     localStorage.setItem(USER_KEY, normalized);
-
     if (currentUser && currentUser !== normalized) {
         let updated = false;
         for (const book of books) {
@@ -563,7 +601,6 @@ async function saveUserName() {
         }
         if (updated) toast('Navn opdateret fra "' + currentUser + '" til "' + normalized + '"', 'ok');
     }
-
     const btn = document.getElementById('saveNameBtn');
     btn.textContent = '✓ Gemt!'; btn.classList.add('saved');
     setTimeout(() => { btn.textContent = 'GEM NAVN'; btn.classList.remove('saved'); }, 2000);
@@ -572,7 +609,7 @@ async function saveUserName() {
     renderBooks();
 }
 
-// ── FIREBASE ──────────────────────────────────────────────────
+// ── FIREBASE BOOKS ────────────────────────────────────────────
 function setupFirebaseListeners() {
     database.ref('books').on('value', snap => {
         const data = snap.val();
@@ -618,6 +655,82 @@ async function deleteAllBooksFromFirebase() {
     renderBooks();
 }
 
+// ── FIREBASE MEMBERS ──────────────────────────────────────────
+function setupMemberListener() {
+    database.ref('members').on('value', snap => {
+        const data = snap.val();
+        if (data && Array.isArray(data)) {
+            REGISTERED_USERS = data;
+        } else if (data && typeof data === 'object') {
+            REGISTERED_USERS = Object.values(data);
+        } else {
+            // No members node yet — seed Firebase with the defaults
+            saveMembersToFirebase(DEFAULT_MEMBERS);
+            REGISTERED_USERS = [...DEFAULT_MEMBERS];
+        }
+        renderUserList();
+        renderMemberAdminList();
+    });
+}
+async function saveMembersToFirebase(memberArray) {
+    if (!isFirebaseReady) return;
+    try {
+        await database.ref('members').set(memberArray);
+    } catch(e) {
+        toast('Fejl ved gemning af medlemmer: ' + e.message, 'err');
+    }
+}
+async function addMember() {
+    const first = document.getElementById('newMemberFirst').value.trim();
+    const last  = document.getElementById('newMemberLast').value.trim();
+    if (!first) { toast('Skriv et fornavn', 'err'); document.getElementById('newMemberFirst').focus(); return; }
+    if (!last)  { toast('Skriv et efternavn', 'err'); document.getElementById('newMemberLast').focus(); return; }
+    const fullName = normalizeName(first + ' ' + last);
+    if (REGISTERED_USERS.some(u => u.toLowerCase() === fullName.toLowerCase())) {
+        toast('"' + fullName + '" er allerede på listen', 'err');
+        return;
+    }
+    const updated = [...REGISTERED_USERS, fullName];
+    await saveMembersToFirebase(updated);
+    document.getElementById('newMemberFirst').value = '';
+    document.getElementById('newMemberLast').value  = '';
+    document.getElementById('newMemberFirst').focus();
+    toast('✅ "' + fullName + '" tilføjet!', 'ok');
+}
+async function removeMember(name) {
+    if (!confirm('Fjern "' + name + '" fra listen?')) return;
+    const updated = REGISTERED_USERS.filter(u => u !== name);
+    await saveMembersToFirebase(updated);
+    toast('"' + name + '" fjernet', 'ok');
+}
+function renderMemberAdminList() {
+    const list    = document.getElementById('memberAdminList');
+    const countEl = document.getElementById('memberCount');
+    if (!list) return;
+    if (countEl) countEl.textContent = REGISTERED_USERS.length;
+    if (!REGISTERED_USERS.length) {
+        list.innerHTML = '<div style="padding:16px;text-align:center;color:var(--muted);font-style:italic;font-size:13px">Ingen medlemmer endnu</div>';
+        return;
+    }
+    list.innerHTML = REGISTERED_USERS.map((name, i) => `
+        <div class="member-row" style="background:${i % 2 === 0 ? '#fff' : 'var(--bg)'}">
+            <span class="member-row-name">${esc(name)}</span>
+            ${isAdminMode
+                ? `<button class="member-row-remove" onclick="removeMember('${esc(name)}')">🗑️ Fjern</button>`
+                : ''}
+        </div>`).join('');
+}
+function openMembersModal() {
+    renderMemberAdminList();
+    document.getElementById('membersModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('newMemberFirst').focus(), 80);
+}
+function closeMembersModal() {
+    document.getElementById('membersModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
 // ── INIT ──────────────────────────────────────────────────────
 function init() {
     const saved = localStorage.getItem(USER_KEY);
@@ -635,14 +748,24 @@ function init() {
     document.getElementById('bookModal').addEventListener('click', e => {
         if (e.target.id === 'bookModal') closeModal();
     });
+    document.getElementById('membersModal').addEventListener('click', e => {
+        if (e.target.id === 'membersModal') closeMembersModal();
+    });
     renderUserList();
     if (isFirebaseReady) {
         setupFirebaseListeners();
+        setupMemberListener();
     } else {
         let n = 0;
         const iv = setInterval(() => {
-            if (isFirebaseReady)  { clearInterval(iv); setupFirebaseListeners(); }
-            else if (++n >= 50)   { clearInterval(iv); toast('Firebase timeout', 'err'); }
+            if (isFirebaseReady) {
+                clearInterval(iv);
+                setupFirebaseListeners();
+                setupMemberListener();
+            } else if (++n >= 50) {
+                clearInterval(iv);
+                toast('Firebase timeout', 'err');
+            }
         }, 100);
     }
 }
@@ -979,10 +1102,13 @@ function showFetchErrors() {
 async function debugFirebase() {
     let r = '🔍 Firebase Debug\n═══════════════\n';
     r += 'Init: ' + (isFirebaseReady ? '✅' : '❌') + '\nLokale bøger: ' + books.length + '\n';
+    r += 'Registrerede medlemmer: ' + REGISTERED_USERS.length + '\n';
     if (isFirebaseReady) {
         try {
             const snap = await database.ref('books').once('value');
             r += 'Firebase bøger: ' + (snap.val() ? Object.keys(snap.val()).length : 0) + '\n';
+            const msnap = await database.ref('members').once('value');
+            r += 'Firebase medlemmer: ' + (msnap.val() ? (Array.isArray(msnap.val()) ? msnap.val().length : Object.keys(msnap.val()).length) : 0) + '\n';
             await database.ref('test').set({ ts: Date.now() });
             r += 'Skriveadgang: ✅\n';
             await database.ref('test').remove();
