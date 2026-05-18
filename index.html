@@ -42,24 +42,17 @@
         .name-banner-label .step-badge { background:var(--orange); color:#fff; font-size:12px; font-weight:800; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
         .name-banner-label .arrow { font-size:20px; animation:bounceRight .8s infinite; }
         @keyframes bounceRight { 0%,100%{transform:translateX(0)} 50%{transform:translateX(5px)} }
-
-        /* TWO NAME FIELDS */
         .name-input-wrap { display:flex; flex-direction:column; gap:6px; flex:1; max-width:580px; }
         .name-fields-row { display:flex; gap:10px; align-items:flex-end; }
         .name-field-group { display:flex; flex-direction:column; gap:4px; flex:1; }
         .name-field-label { font-size:11px; font-weight:700; color:#795548; text-transform:uppercase; letter-spacing:.5px; padding-left:2px; }
-        .name-field-group input {
-            width:100%; padding:11px 16px; border:2px solid #ffb300; border-radius:10px;
-            font-size:15px; outline:none; background:#fff;
-            transition:border-color .2s, box-shadow .2s;
-            animation:glowPulse 2s infinite;
-        }
+        .name-field-group input { width:100%; padding:11px 16px; border:2px solid #ffb300; border-radius:10px; font-size:15px; outline:none; background:#fff; transition:border-color .2s,box-shadow .2s; animation:glowPulse 2s infinite; }
         .name-field-group input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,122,255,.15); animation:none; }
         @keyframes glowPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,179,0,.5)} 50%{box-shadow:0 0 0 6px rgba(255,179,0,0)} }
         .btn-save { padding:11px 22px; background:var(--orange); color:#fff; border:none; border-radius:10px; font-size:15px; font-weight:700; cursor:pointer; transition:background .15s,transform .1s; white-space:nowrap; flex-shrink:0; }
-        .btn-save:hover  { background:#e68900; }
+        .btn-save:hover { background:#e68900; }
         .btn-save:active { transform:scale(.96); }
-        .btn-save.saved  { background:var(--green); }
+        .btn-save.saved { background:var(--green); }
         .name-hint { font-size:12px; color:#795548; padding-left:2px; }
         #nameWarning { display:none; font-size:12px; color:var(--red); font-weight:500; line-height:1.4; }
         .name-confirmed { display:none; align-items:center; gap:8px; background:#f0fdf4; border:1.5px solid #86efac; border-radius:10px; padding:8px 14px; margin-left:auto; font-size:14px; font-weight:600; color:#166534; cursor:pointer; transition:background .15s; }
@@ -78,6 +71,23 @@
         .admin-btn:disabled { opacity:.4; pointer-events:none; }
         .admin-btn:hover:not(:disabled) { opacity:.85; }
         .btn-ai { background:var(--purple); }
+
+        /* TABS */
+        .tabs-wrap { background:var(--card); border-bottom:1px solid var(--border); }
+        .tabs-inner { max-width:1600px; margin:0 auto; padding:0 30px; display:flex; gap:4px; align-items:flex-end; }
+        .tab-btn {
+            padding:14px 28px; border:none; background:none; font-size:15px; font-weight:600;
+            color:var(--muted); cursor:pointer; border-bottom:3px solid transparent;
+            transition:color .15s, border-color .15s; white-space:nowrap;
+            display:flex; align-items:center; gap:8px;
+        }
+        .tab-btn:hover { color:var(--text); }
+        .tab-btn.active { color:var(--blue); border-bottom-color:var(--blue); }
+        .tab-btn .tab-count {
+            font-size:11px; font-weight:700; padding:2px 7px; border-radius:10px;
+            background:var(--bg); color:var(--muted); transition:background .15s, color .15s;
+        }
+        .tab-btn.active .tab-count { background:var(--blue); color:#fff; }
 
         /* PROGRESS */
         .progress-wrap { display:none; padding:8px 30px; background:var(--card); border-bottom:1px solid var(--border); }
@@ -121,7 +131,7 @@
         .empty-state p { font-size:16px; }
 
         /* USER PANEL */
-        .user-panel { width:240px; flex-shrink:0; padding:24px 20px 24px 0; position:sticky; top:130px; max-height:calc(100vh - 150px); overflow-y:auto; }
+        .user-panel { width:240px; flex-shrink:0; padding:24px 20px 24px 0; position:sticky; top:180px; max-height:calc(100vh - 200px); overflow-y:auto; }
         .user-panel-inner { background:var(--card); border-radius:var(--r); box-shadow:var(--sh); padding:16px; }
         .user-panel-title { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; color:var(--muted); margin-bottom:4px; }
         .user-panel-count { font-size:13px; color:var(--text); margin-bottom:12px; font-weight:500; }
@@ -168,10 +178,12 @@
         .modal-admin a:hover { text-decoration:underline; }
         .modal-admin input[type="url"],
         .modal-admin input[type="text"],
-        .modal-admin textarea { width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:13px; margin-bottom:8px; font-family:inherit; resize:vertical; outline:none; transition:border-color .15s; background:#fff; }
+        .modal-admin textarea,
+        .modal-admin select { width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:13px; margin-bottom:8px; font-family:inherit; resize:vertical; outline:none; transition:border-color .15s; background:#fff; }
         .modal-admin input[type="url"]:focus,
         .modal-admin input[type="text"]:focus,
-        .modal-admin textarea:focus { border-color:var(--blue); }
+        .modal-admin textarea:focus,
+        .modal-admin select:focus { border-color:var(--blue); }
         .modal-admin input[type="file"] { font-size:13px; margin-bottom:10px; display:block; }
         .adm-row { display:flex; gap:8px; margin-bottom:8px; }
         .adm-btn { flex:1; padding:9px 12px; background:var(--blue); color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; transition:opacity .15s; }
@@ -189,7 +201,6 @@
 
         /* MEMBERS MODAL */
         .members-modal-list { max-height:340px; overflow-y:auto; border:1px solid var(--border); border-radius:10px; background:var(--bg); }
-        .members-modal-list:empty::after { content:'Ingen medlemmer endnu'; display:block; padding:16px; text-align:center; color:var(--muted); font-style:italic; font-size:13px; }
         .member-row { display:flex; justify-content:space-between; align-items:center; padding:9px 12px; border-bottom:1px solid var(--border); }
         .member-row:last-child { border-bottom:none; }
         .member-row:nth-child(even) { background:#fff; }
@@ -220,6 +231,8 @@
             .name-banner-inner { padding:12px 16px; }
             .name-fields-row { flex-direction:column; }
             .name-banner-label { padding-top:0; }
+            .tabs-inner { padding:0 16px; }
+            .tab-btn { padding:12px 16px; font-size:14px; }
             .member-add-row { flex-wrap:wrap; }
         }
     </style>
@@ -255,18 +268,12 @@
             <div class="name-fields-row">
                 <div class="name-field-group">
                     <label class="name-field-label">Fornavn</label>
-                    <input type="text"
-                           id="userFirstName"
-                           placeholder="Fornavn…"
-                           autocomplete="given-name"
+                    <input type="text" id="userFirstName" placeholder="Fornavn…" autocomplete="given-name"
                            onkeydown="if(event.key==='Enter') document.getElementById('userLastName').focus()">
                 </div>
                 <div class="name-field-group">
                     <label class="name-field-label">Efternavn</label>
-                    <input type="text"
-                           id="userLastName"
-                           placeholder="Efternavn…"
-                           autocomplete="family-name"
+                    <input type="text" id="userLastName" placeholder="Efternavn…" autocomplete="family-name"
                            onkeydown="if(event.key==='Enter') saveUserName()">
                 </div>
                 <button class="btn-save" id="saveNameBtn" onclick="saveUserName()">GEM NAVN</button>
@@ -294,6 +301,18 @@
             <button class="admin-btn" id="btnLottery"  disabled onclick="runSmartLottery()">🎲 Lodtrækning</button>
             <button class="admin-btn" id="btnReset"    disabled style="background:var(--red)" onclick="clearAllData()">🗑️ Slet Alt</button>
         </div>
+    </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+    <div class="tabs-inner">
+        <button class="tab-btn active" id="tabVoksen" onclick="switchTab('Voksenbog')">
+            📚 Voksenbøger <span class="tab-count" id="countVoksen">0</span>
+        </button>
+        <button class="tab-btn" id="tabBoern" onclick="switchTab('Børnebog')">
+            🧒 Børnebøger <span class="tab-count" id="countBoern">0</span>
+        </button>
     </div>
 </div>
 
@@ -337,6 +356,11 @@
                 <h4>📖 Ny bog – grundoplysninger</h4>
                 <input type="text" id="newBookTitle"  placeholder="Titel *">
                 <input type="text" id="newBookAuthor" placeholder="Forfatter">
+                <label style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:4px;display:block">Kategori</label>
+                <select id="newBookType">
+                    <option value="Voksenbog">📚 Voksenbog</option>
+                    <option value="Børnebog">🧒 Børnebog</option>
+                </select>
                 <hr class="modal-sep">
             </div>
             <div id="searchLinks">
@@ -345,6 +369,13 @@
                 <a id="carlsenSearchLink" href="#" target="_blank">🔍 Carlsen</a>
                 <a id="googleImagesLink"  href="#" target="_blank">🔍 Google Images (forside)</a>
                 <a id="pageUrlLink"       href="#" target="_blank" style="display:none;color:var(--green)">📖 Åbn bogside (fundet automatisk)</a>
+                <hr class="modal-sep">
+                <!-- Admin: change book type -->
+                <h4>🏷️ Ændr kategori</h4>
+                <select id="bookTypeSelect" onchange="changeBookType(this.value)" style="margin-bottom:0">
+                    <option value="Voksenbog">📚 Voksenbog</option>
+                    <option value="Børnebog">🧒 Børnebog</option>
+                </select>
                 <hr class="modal-sep">
             </div>
             <h4>📸 Forside (Admin)</h4>
@@ -383,26 +414,16 @@
             <div style="font-size:13px;color:var(--muted);margin-bottom:20px">
                 Tilføj eller fjern deltagere. Ændringer gemmes automatisk i Firebase og vises for alle i realtid.
             </div>
-
-            <!-- Add new member row -->
             <div class="member-add-row">
-                <input type="text"
-                       id="newMemberFirst"
-                       placeholder="Fornavn"
+                <input type="text" id="newMemberFirst" placeholder="Fornavn"
                        onkeydown="if(event.key==='Enter') document.getElementById('newMemberLast').focus()">
-                <input type="text"
-                       id="newMemberLast"
-                       placeholder="Efternavn"
+                <input type="text" id="newMemberLast"  placeholder="Efternavn"
                        onkeydown="if(event.key==='Enter') addMember()">
                 <button class="member-add-btn" onclick="addMember()">➕ Tilføj</button>
             </div>
-
-            <!-- Member count label -->
             <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:8px">
                 Nuværende medlemmer (<span id="memberCount">0</span>)
             </div>
-
-            <!-- Scrollable member list -->
             <div class="members-modal-list" id="memberAdminList"></div>
         </div>
         <div class="modal-footer">
@@ -443,7 +464,6 @@ function setStatus(ok) {
 }
 
 // ── REGISTERED USERS ──────────────────────────────────────────
-// Default list — only used to seed Firebase if no members node exists yet
 const DEFAULT_MEMBERS = [
     'Alice Stenild','Annette Pallesen',
     'Eva Aarris Späth','Eva Marianne Stokholm','Hanne Berit Schmidt Madsen',
@@ -452,7 +472,6 @@ const DEFAULT_MEMBERS = [
     'Mie Schannong Aagaard','Morten Rasmussen','Pernille Christensen',
     'Pernille Falk-Jensen','Randi Andersen','Tarja Maria Kesti','Louise Grønne'
 ];
-// Live list — loaded from and synced to Firebase
 let REGISTERED_USERS = [...DEFAULT_MEMBERS];
 
 function userHasClaimed(registeredName) {
@@ -462,15 +481,14 @@ function userHasClaimed(registeredName) {
         for (const claim of (book.claims || [])) {
             const cl          = claim.toLowerCase().trim();
             const clFirstWord = cl.split(' ')[0];
-            if (cl === regLower)                                   return true;
-            if (cl.length > 2 && regLower.startsWith(cl + ' '))  return true;
+            if (cl === regLower)                                  return true;
+            if (cl.length > 2 && regLower.startsWith(cl + ' ')) return true;
             if (clFirstWord.length > 2 && clFirstWord === regFirstWord) return true;
-            if (cl.length > 3 && regLower.startsWith(cl))         return true;
+            if (cl.length > 3 && regLower.startsWith(cl))        return true;
         }
     }
     return false;
 }
-
 function renderUserList() {
     const listEl  = document.getElementById('userList');
     const countEl = document.getElementById('userPanelCount');
@@ -543,6 +561,21 @@ let currentBookId = null;
 let isAdminMode   = false;
 let isNewBookMode = false;
 let tempNewBook   = null;
+let activeTab     = 'Voksenbog'; // default tab
+
+// ── TABS ──────────────────────────────────────────────────────
+function switchTab(type) {
+    activeTab = type;
+    document.getElementById('tabVoksen').className = 'tab-btn' + (type === 'Voksenbog' ? ' active' : '');
+    document.getElementById('tabBoern').className  = 'tab-btn' + (type === 'Børnebog'  ? ' active' : '');
+    renderBooks();
+}
+function updateTabCounts() {
+    const voksen = books.filter(b => (b.type || 'Voksenbog') === 'Voksenbog').length;
+    const boern  = books.filter(b => (b.type || 'Voksenbog') === 'Børnebog').length;
+    document.getElementById('countVoksen').textContent = voksen;
+    document.getElementById('countBoern').textContent  = boern;
+}
 
 // ── NAME BANNER LOGIC ─────────────────────────────────────────
 function hideBannerShowChip(name) {
@@ -574,9 +607,9 @@ async function saveUserName() {
     const last  = document.getElementById('userLastName').value.trim();
     if (!first) { toast('Skriv dit fornavn', 'err'); document.getElementById('userFirstName').focus(); return; }
     if (!last)  { toast('Skriv dit efternavn', 'err'); document.getElementById('userLastName').focus(); return; }
-    const raw        = first + ' ' + last;
-    const normalized = normalizeName(raw);
-    const existing   = getAllClaimedNames();
+    const raw         = first + ' ' + last;
+    const normalized  = normalizeName(raw);
+    const existing    = getAllClaimedNames();
     const currentUser = localStorage.getItem(USER_KEY);
     if (existing.has(normalized.toLowerCase()) &&
         normalized.toLowerCase() !== (currentUser || '').toLowerCase()) {
@@ -614,6 +647,7 @@ function setupFirebaseListeners() {
     database.ref('books').on('value', snap => {
         const data = snap.val();
         books = data ? Object.keys(data).map(k => ({ firebaseKey: k, ...data[k] })) : [];
+        updateTabCounts();
         renderBooks();
         if (currentBookId && !isNewBookMode) {
             const b = books.find(b => b.id === currentBookId);
@@ -664,7 +698,6 @@ function setupMemberListener() {
         } else if (data && typeof data === 'object') {
             REGISTERED_USERS = Object.values(data);
         } else {
-            // No members node yet — seed Firebase with the defaults
             saveMembersToFirebase(DEFAULT_MEMBERS);
             REGISTERED_USERS = [...DEFAULT_MEMBERS];
         }
@@ -676,9 +709,7 @@ async function saveMembersToFirebase(memberArray) {
     if (!isFirebaseReady) return;
     try {
         await database.ref('members').set(memberArray);
-    } catch(e) {
-        toast('Fejl ved gemning af medlemmer: ' + e.message, 'err');
-    }
+    } catch(e) { toast('Fejl ved gemning af medlemmer: ' + e.message, 'err'); }
 }
 async function addMember() {
     const first = document.getElementById('newMemberFirst').value.trim();
@@ -687,8 +718,7 @@ async function addMember() {
     if (!last)  { toast('Skriv et efternavn', 'err'); document.getElementById('newMemberLast').focus(); return; }
     const fullName = normalizeName(first + ' ' + last);
     if (REGISTERED_USERS.some(u => u.toLowerCase() === fullName.toLowerCase())) {
-        toast('"' + fullName + '" er allerede på listen', 'err');
-        return;
+        toast('"' + fullName + '" er allerede på listen', 'err'); return;
     }
     const updated = [...REGISTERED_USERS, fullName];
     await saveMembersToFirebase(updated);
@@ -715,9 +745,7 @@ function renderMemberAdminList() {
     list.innerHTML = REGISTERED_USERS.map((name, i) => `
         <div class="member-row" style="background:${i % 2 === 0 ? '#fff' : 'var(--bg)'}">
             <span class="member-row-name">${esc(name)}</span>
-            ${isAdminMode
-                ? `<button class="member-row-remove" onclick="removeMember('${esc(name)}')">🗑️ Fjern</button>`
-                : ''}
+            ${isAdminMode ? `<button class="member-row-remove" onclick="removeMember('${esc(name)}')">🗑️ Fjern</button>` : ''}
         </div>`).join('');
 }
 function openMembersModal() {
@@ -780,6 +808,8 @@ function toggleAdmin() {
         toast('Forkert adgangskode', 'err');
     }
 }
+
+// ── CSV UPLOAD — reads Title, Author, Type ────────────────────
 function handleCSVUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -789,11 +819,14 @@ function handleCSVUpload(event) {
             const lines = e.target.result.split('\n').filter(l => l.trim());
             if (lines.length < 2) { toast('CSV skal have mindst 2 linjer', 'err'); return; }
             const newBooks = lines.slice(1).map((line, i) => {
-                const p = line.split(/[;,]/).map(s => s.trim());
+                const p    = line.split(/[;,]/).map(s => s.trim());
+                const raw  = (p[2] || '').toLowerCase();
+                const type = raw.includes('børn') ? 'Børnebog' : 'Voksenbog';
                 return {
                     id: 'b-' + Date.now() + '-' + i,
-                    title: p[0] || 'Ingen titel',
+                    title:  p[0] || 'Ingen titel',
                     author: p[1] || 'Ukendt forfatter',
+                    type,
                     desc: 'Tryk "Hent info" for at hente beskrivelse.',
                     cover: '', claims: [], winner: null,
                     fetchAttempted: false, fetchSuccess: false,
@@ -807,14 +840,25 @@ function handleCSVUpload(event) {
     event.target.value = '';
 }
 
+// ── CHANGE BOOK TYPE (admin) ──────────────────────────────────
+async function changeBookType(newType) {
+    if (!currentBookId || isNewBookMode) return;
+    const book = books.find(b => b.id === currentBookId);
+    if (!book) return;
+    book.type = newType;
+    await saveBookToFirebase(book);
+    updateTabCounts();
+    toast('Kategori ændret til ' + (newType === 'Børnebog' ? '🧒 Børnebog' : '📚 Voksenbog'), 'ok');
+}
+
 // ── ADD NEW BOOK ──────────────────────────────────────────────
 function addNewBook() {
     if (!isAdminMode) return;
     isNewBookMode = true;
     tempNewBook = {
         id: 'b-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
-        title: '', author: '', desc: '', cover: '',
-        claims: [], winner: null,
+        title: '', author: '', type: activeTab,
+        desc: '', cover: '', claims: [], winner: null,
         fetchAttempted: false, fetchSuccess: false,
         manualCover: false, manualDesc: false
     };
@@ -835,6 +879,7 @@ function addNewBook() {
     document.getElementById('btnClearDesc').style.display   = 'none';
     document.getElementById('newBookTitle').value        = '';
     document.getElementById('newBookAuthor').value       = '';
+    document.getElementById('newBookType').value         = activeTab;
     document.getElementById('imageUrlInput').value       = '';
     document.getElementById('imageFileInput').value      = '';
     document.getElementById('descriptionTextarea').value = '';
@@ -845,9 +890,11 @@ function addNewBook() {
 async function saveNewBook() {
     const title  = document.getElementById('newBookTitle').value.trim();
     const author = document.getElementById('newBookAuthor').value.trim();
+    const type   = document.getElementById('newBookType').value;
     if (!title) { toast('Skriv en titel', 'err'); document.getElementById('newBookTitle').focus(); return; }
     tempNewBook.title  = normalizeName(title);
     tempNewBook.author = author ? normalizeName(author) : 'Ukendt forfatter';
+    tempNewBook.type   = type;
     const descInput = document.getElementById('descriptionTextarea').value.trim();
     if (descInput && !tempNewBook.manualDesc) {
         tempNewBook.desc = descInput;
@@ -862,7 +909,7 @@ async function saveNewBook() {
         }
     }
     await saveBookToFirebase(tempNewBook);
-    toast('✅ "' + tempNewBook.title + '" oprettet!', 'ok');
+    toast('✅ "' + tempNewBook.title + '" oprettet som ' + (type === 'Børnebog' ? '🧒 Børnebog' : '📚 Voksenbog') + '!', 'ok');
     isNewBookMode = false;
     currentBookId = null;
     tempNewBook   = null;
@@ -1019,7 +1066,7 @@ async function fetchFromOpenLibrary(title, author) {
             try {
                 const wr = await fetch(`https://openlibrary.org${best.key}.json`);
                 if (wr.ok) {
-                    const w = await wr.json();
+                    const w   = await wr.json();
                     const raw = typeof w.description === 'string' ? w.description : (w.description?.value || null);
                     if (raw) desc = trimDesc(raw);
                 }
@@ -1103,6 +1150,9 @@ async function debugFirebase() {
     let r = '🔍 Firebase Debug\n═══════════════\n';
     r += 'Init: ' + (isFirebaseReady ? '✅' : '❌') + '\nLokale bøger: ' + books.length + '\n';
     r += 'Registrerede medlemmer: ' + REGISTERED_USERS.length + '\n';
+    const voksen = books.filter(b => (b.type || 'Voksenbog') === 'Voksenbog').length;
+    const boern  = books.filter(b => (b.type || 'Voksenbog') === 'Børnebog').length;
+    r += 'Voksenbøger: ' + voksen + ' | Børnebøger: ' + boern + '\n';
     if (isFirebaseReady) {
         try {
             const snap = await database.ref('books').once('value');
@@ -1123,6 +1173,7 @@ async function manualRefresh() {
     const snap = await database.ref('books').once('value');
     const data = snap.val();
     books = data ? Object.keys(data).map(k => ({ firebaseKey: k, ...data[k] })) : [];
+    updateTabCounts();
     renderBooks();
     toast('✅ ' + books.length + ' bøger genindlæst', 'ok');
 }
@@ -1185,14 +1236,18 @@ function handleModalClaim() {
 function renderBooks() {
     const grid = document.getElementById('bookGrid');
     const user = getUser();
-    if (!books.length) {
-        grid.innerHTML = '<div class="empty-state"><div class="icon">📚</div><p>Ingen bøger endnu — upload en CSV-fil (admin) for at starte.</p></div>';
+    // Filter books by active tab
+    const filtered = books.filter(b => (b.type || 'Voksenbog') === activeTab);
+    updateTabCounts();
+    if (!filtered.length) {
+        const label = activeTab === 'Børnebog' ? '🧒 Børnebøger' : '📚 Voksenbøger';
+        grid.innerHTML = `<div class="empty-state"><div class="icon">${activeTab === 'Børnebog' ? '🧒' : '📚'}</div><p>Ingen ${label} endnu.</p></div>`;
         renderUserList();
         renderMyWonBooks();
         return;
     }
     grid.innerHTML = '';
-    books.forEach(book => grid.appendChild(createBookCard(book, user)));
+    filtered.forEach(book => grid.appendChild(createBookCard(book, user)));
     renderUserList();
     renderMyWonBooks();
 }
@@ -1206,7 +1261,8 @@ function createBookCard(book, user) {
     const slots = Array(MAX_CLAIMS).fill(0).map((_, i) => {
         const c = claims[i];
         const w = book.winner === c && c;
-        return '<div class="slot' + (c ? ' taken' : '') + (w ? ' winner' : '') + '">' + (c ? c.split(' ')[0] : '–') + (w ? ' 🏆' : '') + '</div>';
+        return '<div class="slot' + (c ? ' taken' : '') + (w ? ' winner' : '') + '">' +
+               (c ? c.split(' ')[0] : '–') + (w ? ' 🏆' : '') + '</div>';
     }).join('');
     const lotteryDone = books.some(b => b.winner);
     let btnCls = 'btn-claim', btnTxt = 'Jeg ønsker mig bogen her', dis = false;
@@ -1225,7 +1281,8 @@ function createBookCard(book, user) {
             <div class="card-author">${esc(book.author)}</div>
             <div class="card-hint">ℹ️ Klik for beskrivelse</div>
             <div class="claim-slots">${slots}</div>
-            ${lotteryDone ? '' : '<button class="' + btnCls + '" ' + (dis ? 'disabled' : '') + ' onclick="event.stopPropagation();toggleClaim(\'' + book.id + '\')">' + btnTxt + '</button>'}
+            ${lotteryDone ? '' : '<button class="' + btnCls + '" ' + (dis ? 'disabled' : '') +
+              ' onclick="event.stopPropagation();toggleClaim(\'' + book.id + '\')">' + btnTxt + '</button>'}
         </div>`;
     return card;
 }
@@ -1277,6 +1334,7 @@ function updateModalContent(book) {
         document.getElementById('imageUrlInput').value       = '';
         document.getElementById('imageFileInput').value      = '';
         document.getElementById('descriptionTextarea').value = book.desc || '';
+        document.getElementById('bookTypeSelect').value      = book.type || 'Voksenbog';
         const q = encodeURIComponent(book.title);
         document.getElementById('lrSearchLink').href      = 'https://www.lindhardtogringhof.dk/soeg/' + q;
         document.getElementById('carlsenSearchLink').href = 'https://www.carlsen.dk/soeg/' + q;
