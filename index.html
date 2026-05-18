@@ -1,19 +1,4 @@
-
-                        <!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-							<style>
-								body {
-									background-color: white; /* Ensure the iframe has a white background */
-								}
-
-								
-							</style>
-                        </head>
-                        <body>
-                            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="da">
 <head>
     <meta charset="UTF-8">
@@ -88,13 +73,13 @@
         .btn-ai { background:var(--purple); }
 
         /* TABS */
-        .tabs-wrap { background:var(--card); border-bottom:1px solid var(--border); }
-        .tabs-inner { max-width:1600px; margin:0 auto; padding:0 30px; display:flex; gap:4px; align-items:flex-end; }
-        .tab-btn { padding:14px 28px; border:none; background:none; font-size:15px; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:3px solid transparent; transition:color .15s,border-color .15s; white-space:nowrap; display:flex; align-items:center; gap:8px; }
-        .tab-btn:hover { color:var(--text); }
-        .tab-btn.active { color:var(--blue); border-bottom-color:var(--blue); }
-        .tab-btn .tab-count { font-size:11px; font-weight:700; padding:2px 7px; border-radius:10px; background:var(--bg); color:var(--muted); transition:background .15s,color .15s; }
-        .tab-btn.active .tab-count { background:var(--blue); color:#fff; }
+        .tabs-wrap { background:var(--card); border-bottom:3px solid var(--border); box-shadow:0 3px 10px rgba(0,0,0,.06); }
+        .tabs-inner { max-width:1600px; margin:0 auto; padding:0 30px; display:flex; gap:0; }
+        .tab-btn { padding:18px 36px; border:none; background:none; font-size:16px; font-weight:700; color:var(--muted); cursor:pointer; border-bottom:5px solid transparent; margin-bottom:-3px; transition:color .15s,border-color .15s,background .15s; white-space:nowrap; display:flex; align-items:center; gap:10px; }
+        .tab-btn:hover { color:var(--text); background:var(--bg); }
+        .tab-btn.active { color:var(--blue); border-bottom-color:var(--blue); background:linear-gradient(to bottom,#f0f6ff,var(--card)); }
+        .tab-btn .tab-count { font-size:12px; font-weight:800; padding:3px 9px; border-radius:12px; background:var(--bg); color:var(--muted); border:1.5px solid var(--border); transition:background .15s,color .15s; }
+        .tab-btn.active .tab-count { background:var(--blue); color:#fff; border-color:var(--blue); }
 
         /* PROGRESS */
         .progress-wrap { display:none; padding:8px 30px; background:var(--card); border-bottom:1px solid var(--border); }
@@ -123,11 +108,13 @@
         .card-title  { font-size:13px; font-weight:700; line-height:1.3; margin-bottom:3px; }
         .card-author { font-size:12px; color:var(--muted); margin-bottom:6px; flex:1; }
         .card-hint   { font-size:11px; color:var(--blue); font-style:italic; margin-bottom:8px; }
-        .claim-slots { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-bottom:10px; }
+        .claim-slots { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-bottom:6px; }
         .slot { padding:4px 3px; background:var(--bg); border:1px solid var(--border); border-radius:5px; font-size:10px; text-align:center; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color:var(--muted); }
         .slot.taken  { color:var(--text); font-weight:600; background:#f0f4ff; border-color:#c5cfe8; }
         .slot.winner { background:var(--gold); border-color:#d4aa00; color:#000; font-weight:700; }
-        .btn-claim { width:100%; padding:9px; background:var(--blue); color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s; }
+        .btn-see-more { width:100%; margin-bottom:8px; padding:6px; background:none; border:1.5px dashed var(--border); border-radius:7px; font-size:11px; font-weight:600; color:var(--muted); cursor:pointer; transition:border-color .15s,color .15s,background .15s; }
+        .btn-see-more:hover { border-color:var(--blue); color:var(--blue); background:#f0f6ff; }
+        .btn-claim { width:100%; padding:9px; background:var(--blue); color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s; margin-top:2px; }
         .btn-claim:hover:not(:disabled) { background:#0062cc; }
         .btn-claim.claimed { background:var(--red); }
         .btn-claim.claimed:hover { background:#cc2a1f; }
@@ -176,8 +163,6 @@
         .modal-claims-lbl { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:8px; }
         .claim-item { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg); border-radius:8px; margin-bottom:6px; font-size:14px; border:1px solid var(--border); }
         .claim-item.win { background:var(--gold); border-color:#d4aa00; font-weight:700; }
-
-        /* MODAL ADMIN */
         .modal-admin { display:none; margin:0 24px 24px; background:var(--bg); border-radius:10px; border:2px dashed var(--blue); padding:18px; }
         .modal-admin.active { display:block; }
         .modal-admin h4 { font-size:13px; color:var(--blue); margin-bottom:10px; font-weight:700; }
@@ -207,13 +192,15 @@
         .btn-mc { background:var(--bg); color:var(--text); border:1px solid var(--border); }
 
         /* MEMBERS MODAL */
-        .members-modal-list { max-height:340px; overflow-y:auto; border:1px solid var(--border); border-radius:10px; background:var(--bg); }
-        .member-row { display:flex; justify-content:space-between; align-items:center; padding:9px 12px; border-bottom:1px solid var(--border); }
+        .members-modal-list { max-height:380px; overflow-y:auto; border:1px solid var(--border); border-radius:10px; background:var(--bg); }
+        .member-row { display:flex; justify-content:space-between; align-items:center; padding:9px 12px; border-bottom:1px solid var(--border); gap:8px; }
         .member-row:last-child { border-bottom:none; }
         .member-row:nth-child(even) { background:#fff; }
-        .member-row-name { font-size:14px; font-weight:500; }
-        .member-row-remove { padding:3px 10px; background:var(--red); color:#fff; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:opacity .15s; }
-        .member-row-remove:hover { opacity:.8; }
+        .member-row-name { font-size:14px; font-weight:500; flex:1; }
+        .member-row-btns { display:flex; gap:6px; flex-shrink:0; }
+        .member-btn-edit   { padding:3px 10px; background:var(--blue); color:#fff; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:opacity .15s; }
+        .member-btn-remove { padding:3px 10px; background:var(--red);  color:#fff; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:opacity .15s; }
+        .member-btn-edit:hover, .member-btn-remove:hover { opacity:.8; }
         .member-add-row { display:flex; gap:8px; margin-bottom:16px; }
         .member-add-row input { flex:1; padding:9px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:14px; outline:none; transition:border-color .15s; }
         .member-add-row input:focus { border-color:var(--blue); }
@@ -239,7 +226,7 @@
             .name-fields-row { flex-direction:column; }
             .name-banner-label { padding-top:0; }
             .tabs-inner { padding:0 16px; }
-            .tab-btn { padding:12px 16px; font-size:14px; }
+            .tab-btn { padding:14px 18px; font-size:14px; }
             .member-add-row { flex-wrap:wrap; }
         }
     </style>
@@ -286,7 +273,7 @@
                 <button class="btn-save" id="saveNameBtn" onclick="saveUserName()">GEM NAVN</button>
             </div>
             <div id="nameWarning"></div>
-            <div class="name-hint">Skriv dit fornavn og efternavn — tryk derefter GEM NAVN.</div>
+            <div class="name-hint">Skriv dit fulde fornavn og efternavn — tryk derefter GEM NAVN.</div>
         </div>
     </div>
 </div>
@@ -328,7 +315,6 @@
         <div class="progress-fill" id="progressBar" style="width:0%">0%</div>
     </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <div class="main-layout">
@@ -355,12 +341,10 @@
             <div class="modal-title"  id="modalTitle"></div>
             <div class="modal-author" id="modalAuthor"></div>
             <div class="modal-desc"   id="modalDesc"></div>
-            <div class="modal-claims-lbl">Ønsker (maks 6)</div>
+            <div class="modal-claims-lbl">Ønsker (maks 10)</div>
             <div id="modalClaims"></div>
         </div>
         <div class="modal-admin" id="adminImageUpload">
-
-            <!-- NEW BOOK fields -->
             <div id="newBookFields" style="display:none">
                 <h4>📖 Ny bog – grundoplysninger</h4>
                 <input type="text" id="newBookTitle"  placeholder="Titel *">
@@ -372,8 +356,6 @@
                 </select>
                 <hr class="modal-sep">
             </div>
-
-            <!-- EDIT EXISTING BOOK info -->
             <div id="editBookFields" style="display:none">
                 <h4>✏️ Rediger titel & forfatter</h4>
                 <input type="text" id="editBookTitle"  placeholder="Titel *">
@@ -383,13 +365,12 @@
                 </div>
                 <hr class="modal-sep">
             </div>
-
             <div id="searchLinks">
                 <h4>🔗 Find bogen</h4>
                 <a id="lrSearchLink"      href="#" target="_blank">🔍 Lindhardt og Ringhof</a>
                 <a id="carlsenSearchLink" href="#" target="_blank">🔍 Carlsen</a>
                 <a id="googleImagesLink"  href="#" target="_blank">🔍 Google Images (forside)</a>
-                <a id="pageUrlLink"       href="#" target="_blank" style="display:none;color:var(--green)">📖 Åbn bogside (fundet automatisk)</a>
+                <a id="pageUrlLink"       href="#" target="_blank" style="display:none;color:var(--green)">📖 Åbn bogside</a>
                 <hr class="modal-sep">
                 <h4>🏷️ Ændr kategori</h4>
                 <select id="bookTypeSelect" onchange="changeBookType(this.value)" style="margin-bottom:0">
@@ -398,7 +379,6 @@
                 </select>
                 <hr class="modal-sep">
             </div>
-
             <h4>📸 Forside (Admin)</h4>
             <input type="url" id="imageUrlInput" placeholder="Billede-URL (https://…)">
             <div class="adm-row">
@@ -415,9 +395,7 @@
                 <button class="adm-btn ora" id="btnClearDesc" onclick="clearDescription()">Nulstil</button>
             </div>
             <div id="saveNewBookRow" style="display:none;margin-top:14px">
-                <button class="adm-btn green" style="width:100%;padding:13px;font-size:14px" onclick="saveNewBook()">
-                    ✅ Gem ny bog
-                </button>
+                <button class="adm-btn green" style="width:100%;padding:13px;font-size:14px" onclick="saveNewBook()">✅ Gem ny bog</button>
             </div>
         </div>
         <div class="modal-footer">
@@ -429,11 +407,11 @@
 
 <!-- MEMBERS MODAL -->
 <div class="modal-overlay" id="membersModal">
-    <div class="modal-box" style="max-width:480px">
+    <div class="modal-box" style="max-width:500px">
         <div class="modal-body">
             <div class="modal-title" style="font-size:20px;margin-bottom:6px">👥 Administrer Medlemmer</div>
             <div style="font-size:13px;color:var(--muted);margin-bottom:20px">
-                Tilføj eller fjern deltagere. Ændringer gemmes automatisk i Firebase og vises for alle i realtid.
+                Tilføj, rediger eller fjern deltagere. Ændringer gemmes automatisk i Firebase.
             </div>
             <div class="member-add-row">
                 <input type="text" id="newMemberFirst" placeholder="Fornavn"
@@ -495,21 +473,27 @@ const DEFAULT_MEMBERS = [
 ];
 let REGISTERED_USERS = [...DEFAULT_MEMBERS];
 
+// ── BUGFIX: Præcis navnematch ─────────────────────────────────
+// Matcher eksakt navn ELLER hvis claim matcher starten af registreret navn
+// fx "Eva Stokholm" matcher "Eva Marianne Stokholm" KUN hvis admin har ændret
+// det registrerede navn til "Eva Stokholm"
 function userHasClaimed(registeredName) {
-    const regLower     = registeredName.toLowerCase().trim();
-    const regFirstWord = regLower.split(' ')[0];
+    const regLower = registeredName.toLowerCase().trim();
     for (const book of books) {
         for (const claim of (book.claims || [])) {
-            const cl          = claim.toLowerCase().trim();
-            const clFirstWord = cl.split(' ')[0];
-            if (cl === regLower)                                  return true;
-            if (cl.length > 2 && regLower.startsWith(cl + ' ')) return true;
-            if (clFirstWord.length > 2 && clFirstWord === regFirstWord) return true;
-            if (cl.length > 3 && regLower.startsWith(cl))        return true;
+            const cl = claim.toLowerCase().trim();
+            if (cl === regLower) return true;
+            // Claim starter med registreret navn (fx registreret: "Eva Stokholm", claim: "Eva Stokholm")
+            if (cl.length >= 5 && cl === regLower) return true;
+            // Registreret navn starter med claim + mellemrum (dæk kortere varianter)
+            if (cl.length >= 5 && regLower.startsWith(cl + ' ')) return true;
+            // Claim starter med registreret navn + mellemrum
+            if (regLower.length >= 5 && cl.startsWith(regLower + ' ')) return true;
         }
     }
     return false;
 }
+
 function renderUserList() {
     const listEl  = document.getElementById('userList');
     const countEl = document.getElementById('userPanelCount');
@@ -537,16 +521,13 @@ function renderMyWonBooks() {
     if (!user) { panel.style.display = 'none'; return; }
     const lotteryDone = books.some(b => b.winner);
     if (!lotteryDone) { panel.style.display = 'none'; return; }
-    const userLower     = user.toLowerCase().trim();
-    const userFirstWord = userLower.split(' ')[0];
+    const userLower = user.toLowerCase().trim();
     const won = books.filter(b => {
         if (!b.winner) return false;
-        const winLower     = b.winner.toLowerCase().trim();
-        const winFirstWord = winLower.split(' ')[0];
-        if (winLower === userLower)                                       return true;
-        if (winLower.length > 2 && userLower.startsWith(winLower + ' ')) return true;
-        if (winFirstWord.length > 2 && winFirstWord === userFirstWord)   return true;
-        if (winLower.length > 3 && userLower.startsWith(winLower))       return true;
+        const winLower = b.winner.toLowerCase().trim();
+        if (winLower === userLower) return true;
+        if (winLower.length >= 5 && userLower.startsWith(winLower + ' ')) return true;
+        if (userLower.length >= 5 && winLower.startsWith(userLower + ' ')) return true;
         return false;
     });
     panel.style.display = 'block';
@@ -571,7 +552,8 @@ function renderMyWonBooks() {
 // ── STATE ─────────────────────────────────────────────────────
 const USER_KEY   = 'shufflerUserName';
 const ADMIN_PW   = 'Bogsnup2026';
-const MAX_CLAIMS = 6;
+const MAX_CLAIMS = 10;
+const SHOW_SLOTS = 6;
 const API_DELAY  = 800;
 const PROXIES = [
     url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
@@ -592,18 +574,15 @@ function switchTab(type) {
     renderBooks();
 }
 function updateTabCounts() {
-    const voksen = books.filter(b => (b.type || 'Voksenbog') === 'Voksenbog').length;
-    const boern  = books.filter(b => (b.type || 'Voksenbog') === 'Børnebog').length;
-    document.getElementById('countVoksen').textContent = voksen;
-    document.getElementById('countBoern').textContent  = boern;
+    document.getElementById('countVoksen').textContent = books.filter(b => (b.type || 'Voksenbog') === 'Voksenbog').length;
+    document.getElementById('countBoern').textContent  = books.filter(b => (b.type || 'Voksenbog') === 'Børnebog').length;
 }
 
 // ── NAME BANNER ───────────────────────────────────────────────
 function hideBannerShowChip(name) {
     document.getElementById('nameBanner').classList.add('hidden');
-    const chip = document.getElementById('nameConfirmed');
     document.getElementById('nameConfirmedText').textContent = '👤 ' + name;
-    chip.classList.add('visible');
+    document.getElementById('nameConfirmed').classList.add('visible');
 }
 function showNameBanner() {
     document.getElementById('nameBanner').classList.remove('hidden');
@@ -628,15 +607,14 @@ async function saveUserName() {
     const last  = document.getElementById('userLastName').value.trim();
     if (!first) { toast('Skriv dit fornavn', 'err'); document.getElementById('userFirstName').focus(); return; }
     if (!last)  { toast('Skriv dit efternavn', 'err'); document.getElementById('userLastName').focus(); return; }
-    const raw         = first + ' ' + last;
-    const normalized  = normalizeName(raw);
+    const normalized  = normalizeName(first + ' ' + last);
     const existing    = getAllClaimedNames();
     const currentUser = localStorage.getItem(USER_KEY);
     if (existing.has(normalized.toLowerCase()) &&
         normalized.toLowerCase() !== (currentUser || '').toLowerCase()) {
         const w = document.getElementById('nameWarning');
         w.style.display = 'block';
-        w.textContent = '"' + normalized + '" er allerede i brug — tilføj første bogstav i dit efternavn.';
+        w.textContent = '"' + normalized + '" er allerede i brug.';
         return;
     }
     document.getElementById('nameWarning').style.display = 'none';
@@ -653,7 +631,7 @@ async function saveUserName() {
                 updated = true;
             }
         }
-        if (updated) toast('Navn opdateret fra "' + currentUser + '" til "' + normalized + '"', 'ok');
+        if (updated) toast('Navn opdateret!', 'ok');
     }
     const btn = document.getElementById('saveNameBtn');
     btn.textContent = '✓ Gemt!'; btn.classList.add('saved');
@@ -679,8 +657,7 @@ function setupFirebaseListeners() {
 async function saveBookToFirebase(book) {
     if (!isFirebaseReady) return;
     try {
-        const data = { ...book };
-        delete data.firebaseKey;
+        const data = { ...book }; delete data.firebaseKey;
         if (book.firebaseKey) {
             await database.ref('books/' + book.firebaseKey).set(data);
         } else {
@@ -695,8 +672,7 @@ async function saveAllBooksToFirebase(arr) {
         const upd = {};
         arr.forEach(book => {
             const key = book.firebaseKey || database.ref('books').push().key;
-            const d = { ...book };
-            delete d.firebaseKey;
+            const d = { ...book }; delete d.firebaseKey;
             upd['/books/' + key] = d;
         });
         await database.ref().update(upd);
@@ -706,31 +682,24 @@ async function saveAllBooksToFirebase(arr) {
 }
 async function deleteAllBooksFromFirebase() {
     await database.ref('books').remove();
-    books = [];
-    renderBooks();
+    books = []; renderBooks();
 }
 
 // ── FIREBASE MEMBERS ──────────────────────────────────────────
 function setupMemberListener() {
     database.ref('members').on('value', snap => {
         const data = snap.val();
-        if (data && Array.isArray(data)) {
-            REGISTERED_USERS = data;
-        } else if (data && typeof data === 'object') {
-            REGISTERED_USERS = Object.values(data);
-        } else {
-            saveMembersToFirebase(DEFAULT_MEMBERS);
-            REGISTERED_USERS = [...DEFAULT_MEMBERS];
-        }
+        if (data && Array.isArray(data))           REGISTERED_USERS = data;
+        else if (data && typeof data === 'object') REGISTERED_USERS = Object.values(data);
+        else { saveMembersToFirebase(DEFAULT_MEMBERS); REGISTERED_USERS = [...DEFAULT_MEMBERS]; }
         renderUserList();
         renderMemberAdminList();
     });
 }
 async function saveMembersToFirebase(memberArray) {
     if (!isFirebaseReady) return;
-    try {
-        await database.ref('members').set(memberArray);
-    } catch(e) { toast('Fejl ved gemning af medlemmer: ' + e.message, 'err'); }
+    try { await database.ref('members').set(memberArray); }
+    catch(e) { toast('Fejl ved gemning: ' + e.message, 'err'); }
 }
 async function addMember() {
     const first = document.getElementById('newMemberFirst').value.trim();
@@ -741,8 +710,7 @@ async function addMember() {
     if (REGISTERED_USERS.some(u => u.toLowerCase() === fullName.toLowerCase())) {
         toast('"' + fullName + '" er allerede på listen', 'err'); return;
     }
-    const updated = [...REGISTERED_USERS, fullName];
-    await saveMembersToFirebase(updated);
+    await saveMembersToFirebase([...REGISTERED_USERS, fullName]);
     document.getElementById('newMemberFirst').value = '';
     document.getElementById('newMemberLast').value  = '';
     document.getElementById('newMemberFirst').focus();
@@ -750,10 +718,51 @@ async function addMember() {
 }
 async function removeMember(name) {
     if (!confirm('Fjern "' + name + '" fra listen?')) return;
-    const updated = REGISTERED_USERS.filter(u => u !== name);
-    await saveMembersToFirebase(updated);
+    await saveMembersToFirebase(REGISTERED_USERS.filter(u => u !== name));
     toast('"' + name + '" fjernet', 'ok');
 }
+
+// ── ✅ REDIGER MEDLEM ─────────────────────────────────────────
+function startEditMember(index) {
+    const row     = document.getElementById('member-row-' + index);
+    const oldName = REGISTERED_USERS[index];
+    row.innerHTML = `
+        <input type="text" id="member-edit-input-${index}"
+            value="${esc(oldName)}"
+            style="flex:1;padding:6px 10px;border:1.5px solid var(--blue);border-radius:7px;
+                   font-size:14px;outline:none;min-width:0"
+            onkeydown="if(event.key==='Enter') saveEditMember(${index},'${esc(oldName).replace(/'/g,"\\'")}');
+                       if(event.key==='Escape') renderMemberAdminList()">
+        <div style="display:flex;gap:6px;flex-shrink:0;margin-left:8px">
+            <button onclick="saveEditMember(${index},'${esc(oldName).replace(/'/g,"\\'")}' )"
+                style="padding:4px 10px;background:var(--green);color:#fff;border:none;
+                       border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">
+                💾 Gem
+            </button>
+            <button onclick="renderMemberAdminList()"
+                style="padding:4px 10px;background:var(--muted);color:#fff;border:none;
+                       border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">
+                Annuller
+            </button>
+        </div>`;
+    const inp = document.getElementById('member-edit-input-' + index);
+    inp.focus(); inp.select();
+}
+async function saveEditMember(index, oldName) {
+    const input   = document.getElementById('member-edit-input-' + index);
+    if (!input) return;
+    const newName = normalizeName(input.value.trim());
+    if (!newName) { toast('Navn må ikke være tomt', 'err'); return; }
+    if (newName.toLowerCase() === oldName.toLowerCase()) { renderMemberAdminList(); return; }
+    if (REGISTERED_USERS.some((u, i) => i !== index && u.toLowerCase() === newName.toLowerCase())) {
+        toast('"' + newName + '" er allerede på listen', 'err'); return;
+    }
+    const updated = [...REGISTERED_USERS];
+    updated[index] = newName;
+    await saveMembersToFirebase(updated);
+    toast('✅ "' + oldName + '" → "' + newName + '"', 'ok');
+}
+
 function renderMemberAdminList() {
     const list    = document.getElementById('memberAdminList');
     const countEl = document.getElementById('memberCount');
@@ -764,9 +773,13 @@ function renderMemberAdminList() {
         return;
     }
     list.innerHTML = REGISTERED_USERS.map((name, i) => `
-        <div class="member-row" style="background:${i % 2 === 0 ? '#fff' : 'var(--bg)'}">
+        <div class="member-row" id="member-row-${i}" style="background:${i % 2 === 0 ? '#fff' : 'var(--bg)'}">
             <span class="member-row-name">${esc(name)}</span>
-            ${isAdminMode ? `<button class="member-row-remove" onclick="removeMember('${esc(name)}')">🗑️ Fjern</button>` : ''}
+            ${isAdminMode ? `
+                <div class="member-row-btns">
+                    <button class="member-btn-edit"   onclick="startEditMember(${i})">✏️ Rediger</button>
+                    <button class="member-btn-remove" onclick="removeMember('${esc(name)}')">🗑️ Fjern</button>
+                </div>` : ''}
         </div>`).join('');
 }
 function openMembersModal() {
@@ -807,14 +820,8 @@ function init() {
     } else {
         let n = 0;
         const iv = setInterval(() => {
-            if (isFirebaseReady) {
-                clearInterval(iv);
-                setupFirebaseListeners();
-                setupMemberListener();
-            } else if (++n >= 50) {
-                clearInterval(iv);
-                toast('Firebase timeout', 'err');
-            }
+            if (isFirebaseReady) { clearInterval(iv); setupFirebaseListeners(); setupMemberListener(); }
+            else if (++n >= 50)  { clearInterval(iv); toast('Firebase timeout', 'err'); }
         }, 100);
     }
 }
@@ -825,15 +832,10 @@ function toggleAdmin() {
         isAdminMode = true;
         document.querySelectorAll('.admin-btn').forEach(b => b.disabled = false);
         toast('Admin aktiveret ✅', 'ok');
-    } else {
-        toast('Forkert adgangskode', 'err');
-    }
+    } else { toast('Forkert adgangskode', 'err'); }
 }
-
-// ── CSV UPLOAD ────────────────────────────────────────────────
 function handleCSVUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+    const file = event.target.files[0]; if (!file) return;
     const reader = new FileReader();
     reader.onload = async e => {
         try {
@@ -845,13 +847,10 @@ function handleCSVUpload(event) {
                 const type = raw.includes('børn') ? 'Børnebog' : 'Voksenbog';
                 return {
                     id: 'b-' + Date.now() + '-' + i,
-                    title:  p[0] || 'Ingen titel',
-                    author: p[1] || 'Ukendt forfatter',
-                    type,
+                    title: p[0] || 'Ingen titel', author: p[1] || 'Ukendt forfatter', type,
                     desc: 'Tryk "Hent info" for at hente beskrivelse.',
                     cover: '', claims: [], winner: null,
-                    fetchAttempted: false, fetchSuccess: false,
-                    manualCover: false, manualDesc: false
+                    fetchAttempted: false, fetchSuccess: false, manualCover: false, manualDesc: false
                 };
             });
             await saveAllBooksToFirebase(newBooks);
@@ -860,62 +859,48 @@ function handleCSVUpload(event) {
     reader.readAsText(file);
     event.target.value = '';
 }
-
-// ── EDIT BOOK TITLE & AUTHOR (admin) ─────────────────────────
 async function saveBookTitleAuthor() {
     const newTitle  = document.getElementById('editBookTitle').value.trim();
     const newAuthor = document.getElementById('editBookAuthor').value.trim();
-    if (!newTitle) { toast('Titel må ikke være tom', 'err'); document.getElementById('editBookTitle').focus(); return; }
+    if (!newTitle) { toast('Titel må ikke være tom', 'err'); return; }
     if (!currentBookId || isNewBookMode) return;
-    const book = books.find(b => b.id === currentBookId);
-    if (!book) return;
-    book.title  = newTitle;
-    book.author = newAuthor || 'Ukendt forfatter';
+    const book = books.find(b => b.id === currentBookId); if (!book) return;
+    book.title = newTitle; book.author = newAuthor || 'Ukendt forfatter';
     await saveBookToFirebase(book);
-    // Update modal display immediately
     document.getElementById('modalTitle').textContent  = book.title;
     document.getElementById('modalAuthor').textContent = book.author;
-    // Update search links with new title
     const q = encodeURIComponent(book.title);
     document.getElementById('lrSearchLink').href      = 'https://www.lindhardtogringhof.dk/soeg/' + q;
     document.getElementById('carlsenSearchLink').href = 'https://www.carlsen.dk/soeg/' + q;
     document.getElementById('googleImagesLink').href  = 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(book.title + ' ' + book.author + ' bog forside');
     toast('✅ Titel og forfatter opdateret!', 'ok');
 }
-
-// ── CHANGE BOOK TYPE (admin) ──────────────────────────────────
 async function changeBookType(newType) {
     if (!currentBookId || isNewBookMode) return;
-    const book = books.find(b => b.id === currentBookId);
-    if (!book) return;
+    const book = books.find(b => b.id === currentBookId); if (!book) return;
     book.type = newType;
     await saveBookToFirebase(book);
     updateTabCounts();
-    toast('Kategori ændret til ' + (newType === 'Børnebog' ? '🧒 Børnebog' : '📚 Voksenbog'), 'ok');
+    toast('Kategori ændret!', 'ok');
 }
-
-// ── ADD NEW BOOK ──────────────────────────────────────────────
 function addNewBook() {
     if (!isAdminMode) return;
     isNewBookMode = true;
     tempNewBook = {
-        id: 'b-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
-        title: '', author: '', type: activeTab,
-        desc: '', cover: '', claims: [], winner: null,
-        fetchAttempted: false, fetchSuccess: false,
-        manualCover: false, manualDesc: false
+        id: 'b-' + Date.now() + '-' + Math.random().toString(36).slice(2,7),
+        title:'', author:'', type: activeTab,
+        desc:'', cover:'', claims:[], winner:null,
+        fetchAttempted:false, fetchSuccess:false, manualCover:false, manualDesc:false
     };
     currentBookId = tempNewBook.id;
-    const img = document.getElementById('modalImg');
-    img.src = ''; img.style.display = 'none';
+    document.getElementById('modalImg').src = '';
+    document.getElementById('modalImg').style.display = 'none';
     document.getElementById('modalTitle').textContent  = 'Ny bog';
     document.getElementById('modalAuthor').textContent = '';
     document.getElementById('modalDesc').textContent   = '';
-    document.getElementById('modalClaims').innerHTML   =
-        '<p style="color:var(--muted);font-style:italic;font-size:14px;padding:6px 0">Gem bogen for at begynde at modtage ønsker</p>';
+    document.getElementById('modalClaims').innerHTML   = '<p style="color:var(--muted);font-style:italic;font-size:14px;padding:6px 0">Gem bogen for at begynde at modtage ønsker</p>';
     document.getElementById('modalActionButton').style.display = 'none';
-    const adm = document.getElementById('adminImageUpload');
-    adm.classList.add('active');
+    document.getElementById('adminImageUpload').classList.add('active');
     document.getElementById('newBookFields').style.display  = 'block';
     document.getElementById('editBookFields').style.display = 'none';
     document.getElementById('searchLinks').style.display    = 'none';
@@ -935,28 +920,20 @@ async function saveNewBook() {
     const title  = document.getElementById('newBookTitle').value.trim();
     const author = document.getElementById('newBookAuthor').value.trim();
     const type   = document.getElementById('newBookType').value;
-    if (!title) { toast('Skriv en titel', 'err'); document.getElementById('newBookTitle').focus(); return; }
+    if (!title) { toast('Skriv en titel', 'err'); return; }
     tempNewBook.title  = title;
     tempNewBook.author = author || 'Ukendt forfatter';
     tempNewBook.type   = type;
     const descInput = document.getElementById('descriptionTextarea').value.trim();
-    if (descInput && !tempNewBook.manualDesc) {
-        tempNewBook.desc = descInput;
-        tempNewBook.manualDesc = true;
-    }
+    if (descInput) { tempNewBook.desc = descInput; tempNewBook.manualDesc = true; }
     if (!tempNewBook.desc) tempNewBook.desc = 'Ingen beskrivelse endnu.';
     if (!tempNewBook.cover) {
         const coverUrl = document.getElementById('imageUrlInput').value.trim();
-        if (coverUrl && coverUrl.startsWith('http')) {
-            tempNewBook.cover = coverUrl;
-            tempNewBook.manualCover = true;
-        }
+        if (coverUrl && coverUrl.startsWith('http')) { tempNewBook.cover = coverUrl; tempNewBook.manualCover = true; }
     }
     await saveBookToFirebase(tempNewBook);
     toast('✅ "' + tempNewBook.title + '" oprettet!', 'ok');
-    isNewBookMode = false;
-    currentBookId = null;
-    tempNewBook   = null;
+    isNewBookMode = false; currentBookId = null; tempNewBook = null;
     closeModal();
 }
 
@@ -969,16 +946,12 @@ async function proxyFetch(targetUrl, timeoutMs = 9000) {
             const res = await fetch(makeProxy(targetUrl), { signal: controller.signal });
             clearTimeout(timer);
             if (!res.ok) continue;
-            let html;
             const ct = res.headers.get('content-type') || '';
-            if (ct.includes('application/json')) {
-                const data = await res.json();
-                html = data.contents || null;
-            } else {
-                html = await res.text();
-            }
+            let html;
+            if (ct.includes('application/json')) { const d = await res.json(); html = d.contents || null; }
+            else html = await res.text();
             if (html && html.length > 200) return html;
-        } catch(e) { console.warn('Proxy attempt failed:', e.message); }
+        } catch(e) { console.warn('Proxy failed:', e.message); }
         await delay(300);
     }
     return null;
@@ -996,79 +969,70 @@ function parseMeta(html) {
 function trimDesc(d, max = 800) {
     if (!d || typeof d !== 'string') return null;
     d = d.trim().replace(/\s+/g, ' ');
-    return d.length > max ? d.slice(0, max - 1) + '…' : d;
+    return d.length > max ? d.slice(0, max-1) + '…' : d;
 }
 
 // ── FETCH SOURCES ─────────────────────────────────────────────
 async function fetchFromLindhardt(title, author) {
     try {
-        const searchUrl = `https://www.lindhardtogringhof.dk/soeg/${encodeURIComponent(title)}`;
-        const html = await proxyFetch(searchUrl);
+        const html = await proxyFetch(`https://www.lindhardtogringhof.dk/soeg/${encodeURIComponent(title)}`);
         if (!html) return null;
         const doc = new DOMParser().parseFromString(html, 'text/html');
-        const selectors = ['a[href*="/bog/"]', '.product-item a', '.search-result-item a', 'article a', '.product a'];
         let productUrl = null;
-        for (const sel of selectors) {
+        for (const sel of ['a[href*="/bog/"]','.product-item a','article a','.product a']) {
             const el = doc.querySelector(sel);
-            if (el && el.getAttribute('href')) { productUrl = el.getAttribute('href'); break; }
+            if (el?.getAttribute('href')) { productUrl = el.getAttribute('href'); break; }
         }
         if (productUrl) {
             const full  = productUrl.startsWith('http') ? productUrl : 'https://www.lindhardtogringhof.dk' + productUrl;
             const bHtml = await proxyFetch(full);
             if (bHtml) {
                 const bd      = new DOMParser().parseFromString(bHtml, 'text/html');
-                const descEl  = bd.querySelector('.product-description,.description,.book-description,.blurb,[class*="description"],[class*="blurb"],[class*="synopsis"]');
-                const rawDesc = descEl?.innerText?.trim() || descEl?.textContent?.trim() || null;
+                const descEl  = bd.querySelector('.product-description,.description,.blurb,[class*="description"],[class*="synopsis"]');
+                const rawDesc = descEl?.innerText?.trim() || null;
                 const meta    = parseMeta(bHtml);
-                const desc    = trimDesc((rawDesc && rawDesc.length > 20 ? rawDesc : null) || meta.desc);
-                const imgEl   = bd.querySelector('.product-cover img,.book-cover img,.cover img,img[class*="cover"]');
+                const desc    = trimDesc((rawDesc?.length > 20 ? rawDesc : null) || meta.desc);
+                const imgEl   = bd.querySelector('.product-cover img,.cover img,img[class*="cover"]');
                 const cover   = imgEl?.src || imgEl?.getAttribute('data-src') || meta.cover;
-                if (desc || cover) return { desc, cover: cover ? cover.replace('http://', 'https://') : null, pageUrl: full, source: 'Lindhardt og Ringhof' };
+                if (desc || cover) return { desc, cover: cover?.replace('http://', 'https://') || null, pageUrl: full, source: 'Lindhardt og Ringhof' };
             }
         }
         const meta = parseMeta(html);
         if (meta.desc || meta.cover) return { ...meta, source: 'Lindhardt og Ringhof (meta)' };
-    } catch(e) { console.warn('LR error for "' + title + '":', e.message); }
+    } catch(e) { console.warn('LR error:', e.message); }
     return null;
 }
 async function fetchFromCarlsen(title, author) {
     try {
-        const searchUrl = `https://www.carlsen.dk/soeg/${encodeURIComponent(title)}`;
-        const html = await proxyFetch(searchUrl);
+        const html = await proxyFetch(`https://www.carlsen.dk/soeg/${encodeURIComponent(title)}`);
         if (!html) return null;
         const doc = new DOMParser().parseFromString(html, 'text/html');
-        const selectors = ['a[href*="/bog/"]', 'a[href*="/product/"]', '.product-item a', 'article a', '.product a'];
         let productUrl = null;
-        for (const sel of selectors) {
+        for (const sel of ['a[href*="/bog/"]','a[href*="/product/"]','.product-item a','article a']) {
             const el = doc.querySelector(sel);
-            if (el && el.getAttribute('href')) { productUrl = el.getAttribute('href'); break; }
+            if (el?.getAttribute('href')) { productUrl = el.getAttribute('href'); break; }
         }
         if (productUrl) {
             const full  = productUrl.startsWith('http') ? productUrl : 'https://www.carlsen.dk' + productUrl;
             const bHtml = await proxyFetch(full);
             if (bHtml) {
                 const bd      = new DOMParser().parseFromString(bHtml, 'text/html');
-                const descEl  = bd.querySelector('.product-description,.description,.blurb,[class*="description"],[class*="blurb"],[class*="synopsis"]');
-                const rawDesc = descEl?.innerText?.trim() || descEl?.textContent?.trim() || null;
+                const descEl  = bd.querySelector('.product-description,.description,.blurb,[class*="description"],[class*="synopsis"]');
+                const rawDesc = descEl?.innerText?.trim() || null;
                 const meta    = parseMeta(bHtml);
-                const desc    = trimDesc((rawDesc && rawDesc.length > 20 ? rawDesc : null) || meta.desc);
-                const imgEl   = bd.querySelector('.product-cover img,.book-cover img,.cover img,img[class*="cover"]');
+                const desc    = trimDesc((rawDesc?.length > 20 ? rawDesc : null) || meta.desc);
+                const imgEl   = bd.querySelector('.product-cover img,.cover img,img[class*="cover"]');
                 const cover   = imgEl?.src || imgEl?.getAttribute('data-src') || meta.cover;
-                if (desc || cover) return { desc, cover: cover ? cover.replace('http://', 'https://') : null, pageUrl: full, source: 'Carlsen' };
+                if (desc || cover) return { desc, cover: cover?.replace('http://', 'https://') || null, pageUrl: full, source: 'Carlsen' };
             }
         }
         const meta = parseMeta(html);
         if (meta.desc || meta.cover) return { ...meta, source: 'Carlsen (meta)' };
-    } catch(e) { console.warn('Carlsen error for "' + title + '":', e.message); }
+    } catch(e) { console.warn('Carlsen error:', e.message); }
     return null;
 }
 async function fetchFromGoogle(title, author) {
-    const queries = [
-        `intitle:"${title}" inauthor:"${author}"`,
-        `"${title}" "${author}"`,
-        `intitle:"${title}"`,
-        `${title} ${author}`
-    ];
+    const queries = [`intitle:"${title}" inauthor:"${author}"`, `"${title}" "${author}"`, `intitle:"${title}"`, `${title} ${author}`];
     for (const q of queries) {
         try {
             const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&maxResults=8`);
@@ -1087,14 +1051,13 @@ async function fetchFromGoogle(title, author) {
                 .replace('http:', 'https:').replace('&edge=curl', '').replace('zoom=1', 'zoom=3');
             const desc = info.description || info.subtitle || null;
             if (desc || cover) return { desc: trimDesc(desc), cover: cover || null, author: info.authors?.join(', ') || null, source: 'Google Books' };
-        } catch(e) { console.warn('Google Books error for "' + title + '":', e.message); }
+        } catch(e) { console.warn('Google Books error:', e.message); }
     }
     return null;
 }
 async function fetchFromOpenLibrary(title, author) {
     try {
-        const q   = encodeURIComponent(title + ' ' + author);
-        const res = await fetch(`https://openlibrary.org/search.json?q=${q}&limit=10&fields=key,title,author_name,cover_i`);
+        const res = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(title + ' ' + author)}&limit=10&fields=key,title,author_name,cover_i`);
         if (!res.ok) return null;
         const data = await res.json();
         if (!data.docs?.length) return null;
@@ -1110,33 +1073,33 @@ async function fetchFromOpenLibrary(title, author) {
             try {
                 const wr = await fetch(`https://openlibrary.org${best.key}.json`);
                 if (wr.ok) {
-                    const w   = await wr.json();
+                    const w = await wr.json();
                     const raw = typeof w.description === 'string' ? w.description : (w.description?.value || null);
                     if (raw) desc = trimDesc(raw);
                 }
             } catch {}
         }
         if (cover || desc) return { desc, cover, author: best.author_name?.join(', ') || null, source: 'Open Library' };
-    } catch(e) { console.warn('Open Library error for "' + title + '":', e.message); }
+    } catch(e) { console.warn('OL error:', e.message); }
     return null;
 }
 async function fetchFromOpenLibraryTitleOnly(title) {
     try {
-        const res  = await fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&limit=5&fields=key,title,author_name,cover_i`);
+        const res = await fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&limit=5&fields=key,title,author_name,cover_i`);
         if (!res.ok) return null;
         const data = await res.json();
         if (!data.docs?.length) return null;
         const best  = data.docs[0];
         const cover = best.cover_i ? `https://covers.openlibrary.org/b/id/${best.cover_i}-L.jpg` : null;
         if (cover) return { desc: null, cover, author: best.author_name?.join(', ') || null, source: 'Open Library (titel)' };
-    } catch(e) { console.warn('Open Library title-only error:', e.message); }
+    } catch(e) { console.warn('OL title error:', e.message); }
     return null;
 }
 
 // ── MAIN FETCH LOOP ───────────────────────────────────────────
 async function fetchAllInfo() {
     if (!books.length) { toast('Upload en CSV-fil først', 'err'); return; }
-    const btn  = document.getElementById('btnFetch');
+    const btn = document.getElementById('btnFetch');
     const wrap = document.getElementById('progressContainer');
     const bar  = document.getElementById('progressBar');
     btn.disabled = true; btn.textContent = '⏳ Henter…';
@@ -1144,19 +1107,16 @@ async function fetchAllInfo() {
     let ok = 0, fail = 0;
     for (let i = 0; i < books.length; i++) {
         const book = books[i];
-        bar.style.width = Math.round(((i + 1) / books.length) * 100) + '%';
-        bar.textContent = (i + 1) + '/' + books.length + ' – ' + book.title;
+        bar.style.width = Math.round(((i+1)/books.length)*100) + '%';
+        bar.textContent = (i+1) + '/' + books.length + ' – ' + book.title;
         if (book.manualCover && book.manualDesc) { await delay(20); continue; }
         const needDesc  = !book.manualDesc;
         const needCover = !book.manualCover;
         const apply = result => {
             if (!result) return false;
             let changed = false;
-            if (needDesc  && result.desc  && result.desc.length  > 10) { book.desc = result.desc; changed = true; }
-            if (needCover && result.cover && result.cover.startsWith('http')) {
-                book.cover = result.cover.replace('http://', 'https://');
-                changed = true;
-            }
+            if (needDesc  && result.desc?.length  > 10) { book.desc = result.desc; changed = true; }
+            if (needCover && result.cover?.startsWith('http')) { book.cover = result.cover.replace('http://', 'https://'); changed = true; }
             if (result.pageUrl && !book.pageUrl) book.pageUrl = result.pageUrl;
             if (result.author && book.author === 'Ukendt forfatter') book.author = result.author;
             if (changed) { book.fetchSuccess = true; book.fetchSource = result.source; }
@@ -1170,10 +1130,7 @@ async function fetchAllInfo() {
         if (stillNeedAny())   { await delay(300); apply(await fetchFromGoogle(book.title, book.author)); }
         if (stillNeedAny())   { await delay(300); apply(await fetchFromOpenLibrary(book.title, book.author)); }
         if (stillNeedCover()) { await delay(200); apply(await fetchFromOpenLibraryTitleOnly(book.title)); }
-        if (!book.fetchSuccess) {
-            book.fetchError = 'Ikke fundet i Lindhardt & Ringhof, Carlsen, Google Books eller Open Library';
-            fail++;
-        } else { ok++; }
+        if (!book.fetchSuccess) { book.fetchError = 'Ikke fundet'; fail++; } else ok++;
         book.fetchAttempted = true;
         await saveBookToFirebase(book);
         if (i < books.length - 1) await delay(API_DELAY);
@@ -1181,35 +1138,26 @@ async function fetchAllInfo() {
     btn.disabled = false; btn.textContent = '✨ Hent info';
     wrap.style.display = 'none';
     if (fail === 0)    toast('🎉 Alle ' + ok + ' bøger hentet!', 'ok');
-    else if (ok === 0) toast('❌ Ingen bøger fundet — tjek fejl-knappen', 'err');
+    else if (ok === 0) toast('❌ Ingen bøger fundet', 'err');
     else               toast('✅ ' + ok + ' ok — ❌ ' + fail + ' fejlede', 'ok');
 }
 function showFetchErrors() {
     const failed = books.filter(b => b.fetchAttempted && !b.fetchSuccess);
     if (!failed.length) { toast('Ingen fejl!', 'ok'); return; }
-    alert('❌ ' + failed.length + ' fejlede:\n\n' +
-        failed.map(b => '• "' + b.title + '" af ' + b.author + '\n  → ' + (b.fetchError || 'Ikke fundet')).join('\n\n'));
+    alert('❌ ' + failed.length + ' fejlede:\n\n' + failed.map(b => '• "' + b.title + '"\n  → ' + (b.fetchError || 'Ikke fundet')).join('\n\n'));
 }
 async function debugFirebase() {
     let r = '🔍 Firebase Debug\n═══════════════\n';
-    r += 'Init: ' + (isFirebaseReady ? '✅' : '❌') + '\nLokale bøger: ' + books.length + '\n';
-    r += 'Registrerede medlemmer: ' + REGISTERED_USERS.length + '\n';
-    const voksen = books.filter(b => (b.type || 'Voksenbog') === 'Voksenbog').length;
-    const boern  = books.filter(b => (b.type || 'Voksenbog') === 'Børnebog').length;
-    r += 'Voksenbøger: ' + voksen + ' | Børnebøger: ' + boern + '\n';
+    r += 'Bøger: ' + books.length + ' | Max ønsker: ' + MAX_CLAIMS + ' (viser ' + SHOW_SLOTS + ')\n';
     if (isFirebaseReady) {
         try {
             const snap = await database.ref('books').once('value');
             r += 'Firebase bøger: ' + (snap.val() ? Object.keys(snap.val()).length : 0) + '\n';
-            const msnap = await database.ref('members').once('value');
-            r += 'Firebase medlemmer: ' + (msnap.val() ? (Array.isArray(msnap.val()) ? msnap.val().length : Object.keys(msnap.val()).length) : 0) + '\n';
             await database.ref('test').set({ ts: Date.now() });
             r += 'Skriveadgang: ✅\n';
             await database.ref('test').remove();
         } catch(e) { r += 'Fejl: ' + e.message + '\n'; }
     }
-    const sources = [...new Set(books.filter(b => b.fetchSource).map(b => b.fetchSource))];
-    r += '\nKilder brugt:\n' + (sources.length ? sources.map(s => '• ' + s).join('\n') : '(ingen endnu)');
     alert(r);
 }
 async function manualRefresh() {
@@ -1217,15 +1165,14 @@ async function manualRefresh() {
     const snap = await database.ref('books').once('value');
     const data = snap.val();
     books = data ? Object.keys(data).map(k => ({ firebaseKey: k, ...data[k] })) : [];
-    updateTabCounts();
-    renderBooks();
+    updateTabCounts(); renderBooks();
     toast('✅ ' + books.length + ' bøger genindlæst', 'ok');
 }
 async function runSmartLottery() {
     if (!books.length) { toast('Ingen bøger', 'err'); return; }
-    const total = books.reduce((s, b) => s + (b.claims?.length || 0), 0);
+    const total = books.reduce((s,b) => s + (b.claims?.length || 0), 0);
     if (!total) { toast('Ingen ønsker endnu', 'err'); return; }
-    if (!confirm('Kør lodtrækning for ' + books.length + ' bøger (' + total + ' ønsker i alt)?')) return;
+    if (!confirm('Kør lodtrækning for ' + books.length + ' bøger (' + total + ' ønsker)?')) return;
     books.forEach(b => b.winner = null);
     books.forEach(b => { if (b.claims?.length === 1) b.winner = b.claims[0]; });
     const popular = books.filter(b => b.claims?.length > 1);
@@ -1249,7 +1196,7 @@ async function runSmartLottery() {
     toast('🎉 ' + books.filter(b => b.winner).length + ' bøger tildelt til ' + winners.size + ' vindere', 'ok');
 }
 async function clearAllData() {
-    if (!confirm('Slet ALLE data? Kan ikke fortrydes!')) return;
+    if (!confirm('Slet ALLE data?')) return;
     if (!confirm('Bekræft: slet alt permanent')) return;
     await deleteAllBooksFromFirebase();
     toast('Alle data slettet', 'ok');
@@ -1259,8 +1206,7 @@ async function clearAllData() {
 async function toggleClaim(bookId) {
     const user = getUser();
     if (!user) { toast('Skriv og GEM dit navn først', 'err'); return; }
-    const book = books.find(b => b.id === bookId);
-    if (!book) return;
+    const book = books.find(b => b.id === bookId); if (!book) return;
     if (!book.claims) book.claims = [];
     const idx = book.claims.indexOf(user);
     if (idx > -1) {
@@ -1290,35 +1236,38 @@ function renderBooks() {
     }
     grid.innerHTML = '';
     filtered.forEach(book => grid.appendChild(createBookCard(book, user)));
-    renderUserList();
-    renderMyWonBooks();
+    renderUserList(); renderMyWonBooks();
 }
 
-// ── FIX: use data-id instead of inline string to avoid quote bugs ──
+// ── BOOK CARD ─────────────────────────────────────────────────
 function createBookCard(book, user) {
-    const card     = document.createElement('div');
-    card.className = 'book-card';
-    card.dataset.id = book.id; // ✅ safe — no inline string with quotes
+    const card      = document.createElement('div');
+    card.className  = 'book-card';
+    card.dataset.id = book.id;
     card.addEventListener('click', () => openModal(book.id));
-    const claims    = book.claims || [];
-    const isClaimed = user && claims.includes(user);
-    const isWinner  = book.winner === user;
-    const slots = Array(MAX_CLAIMS).fill(0).map((_, i) => {
-        const c = claims[i];
+
+    const claims      = book.claims || [];
+    const isClaimed   = user && claims.includes(user);
+    const isWinner    = book.winner === user;
+    const lotteryDone = books.some(b => b.winner);
+
+    const visibleClaims = claims.slice(0, SHOW_SLOTS);
+    const hiddenCount   = claims.length - SHOW_SLOTS;
+
+    const slots = Array(SHOW_SLOTS).fill(0).map((_, i) => {
+        const c = visibleClaims[i];
         const w = book.winner === c && c;
         return '<div class="slot' + (c ? ' taken' : '') + (w ? ' winner' : '') + '">' +
                (c ? esc(c.split(' ')[0]) : '–') + (w ? ' 🏆' : '') + '</div>';
     }).join('');
-    const lotteryDone = books.some(b => b.winner);
+
     let btnCls = 'btn-claim', btnTxt = 'Jeg ønsker mig bogen her', dis = false;
     if (!user)                            { btnTxt = 'Gem dit navn først'; dis = true; }
     else if (isClaimed)                   { btnCls += ' claimed'; btnTxt = 'Fjern ønske'; }
     else if (claims.length >= MAX_CLAIMS) { btnTxt = 'Fuld (' + MAX_CLAIMS + '/' + MAX_CLAIMS + ')'; dis = true; }
 
-    // ✅ Claim button uses data-attribute click handler — no inline string interpolation
     const claimBtn = document.createElement('button');
-    claimBtn.className = btnCls;
-    claimBtn.textContent = btnTxt;
+    claimBtn.className = btnCls; claimBtn.textContent = btnTxt;
     if (dis) claimBtn.disabled = true;
     claimBtn.addEventListener('click', e => { e.stopPropagation(); toggleClaim(book.id); });
 
@@ -1334,20 +1283,25 @@ function createBookCard(book, user) {
             <div class="card-author">${esc(book.author)}</div>
             <div class="card-hint">ℹ️ Klik for beskrivelse</div>
             <div class="claim-slots">${slots}</div>
+            <div class="see-more-wrap"></div>
             <div class="claim-btn-wrap"></div>
         </div>`;
-    if (!lotteryDone) {
-        card.querySelector('.claim-btn-wrap').appendChild(claimBtn);
+
+    if (hiddenCount > 0) {
+        const seeMoreBtn = document.createElement('button');
+        seeMoreBtn.className   = 'btn-see-more';
+        seeMoreBtn.textContent = '👁️ Se alle ' + claims.length + ' ønsker';
+        seeMoreBtn.addEventListener('click', e => { e.stopPropagation(); openModal(book.id); });
+        card.querySelector('.see-more-wrap').appendChild(seeMoreBtn);
     }
+    if (!lotteryDone) card.querySelector('.claim-btn-wrap').appendChild(claimBtn);
     return card;
 }
 
 // ── MODAL ─────────────────────────────────────────────────────
 function openModal(bookId) {
-    isNewBookMode = false;
-    currentBookId = bookId;
-    const book = books.find(b => b.id === bookId);
-    if (!book) return;
+    isNewBookMode = false; currentBookId = bookId;
+    const book = books.find(b => b.id === bookId); if (!book) return;
     updateModalContent(book);
     document.getElementById('bookModal').classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -1385,7 +1339,6 @@ function updateModalContent(book) {
     const adm = document.getElementById('adminImageUpload');
     if (isAdminMode) {
         adm.classList.add('active');
-        // Show edit fields for existing book
         document.getElementById('editBookFields').style.display = 'block';
         document.getElementById('searchLinks').style.display    = '';
         document.getElementById('editBookTitle').value          = book.title;
@@ -1404,7 +1357,6 @@ function updateModalContent(book) {
     } else {
         adm.classList.remove('active');
         document.getElementById('editBookFields').style.display = 'none';
-        document.getElementById('searchLinks').style.display    = '';
     }
 }
 function closeModal() {
@@ -1421,7 +1373,7 @@ async function uploadImageFromUrl() {
     if (isNewBookMode && tempNewBook) {
         tempNewBook.cover = url; tempNewBook.manualCover = true;
         const img = document.getElementById('modalImg'); img.src = url; img.style.display = 'block';
-        toast('Billede-URL klar — husk at klikke "Gem ny bog"!', 'ok'); return;
+        toast('Billede-URL klar!', 'ok'); return;
     }
     if (!currentBookId) return;
     const book = books.find(b => b.id === currentBookId); if (!book) return;
@@ -1441,7 +1393,7 @@ async function uploadImageFromFile() {
         if (isNewBookMode && tempNewBook) {
             tempNewBook.cover = dataUrl; tempNewBook.manualCover = true;
             const img = document.getElementById('modalImg'); img.src = dataUrl; img.style.display = 'block';
-            toast('Billede klar — husk at klikke "Gem ny bog"!', 'ok'); return;
+            toast('Billede klar!', 'ok'); return;
         }
         if (!currentBookId) return;
         const book = books.find(b => b.id === currentBookId); if (!book) return;
@@ -1471,7 +1423,7 @@ async function saveManualDescription() {
     if (isNewBookMode && tempNewBook) {
         tempNewBook.desc = desc; tempNewBook.manualDesc = true;
         document.getElementById('modalDesc').textContent = desc;
-        toast('Beskrivelse klar — husk at klikke "Gem ny bog"!', 'ok'); return;
+        toast('Beskrivelse klar!', 'ok'); return;
     }
     if (!currentBookId) return;
     const book = books.find(b => b.id === currentBookId); if (!book) return;
@@ -1511,10 +1463,3 @@ window.onload = init;
 </script>
 </body>
 </html>
-
-							<script>
-                            	
-							</script>
-                        </body>
-                        </html>
-                    
