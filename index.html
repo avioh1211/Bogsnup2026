@@ -1,4 +1,19 @@
-<!DOCTYPE html>
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
 <html lang="da">
 <head>
     <meta charset="UTF-8">
@@ -75,18 +90,10 @@
         /* TABS */
         .tabs-wrap { background:var(--card); border-bottom:1px solid var(--border); }
         .tabs-inner { max-width:1600px; margin:0 auto; padding:0 30px; display:flex; gap:4px; align-items:flex-end; }
-        .tab-btn {
-            padding:14px 28px; border:none; background:none; font-size:15px; font-weight:600;
-            color:var(--muted); cursor:pointer; border-bottom:3px solid transparent;
-            transition:color .15s, border-color .15s; white-space:nowrap;
-            display:flex; align-items:center; gap:8px;
-        }
+        .tab-btn { padding:14px 28px; border:none; background:none; font-size:15px; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:3px solid transparent; transition:color .15s,border-color .15s; white-space:nowrap; display:flex; align-items:center; gap:8px; }
         .tab-btn:hover { color:var(--text); }
         .tab-btn.active { color:var(--blue); border-bottom-color:var(--blue); }
-        .tab-btn .tab-count {
-            font-size:11px; font-weight:700; padding:2px 7px; border-radius:10px;
-            background:var(--bg); color:var(--muted); transition:background .15s, color .15s;
-        }
+        .tab-btn .tab-count { font-size:11px; font-weight:700; padding:2px 7px; border-radius:10px; background:var(--bg); color:var(--muted); transition:background .15s,color .15s; }
         .tab-btn.active .tab-count { background:var(--blue); color:#fff; }
 
         /* PROGRESS */
@@ -352,6 +359,8 @@
             <div id="modalClaims"></div>
         </div>
         <div class="modal-admin" id="adminImageUpload">
+
+            <!-- NEW BOOK fields -->
             <div id="newBookFields" style="display:none">
                 <h4>📖 Ny bog – grundoplysninger</h4>
                 <input type="text" id="newBookTitle"  placeholder="Titel *">
@@ -363,6 +372,18 @@
                 </select>
                 <hr class="modal-sep">
             </div>
+
+            <!-- EDIT EXISTING BOOK info -->
+            <div id="editBookFields" style="display:none">
+                <h4>✏️ Rediger titel & forfatter</h4>
+                <input type="text" id="editBookTitle"  placeholder="Titel *">
+                <input type="text" id="editBookAuthor" placeholder="Forfatter">
+                <div class="adm-row">
+                    <button class="adm-btn green" onclick="saveBookTitleAuthor()">💾 Gem titel & forfatter</button>
+                </div>
+                <hr class="modal-sep">
+            </div>
+
             <div id="searchLinks">
                 <h4>🔗 Find bogen</h4>
                 <a id="lrSearchLink"      href="#" target="_blank">🔍 Lindhardt og Ringhof</a>
@@ -370,7 +391,6 @@
                 <a id="googleImagesLink"  href="#" target="_blank">🔍 Google Images (forside)</a>
                 <a id="pageUrlLink"       href="#" target="_blank" style="display:none;color:var(--green)">📖 Åbn bogside (fundet automatisk)</a>
                 <hr class="modal-sep">
-                <!-- Admin: change book type -->
                 <h4>🏷️ Ændr kategori</h4>
                 <select id="bookTypeSelect" onchange="changeBookType(this.value)" style="margin-bottom:0">
                     <option value="Voksenbog">📚 Voksenbog</option>
@@ -378,6 +398,7 @@
                 </select>
                 <hr class="modal-sep">
             </div>
+
             <h4>📸 Forside (Admin)</h4>
             <input type="url" id="imageUrlInput" placeholder="Billede-URL (https://…)">
             <div class="adm-row">
@@ -561,7 +582,7 @@ let currentBookId = null;
 let isAdminMode   = false;
 let isNewBookMode = false;
 let tempNewBook   = null;
-let activeTab     = 'Voksenbog'; // default tab
+let activeTab     = 'Voksenbog';
 
 // ── TABS ──────────────────────────────────────────────────────
 function switchTab(type) {
@@ -577,7 +598,7 @@ function updateTabCounts() {
     document.getElementById('countBoern').textContent  = boern;
 }
 
-// ── NAME BANNER LOGIC ─────────────────────────────────────────
+// ── NAME BANNER ───────────────────────────────────────────────
 function hideBannerShowChip(name) {
     document.getElementById('nameBanner').classList.add('hidden');
     const chip = document.getElementById('nameConfirmed');
@@ -809,7 +830,7 @@ function toggleAdmin() {
     }
 }
 
-// ── CSV UPLOAD — reads Title, Author, Type ────────────────────
+// ── CSV UPLOAD ────────────────────────────────────────────────
 function handleCSVUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -838,6 +859,28 @@ function handleCSVUpload(event) {
     };
     reader.readAsText(file);
     event.target.value = '';
+}
+
+// ── EDIT BOOK TITLE & AUTHOR (admin) ─────────────────────────
+async function saveBookTitleAuthor() {
+    const newTitle  = document.getElementById('editBookTitle').value.trim();
+    const newAuthor = document.getElementById('editBookAuthor').value.trim();
+    if (!newTitle) { toast('Titel må ikke være tom', 'err'); document.getElementById('editBookTitle').focus(); return; }
+    if (!currentBookId || isNewBookMode) return;
+    const book = books.find(b => b.id === currentBookId);
+    if (!book) return;
+    book.title  = newTitle;
+    book.author = newAuthor || 'Ukendt forfatter';
+    await saveBookToFirebase(book);
+    // Update modal display immediately
+    document.getElementById('modalTitle').textContent  = book.title;
+    document.getElementById('modalAuthor').textContent = book.author;
+    // Update search links with new title
+    const q = encodeURIComponent(book.title);
+    document.getElementById('lrSearchLink').href      = 'https://www.lindhardtogringhof.dk/soeg/' + q;
+    document.getElementById('carlsenSearchLink').href = 'https://www.carlsen.dk/soeg/' + q;
+    document.getElementById('googleImagesLink').href  = 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(book.title + ' ' + book.author + ' bog forside');
+    toast('✅ Titel og forfatter opdateret!', 'ok');
 }
 
 // ── CHANGE BOOK TYPE (admin) ──────────────────────────────────
@@ -874,6 +917,7 @@ function addNewBook() {
     const adm = document.getElementById('adminImageUpload');
     adm.classList.add('active');
     document.getElementById('newBookFields').style.display  = 'block';
+    document.getElementById('editBookFields').style.display = 'none';
     document.getElementById('searchLinks').style.display    = 'none';
     document.getElementById('saveNewBookRow').style.display = 'block';
     document.getElementById('btnClearDesc').style.display   = 'none';
@@ -892,8 +936,8 @@ async function saveNewBook() {
     const author = document.getElementById('newBookAuthor').value.trim();
     const type   = document.getElementById('newBookType').value;
     if (!title) { toast('Skriv en titel', 'err'); document.getElementById('newBookTitle').focus(); return; }
-    tempNewBook.title  = normalizeName(title);
-    tempNewBook.author = author ? normalizeName(author) : 'Ukendt forfatter';
+    tempNewBook.title  = title;
+    tempNewBook.author = author || 'Ukendt forfatter';
     tempNewBook.type   = type;
     const descInput = document.getElementById('descriptionTextarea').value.trim();
     if (descInput && !tempNewBook.manualDesc) {
@@ -909,7 +953,7 @@ async function saveNewBook() {
         }
     }
     await saveBookToFirebase(tempNewBook);
-    toast('✅ "' + tempNewBook.title + '" oprettet som ' + (type === 'Børnebog' ? '🧒 Børnebog' : '📚 Voksenbog') + '!', 'ok');
+    toast('✅ "' + tempNewBook.title + '" oprettet!', 'ok');
     isNewBookMode = false;
     currentBookId = null;
     tempNewBook   = null;
@@ -1234,27 +1278,28 @@ function handleModalClaim() {
 
 // ── RENDER ────────────────────────────────────────────────────
 function renderBooks() {
-    const grid = document.getElementById('bookGrid');
-    const user = getUser();
-    // Filter books by active tab
+    const grid     = document.getElementById('bookGrid');
+    const user     = getUser();
     const filtered = books.filter(b => (b.type || 'Voksenbog') === activeTab);
     updateTabCounts();
     if (!filtered.length) {
-        const label = activeTab === 'Børnebog' ? '🧒 Børnebøger' : '📚 Voksenbøger';
-        grid.innerHTML = `<div class="empty-state"><div class="icon">${activeTab === 'Børnebog' ? '🧒' : '📚'}</div><p>Ingen ${label} endnu.</p></div>`;
-        renderUserList();
-        renderMyWonBooks();
-        return;
+        const icon  = activeTab === 'Børnebog' ? '🧒' : '📚';
+        const label = activeTab === 'Børnebog' ? 'Børnebøger' : 'Voksenbøger';
+        grid.innerHTML = `<div class="empty-state"><div class="icon">${icon}</div><p>Ingen ${label} endnu.</p></div>`;
+        renderUserList(); renderMyWonBooks(); return;
     }
     grid.innerHTML = '';
     filtered.forEach(book => grid.appendChild(createBookCard(book, user)));
     renderUserList();
     renderMyWonBooks();
 }
+
+// ── FIX: use data-id instead of inline string to avoid quote bugs ──
 function createBookCard(book, user) {
     const card     = document.createElement('div');
     card.className = 'book-card';
-    card.onclick   = () => openModal(book.id);
+    card.dataset.id = book.id; // ✅ safe — no inline string with quotes
+    card.addEventListener('click', () => openModal(book.id));
     const claims    = book.claims || [];
     const isClaimed = user && claims.includes(user);
     const isWinner  = book.winner === user;
@@ -1262,13 +1307,21 @@ function createBookCard(book, user) {
         const c = claims[i];
         const w = book.winner === c && c;
         return '<div class="slot' + (c ? ' taken' : '') + (w ? ' winner' : '') + '">' +
-               (c ? c.split(' ')[0] : '–') + (w ? ' 🏆' : '') + '</div>';
+               (c ? esc(c.split(' ')[0]) : '–') + (w ? ' 🏆' : '') + '</div>';
     }).join('');
     const lotteryDone = books.some(b => b.winner);
     let btnCls = 'btn-claim', btnTxt = 'Jeg ønsker mig bogen her', dis = false;
     if (!user)                            { btnTxt = 'Gem dit navn først'; dis = true; }
     else if (isClaimed)                   { btnCls += ' claimed'; btnTxt = 'Fjern ønske'; }
     else if (claims.length >= MAX_CLAIMS) { btnTxt = 'Fuld (' + MAX_CLAIMS + '/' + MAX_CLAIMS + ')'; dis = true; }
+
+    // ✅ Claim button uses data-attribute click handler — no inline string interpolation
+    const claimBtn = document.createElement('button');
+    claimBtn.className = btnCls;
+    claimBtn.textContent = btnTxt;
+    if (dis) claimBtn.disabled = true;
+    claimBtn.addEventListener('click', e => { e.stopPropagation(); toggleClaim(book.id); });
+
     card.innerHTML = `
         <div class="card-cover">
             ${book.cover
@@ -1281,9 +1334,11 @@ function createBookCard(book, user) {
             <div class="card-author">${esc(book.author)}</div>
             <div class="card-hint">ℹ️ Klik for beskrivelse</div>
             <div class="claim-slots">${slots}</div>
-            ${lotteryDone ? '' : '<button class="' + btnCls + '" ' + (dis ? 'disabled' : '') +
-              ' onclick="event.stopPropagation();toggleClaim(\'' + book.id + '\')">' + btnTxt + '</button>'}
+            <div class="claim-btn-wrap"></div>
         </div>`;
+    if (!lotteryDone) {
+        card.querySelector('.claim-btn-wrap').appendChild(claimBtn);
+    }
     return card;
 }
 
@@ -1325,16 +1380,20 @@ function updateModalContent(book) {
         else                                  { btn.textContent = 'Jeg ønsker mig bogen her';                      btn.disabled = false; btn.className = 'btn-ma'; }
     }
     document.getElementById('newBookFields').style.display  = 'none';
-    document.getElementById('searchLinks').style.display    = '';
     document.getElementById('saveNewBookRow').style.display = 'none';
     document.getElementById('btnClearDesc').style.display   = '';
     const adm = document.getElementById('adminImageUpload');
     if (isAdminMode) {
         adm.classList.add('active');
-        document.getElementById('imageUrlInput').value       = '';
-        document.getElementById('imageFileInput').value      = '';
-        document.getElementById('descriptionTextarea').value = book.desc || '';
-        document.getElementById('bookTypeSelect').value      = book.type || 'Voksenbog';
+        // Show edit fields for existing book
+        document.getElementById('editBookFields').style.display = 'block';
+        document.getElementById('searchLinks').style.display    = '';
+        document.getElementById('editBookTitle').value          = book.title;
+        document.getElementById('editBookAuthor').value         = book.author;
+        document.getElementById('imageUrlInput').value          = '';
+        document.getElementById('imageFileInput').value         = '';
+        document.getElementById('descriptionTextarea').value    = book.desc || '';
+        document.getElementById('bookTypeSelect').value         = book.type || 'Voksenbog';
         const q = encodeURIComponent(book.title);
         document.getElementById('lrSearchLink').href      = 'https://www.lindhardtogringhof.dk/soeg/' + q;
         document.getElementById('carlsenSearchLink').href = 'https://www.carlsen.dk/soeg/' + q;
@@ -1344,6 +1403,8 @@ function updateModalContent(book) {
         else               { pageLink.style.display = 'none'; }
     } else {
         adm.classList.remove('active');
+        document.getElementById('editBookFields').style.display = 'none';
+        document.getElementById('searchLinks').style.display    = '';
     }
 }
 function closeModal() {
@@ -1445,8 +1506,15 @@ function shuffleArray(arr) {
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
 }
-function esc(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+function esc(t) { const d = document.createElement('div'); d.textContent = t || ''; return d.innerHTML; }
 window.onload = init;
 </script>
 </body>
 </html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    
