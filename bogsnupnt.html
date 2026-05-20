@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bogsnup 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  /* ═══════════════════════════════════════════
+     ROOT & RESET
+  ═══════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange:    #F4622A;
+    --orange-lt: #FFF0EB;
+    --orange-md: #FED7AA;
+    --bg:        #FAF8F5;
+    --card:      #FFFFFF;
+    --dark:      #1C1C1C;
+    --mid:       #374151;
+    --muted:     #9CA3AF;
+    --border:    #EBEBEB;
+    --green:     #16A34A;
+    --green-lt:  #F0FDF4;
+    --green-bd:  #BBF7D0;
+    --red:       #DC2626;
+    --red-lt:    #FEF2F2;
+    --red-bd:    #FECACA;
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.10);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.14);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* ═══════════════════════════════════════════
+     STICKY NAV
+  ═══════════════════════════════════════════ */
+  #top-nav {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(250,248,245,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 40px; height: 62px; gap: 24px;
+  }
+
+  .nav-logo {
+    font-size: 18px; font-weight: 900;
+    letter-spacing: -0.04em; color: var(--dark);
+    flex-shrink: 0;
+  }
+  .nav-logo span { color: var(--orange); }
+
+  .nav-status {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600;
+    color: var(--green);
+    background: var(--green-lt);
+    border: 1px solid var(--green-bd);
+    border-radius: 99px; padding: 3px 10px;
+    flex-shrink: 0;
+  }
+  .nav-status .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+  }
+  .nav-status.disconnected { color: var(--red); background: var(--red-lt); border-color: var(--red-bd); }
+  .nav-status.disconnected .dot { background: var(--red); box-shadow: 0 0 6px var(--red); }
+
+  .nav-rule {
+    font-size: 11.5px; color: var(--muted);
+    line-height: 1.5; flex: 1;
+    display: none;
+  }
+  @media (min-width: 1024px) { .nav-rule { display: block; } }
+
+  .nav-right {
+    margin-left: auto; display: flex;
+    align-items: center; gap: 8px; flex-shrink: 0;
+  }
+
+  /* Name entry inline */
+  #nav-name-form {
+    display: flex; align-items: center; gap: 6px;
+  }
+  #nav-name-form input {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px; font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    background: var(--card); outline: none; width: 100px;
+    transition: border-color 0.15s;
+  }
+  #nav-name-form input:focus { border-color: var(--orange); }
+
+  /* Buttons */
+  .btn { cursor: pointer; font-family: 'Inter', sans-serif; border: none; display: inline-flex; align-items: center; gap: 5px; transition: all 0.15s; font-weight: 600; }
+  .btn-primary { background: var(--orange); color: #fff; border-radius: var(--radius-sm); padding: 8px 18px; font-size: 12px; }
+  .btn-primary:hover { background: #df551f; }
+  .btn-dark { background: var(--dark); color: #fff; border-radius: var(--radius-sm); padding: 8px 16px; font-size: 12px; }
+  .btn-dark:hover { background: #333; }
+  .btn-ghost { background: transparent; color: var(--mid); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 7px 14px; font-size: 12px; }
+  .btn-ghost:hover { border-color: #bbb; color: var(--dark); }
+  .btn-icon { background: transparent; color: var(--muted); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 7px 10px; font-size: 13px; }
+  .btn-icon:hover { color: var(--dark); border-color: #bbb; }
+  .btn-danger { background: var(--red-lt); color: var(--red); border: 1.5px solid var(--red-bd); border-radius: var(--radius-sm); padding: 7px 14px; font-size: 12px; }
+  .btn-danger:hover { background: var(--red); color: #fff; }
+
+  /* Admin toolbar — hidden until ⚙️ hovered */
+  #admin-toolbar {
+    display: flex; gap: 6px; align-items: center;
+    opacity: 0.25; transition: opacity 0.2s;
+  }
+  #admin-toolbar:hover { opacity: 1; }
+
+  /* ═══════════════════════════════════════════
+     HERO STRIP
+  ═══════════════════════════════════════════ */
+  #hero {
+    padding: 48px 40px 32px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px; align-items: start;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--orange); margin-bottom: 12px;
+  }
+
+  #hero h1 {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 900; letter-spacing: -0.035em;
+    line-height: 1.05; margin-bottom: 14px;
+  }
+  #hero h1 em { color: var(--orange); font-style: normal; }
+
+  .hero-sub {
+    font-size: 13.5px; color: var(--muted);
+    line-height: 1.7; max-width: 460px; margin-bottom: 24px;
+  }
+
+  .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .hero-stats {
+    display: flex; gap: 28px; margin-top: 32px;
+    padding-top: 24px; border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-size: 26px; font-weight: 900;
+    letter-spacing: -0.04em; color: var(--dark);
+  }
+  .stat-num.orange { color: var(--orange); }
+  .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .hero-visual {
+    width: 180px; height: 180px;
+    background: var(--orange-lt);
+    border-radius: 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 72px; flex-shrink: 0;
+  }
+
+  /* ═══════════════════════════════════════════
+     TABS
+  ═══════════════════════════════════════════ */
+  #tabs-bar {
+    display: flex; gap: 2px;
+    padding: 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+
+  .tab-btn {
+    padding: 11px 22px; font-size: 13px; font-weight: 500;
+    color: var(--muted); cursor: pointer; position: relative;
+    background: none; border: none;
+    font-family: 'Inter', sans-serif;
+    transition: color 0.15s;
+  }
+  .tab-btn.active { color: var(--dark); font-weight: 700; }
+  .tab-btn.active::after {
+    content: '';
+    position: absolute; bottom: -1px; left: 0; right: 0;
+    height: 2.5px; background: var(--orange);
+    border-radius: 2px 2px 0 0;
+  }
+  .tab-count {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--orange); color: #fff;
+    border-radius: 99px; font-size: 10px; font-weight: 700;
+    min-width: 20px; height: 18px; padding: 0 6px; margin-left: 6px;
+  }
+
+  /* Progress bar under tabs */
+  #progress-wrap {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 40px; margin-bottom: 28px;
+  }
+  #progress-track {
+    flex: 1; background: #EBEBEB;
+    border-radius: 99px; height: 5px;
+  }
+  #progress-fill {
+    height: 5px; border-radius: 99px;
+    background: linear-gradient(90deg, var(--orange), #f97316);
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  #progress-label {
+    font-size: 12px; font-weight: 700; color: var(--orange);
+    white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* ═══════════════════════════════════════════
+     MAIN LAYOUT (books + sidebar)
+  ═══════════════════════════════════════════ */
+  #main-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 24px;
+    padding: 0 40px;
+    align-items: start;
+  }
+
+  /* ─── BOOK GRID ─── */
+  #book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+    gap: 20px;
+  }
+
+  /* ─── BOOK CARD ─── */
+  .book-card {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(0,0,0,0.04);
+    cursor: pointer;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    display: flex; flex-direction: column;
+  }
+  .book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .book-cover-wrap {
+    width: 100%; aspect-ratio: 2/3;
+    background: linear-gradient(160deg, #c4b5fd, #818cf8);
+    overflow: hidden; position: relative; flex-shrink: 0;
+  }
+  .book-cover-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block;
+  }
+  .book-cover-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px; color: rgba(255,255,255,0.6);
+  }
+  /* random gradient palette */
+  .book-card:nth-child(6n+1) .book-cover-wrap { background: linear-gradient(160deg,#2d1b69,#11998e); }
+  .book-card:nth-child(6n+2) .book-cover-wrap { background: linear-gradient(160deg,#1a1a2e,#16213e); }
+  .book-card:nth-child(6n+3) .book-cover-wrap { background: linear-gradient(160deg,#c0392b,#8b0000); }
+  .book-card:nth-child(6n+4) .book-cover-wrap { background: linear-gradient(160deg,#F4622A,#c0392b); }
+  .book-card:nth-child(6n+5) .book-cover-wrap { background: linear-gradient(160deg,#1f4037,#99f2c8); }
+  .book-card:nth-child(6n+0) .book-cover-wrap { background: linear-gradient(160deg,#4b1248,#f10711); }
+
+  /* wished ribbon */
+  .wished-ribbon {
+    position: absolute; top: 10px; right: 10px;
+    background: var(--orange); color: #fff;
+    border-radius: 99px; font-size: 9px; font-weight: 700;
+    padding: 3px 9px; letter-spacing: 0.04em;
+    display: none;
+  }
+  .book-card.i-wish .wished-ribbon { display: block; }
+
+  .book-body {
+    padding: 12px 12px 14px;
+    display: flex; flex-direction: column; flex: 1;
+  }
+  .book-title-text {
+    font-size: 12.5px; font-weight: 700;
+    color: var(--dark); line-height: 1.35;
+  }
+  .book-author-text { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  .book-desc-link {
+    font-size: 10.5px; color: var(--orange);
+    text-decoration: none; margin-top: 5px;
+    display: inline-flex; align-items: center; gap: 3px;
+    font-weight: 500;
+  }
+  .book-desc-link:hover { text-decoration: underline; }
+
+  .book-voters-row {
+    display: flex; flex-wrap: wrap; gap: 3px; margin-top: 8px;
+  }
+  .voter-chip {
+    background: var(--orange-lt); color: var(--orange);
+    border-radius: 99px; font-size: 9.5px; font-weight: 600;
+    padding: 2px 8px;
+  }
+
+  .book-actions { margin-top: auto; padding-top: 10px; }
+
+  .btn-wish-main {
+    display: block; width: 100%; padding: 9px;
+    background: var(--dark); color: #fff;
+    border: none; border-radius: var(--radius-sm);
+    font-size: 11px; font-weight: 700;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+    transition: background 0.15s;
+    text-align: center;
+  }
+  .btn-wish-main:hover { background: #333; }
+  .btn-wish-main.wished-state {
+    background: var(--orange-lt); color: var(--orange);
+    border: 1.5px solid var(--orange-md);
+  }
+  .btn-wish-main.wished-state:hover { background: var(--orange); color: #fff; }
+
+  /* ═══════════════════════════════════════════
+     SIDEBAR
+  ═══════════════════════════════════════════ */
+  #sidebar {
+    display: flex; flex-direction: column; gap: 16px;
+    position: sticky; top: 78px;
+  }
+
+  .sidebar-card {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .sidebar-card-header {
+    padding: 14px 16px 0;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .sidebar-card-header h3 {
+    font-size: 10px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .sidebar-card-header .pill {
+    background: var(--orange-lt); color: var(--orange);
+    border-radius: 99px; font-size: 10px; font-weight: 800;
+    padding: 2px 10px;
+  }
+
+  /* Participants list */
+  #participants-list { padding: 10px 0 4px; }
+  .participant-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 16px; font-size: 12px;
+    border-bottom: 1px solid #f9f9f9;
+    transition: background 0.1s;
+  }
+  .participant-row:hover { background: #fafafa; }
+  .badge {
+    border-radius: 99px; font-size: 9.5px; font-weight: 700;
+    padding: 2px 8px; border: 1px solid;
+  }
+  .badge-has   { background: var(--green-lt); color: var(--green); border-color: var(--green-bd); }
+  .badge-miss  { background: var(--orange-lt); color: var(--orange); border-color: var(--orange-md); }
+
+  /* Won books */
+  #won-books-list { padding: 10px 16px 14px; }
+  .won-book-item {
+    font-size: 12px; padding: 5px 0;
+    border-bottom: 1px solid #f5f5f5; color: var(--mid);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .won-book-item::before { content: '🏆'; font-size: 11px; }
+
+  /* ═══════════════════════════════════════════
+     EMPTY STATE
+  ═══════════════════════════════════════════ */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+  .empty-state .emoji { font-size: 48px; margin-bottom: 14px; }
+  .empty-state p { font-size: 14px; }
+
+  /* ═══════════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════════ */
+  footer {
+    margin-top: 56px;
+    background: var(--dark);
+    border-radius: 24px 24px 0 0;
+    padding: 40px;
+    display: flex; gap: 32px; align-items: center;
+    flex-wrap: wrap;
+  }
+  .footer-headline {
+    font-size: clamp(24px, 3vw, 38px);
+    font-weight: 900; letter-spacing: -0.035em;
+    color: #fff; line-height: 1.1; flex: 1;
+  }
+  .footer-headline em { color: var(--orange); font-style: normal; }
+  .footer-sub { font-size: 12px; color: #6b7280; margin-top: 8px; }
+
+  .footer-stat {
+    background: var(--orange); color: #fff;
+    border-radius: 18px; padding: 20px 28px; text-align: center;
+    flex-shrink: 0;
+  }
+  .footer-stat .num { font-size: 40px; font-weight: 900; letter-spacing: -0.04em; }
+  .footer-stat .lbl { font-size: 11px; font-weight: 500; opacity: 0.85; margin-top: 2px; }
+
+  .footer-actions { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+
+  /* ═══════════════════════════════════════════
+     MODAL — shared shell
+  ═══════════════════════════════════════════ */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    max-width: 560px; width: 92%;
+    max-height: 88vh; overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: #f3f4f6; border: none; border-radius: 99px;
+    width: 28px; height: 28px; font-size: 14px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: var(--muted); transition: background 0.15s;
+  }
+  .modal-close:hover { background: #e5e7eb; color: var(--dark); }
+  .modal-title {
+    font-size: 18px; font-weight: 800;
+    letter-spacing: -0.02em; margin-bottom: 20px;
+  }
+
+  /* Form elements inside modals */
+  .form-group { margin-bottom: 16px; }
+  .form-label {
+    display: block; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .form-input {
+    width: 100%; border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 14px;
+    font-size: 13px; font-family: 'Inter', sans-serif;
+    outline: none; transition: border-color 0.15s; background: var(--bg);
+  }
+  .form-input:focus { border-color: var(--orange); background: #fff; }
+  .form-select {
+    width: 100%; border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 14px;
+    font-size: 13px; font-family: 'Inter', sans-serif;
+    outline: none; background: var(--bg); cursor: pointer;
+  }
+  textarea.form-input { resize: vertical; min-height: 90px; }
+
+  .form-row { display: flex; gap: 10px; }
+  .form-row .form-group { flex: 1; }
+
+  /* modal section divider */
+  .modal-divider {
+    border: none; border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+  .modal-section-title {
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+
+  /* Link row */
+  .link-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+  /* Book info panel inside modal */
+  .book-info-cover {
+    width: 100px; height: 150px;
+    border-radius: var(--radius-md); object-fit: cover;
+    box-shadow: var(--shadow-md); flex-shrink: 0;
+    background: linear-gradient(160deg,#c4b5fd,#818cf8);
+  }
+  .book-info-meta { flex: 1; }
+  .book-info-meta h2 { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .book-info-meta p  { font-size: 12px; color: var(--muted); }
+  .book-info-desc { font-size: 13px; color: var(--mid); line-height: 1.65; margin-top: 14px; }
+
+  /* Members list */
+  .member-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 0; border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .member-item input.form-input { max-width: 180px; padding: 6px 10px; font-size: 12px; }
+
+  /* Error box */
+  #error-box {
+    background: var(--red-lt); border: 1px solid var(--red-bd);
+    border-radius: var(--radius-md); padding: 14px 18px;
+    margin: 0 40px 20px; display: none;
+  }
+  #error-box.show { display: block; }
+  #error-box p { font-size: 12px; color: var(--red); line-height: 1.6; }
+
+  /* ═══════════════════════════════════════════
+     RESPONSIVE
+  ═══════════════════════════════════════════ */
+  @media (max-width: 900px) {
+    #top-nav { padding: 0 20px; }
+    #hero { padding: 28px 20px; grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    #tabs-bar, #progress-wrap, #main-layout { padding-left: 20px; padding-right: 20px; }
+    #main-layout { grid-template-columns: 1fr; }
+    #sidebar { position: static; }
+    footer { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     STICKY NAV
+═══════════════════════════════════════════ -->
+<nav id="top-nav">
+  <div class="nav-logo">Bog<span>snup</span></div>
+
+  <div id="nav-connection" class="nav-status disconnected">
+    <div class="dot"></div>
+    <span id="connection-text">Forbinder…</span>
+  </div>
+
+  <p class="nav-rule">
+    Klik på en bog for info og tryk <em>"Jeg ønsker mig bogen"</em>.
+    Regel: Du kan vinde flere bøger hvis du er den eneste der ønsker dem, men kun én bog hvor der er konkurrence.
+  </p>
+
+  <div class="nav-right">
+    <!-- Name form -->
+    <form id="nav-name-form" onsubmit="return false;">
+      <input type="text" id="input-fornavn" placeholder="Fornavn"/>
+      <input type="text" id="input-efternavn" placeholder="Efternavn"/>
+      <button class="btn btn-primary" id="btn-gem-navn">Gem navn</button>
+    </form>
+
+    <!-- Admin toolbar (faded) -->
+    <div id="admin-toolbar">
+      <button class="btn btn-ghost" id="btn-reload">🔄</button>
+      <button class="btn btn-ghost" id="btn-login">🔓 Login</button>
+      <button class="btn btn-ghost" id="btn-csv">📁 CSV</button>
+      <button class="btn btn-ghost" id="btn-tilfoej">➕ Tilføj</button>
+      <button class="btn btn-ghost" id="btn-members">👥 Medlemmer</button>
+      <button class="btn btn-ghost" id="btn-hent-info">✨ Hent info</button>
+      <button class="btn btn-ghost" id="btn-vis-fejl">⚠️ Fejl</button>
+      <button class="btn btn-ghost" id="btn-debug">🔍 Debug</button>
+      <button class="btn btn-primary" id="btn-lodtraek">🎲 Lodtrækning</button>
+      <button class="btn btn-danger" id="btn-slet-alt">🗑️ Slet Alt</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">📚 Bogklub — Sæson 2026</div>
+    <h1>Vælg din<br/><em>næste bog.</em></h1>
+    <p class="hero-sub">
+      Klik på en bog og tryk "Ønsker bogen" for at stemme.
+      Du kan vinde bogen hvis du er den eneste der ønsker den —
+      eller én bog hvis der er konkurrence.
+    </p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" id="hero-btn-lodtraek">🎲 Kør lodtrækning</button>
+      <button class="btn btn-dark"    id="hero-btn-tilfoej">➕ Tilføj bog</button>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num" id="stat-total">–</div>
+        <div class="stat-lbl">Bøger i alt</div>
+      </div>
+      <div>
+        <div class="stat-num" id="stat-members">–</div>
+        <div class="stat-lbl">Deltagere</div>
+      </div>
+      <div>
+        <div class="stat-num orange" id="stat-chosen">–</div>
+        <div class="stat-lbl">Har valgt</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">📖</div>
+</section>
+
+<!-- Error box -->
+<div id="error-box"><p id="error-text"></p></div>
+
+<!-- ═══════════════════════════════════════════
+     TABS + PROGRESS
+═══════════════════════════════════════════ -->
+<div id="tabs-bar">
+  <button class="tab-btn active" data-cat="voksen">
+    📚 Voksenbøger <span class="tab-count" id="count-voksen">0</span>
+  </button>
+  <button class="tab-btn" data-cat="born">
+    🧒 Børnebøger <span class="tab-count" id="count-born">0</span>
+  </button>
+</div>
+
+<div id="progress-wrap">
+  <div id="progress-track"><div id="progress-fill"></div></div>
+  <div id="progress-label">0 / 0 har valgt</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MAIN: GRID + SIDEBAR
+═══════════════════════════════════════════ -->
+<div id="main-layout">
+
+  <!-- BOOK GRID -->
+  <div id="book-grid">
+    <div class="empty-state">
+      <div class="emoji">📚</div>
+      <p>Indlæser bøger…</p>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+
+    <!-- Participants -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">
+        <h3>👥 Deltagere</h3>
+        <span class="pill" id="sidebar-progress-pill">0/0</span>
+      </div>
+      <div id="participants-list">
+        <div class="participant-row"><span style="color:var(--muted)">Indlæser…</span></div>
+      </div>
+    </div>
+
+    <!-- Won books -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">
+        <h3>🏆 Dine vundne bøger</h3>
+      </div>
+      <div id="won-books-list">
+        <p style="padding:10px 16px 14px;font-size:12px;color:var(--muted)">Ingen endnu</p>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer>
+  <div>
+    <div class="footer-headline">Hold dig<br/>til <em>bøgerne.</em></div>
+    <div class="footer-sub">Bogklub lodtrækning — kun én vinder per bog.</div>
+  </div>
+  <div class="footer-stat">
+    <div class="num" id="footer-stat-num">0</div>
+    <div class="lbl">Har valgt</div>
+  </div>
+  <div class="footer-actions">
+    <button class="btn btn-primary" id="footer-btn-lodtraek">🎲 Kør lodtrækning</button>
+    <button class="btn btn-ghost"   id="footer-btn-csv"      style="color:#9ca3af;border-color:#333;">📁 Eksporter CSV</button>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     MODAL: BOOK INFO / WISH
+═══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-book">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-book-close">✕</button>
+    <div style="display:flex;gap:18px;align-items:flex-start;margin-bottom:16px;">
+      <img id="modal-book-cover" class="book-info-cover" src="" alt=""/>
+      <div class="book-info-meta">
+        <h2 id="modal-book-title">–</h2>
+        <p  id="modal-book-author">–</p>
+        <div class="book-voters-row" id="modal-book-voters" style="margin-top:10px;"></div>
+      </div>
+    </div>
+    <p class="book-info-desc" id="modal-book-desc"></p>
+
+    <div class="link-row" id="modal-book-links" style="margin-top:16px;"></div>
+
+    <hr class="modal-divider"/>
+
+    <!-- Wish action -->
+    <button class="btn btn-primary" id="modal-btn-wish"   style="width:100%;justify-content:center;padding:12px;">Jeg ønsker mig bogen</button>
+    <button class="btn btn-danger"  id="modal-btn-remove" style="width:100%;justify-content:center;padding:12px;margin-top:8px;display:none;">Fjern ønske</button>
+
+    <!-- ADMIN SECTION -->
+    <div id="modal-admin-section" style="display:none;">
+      <hr class="modal-divider"/>
+      <div class="modal-section-title">Admin</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Titel</label>
+          <input class="form-input" id="admin-edit-title" type="text"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Forfatter</label>
+          <input class="form-input" id="admin-edit-author" type="text"/>
+        </div>
+      </div>
+      <button class="btn btn-ghost" id="admin-save-meta" style="width:100%;justify-content:center;">💾 Gem titel & forfatter</button>
+
+      <div class="link-row" style="margin-top:12px;">
+        <button class="btn btn-ghost" id="admin-find-lr">🔍 Lindhardt & Ringhof</button>
+        <button class="btn btn-ghost" id="admin-find-carlsen">🔍 Carlsen</button>
+        <button class="btn btn-ghost" id="admin-find-google">🖼 Google Images</button>
+        <button class="btn btn-ghost" id="admin-open-page">📖 Bogside</button>
+      </div>
+
+      <div class="form-group" style="margin-top:14px;">
+        <label class="form-label">Kategori</label>
+        <select class="form-select" id="admin-category">
+          <option value="voksen">📚 Voksenbog</option>
+          <option value="born">🧒 Børnebog</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Forside URL</label>
+        <div style="display:flex;gap:8px;">
+          <input class="form-input" id="admin-cover-url" type="text" placeholder="https://…"/>
+          <button class="btn btn-ghost" id="admin-save-cover">Gem</button>
+          <button class="btn btn-danger" id="admin-remove-cover">Fjern</button>
+        </div>
+        <input type="file" id="admin-cover-file" accept="image/*" style="margin-top:8px;font-size:12px;"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Beskrivelse</label>
+        <textarea class="form-input" id="admin-desc" rows="4"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button class="btn btn-primary" id="admin-save-desc" style="flex:1;justify-content:center;">💾 Gem beskrivelse</button>
+          <button class="btn btn-ghost"   id="admin-reset-desc">Nulstil</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODAL: ADD BOOK
+═══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-add">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-add-close">✕</button>
+    <div class="modal-title">➕ Tilføj ny bog</div>
+    <div class="form-group">
+      <label class="form-label">Kategori</label>
+      <select class="form-select" id="add-category">
+        <option value="voksen">📚 Voksenbog</option>
+        <option value="born">🧒 Børnebog</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Titel</label>
+        <input class="form-input" id="add-title" type="text" placeholder="Bogens titel"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Forfatter</label>
+        <input class="form-input" id="add-author" type="text" placeholder="Forfatter"/>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="btn-save-new-book" style="width:100%;justify-content:center;padding:12px;">✅ Gem ny bog</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODAL: MEMBERS
+═══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-members">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-members-close">✕</button>
+    <div class="modal-title">👥 Administrer Medlemmer</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">Tilføj, rediger eller fjern deltagere. Ændringer gemmes automatisk i Firebase.</p>
+    <button class="btn btn-primary" id="btn-add-member" style="margin-bottom:16px;">➕ Tilføj</button>
+    <div class="modal-section-title" id="members-count-label">Nuværende medlemmer (0)</div>
+    <div id="members-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     YOUR ORIGINAL FIREBASE SCRIPT GOES HERE
+     (paste your existing <script> block below)
+═══════════════════════════════════════════ -->
+<script type="module">
+  // ── PASTE YOUR EXISTING FIREBASE + APP LOGIC HERE ──
+  // Everything below the <style> in your original file
+  // The HTML IDs used here match your original IDs, so
+  // your JS should wire up with zero changes.
+  //
+  // Key IDs mapped:
+  //   #input-fornavn        ← fornavn input
+  //   #input-efternavn      ← efternavn input
+  //   #btn-gem-navn         ← GEM NAVN button
+  //   #btn-reload           ← Genindlæs
+  //   #btn-login            ← Login
+  //   #btn-csv              ← CSV
+  //   #btn-tilfoej          ← Tilføj bog
+  //   #btn-members          ← Medlemmer
+  //   #btn-hent-info        ← Hent info
+  //   #btn-vis-fejl         ← Vis fejl
+  //   #btn-debug            ← Debug
+  //   #btn-lodtraek         ← Lodtrækning
+  //   #btn-slet-alt         ← Slet Alt
+  //   #book-grid            ← book cards container
+  //   #participants-list    ← participant rows
+  //   #won-books-list       ← won books
+  //   #nav-connection       ← status pill
+  //   #connection-text      ← status text
+  //   #progress-fill        ← progress bar fill
+  //   #progress-label       ← "14 / 20 har valgt"
+  //   #count-voksen         ← tab count badge
+  //   #count-born           ← tab count badge
+  //   #stat-total / #stat-members / #stat-chosen  ← hero stats
+  //   #error-box / #error-text ← error display
+</script>
+
+</body>
+</html>
