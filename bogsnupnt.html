@@ -101,9 +101,7 @@ header{
 #adminArea{
   display:none;align-items:center;gap:6px;flex-wrap:wrap;
   border-left:2px solid var(--border);padding-left:12px;
-  opacity:.3;transition:opacity .2s;
 }
-#adminArea:hover{opacity:1}
 #adminArea input[type="password"]{
   padding:6px 10px;border:1.5px solid var(--border);border-radius:var(--r-sm);
   font-size:12px;height:34px;width:110px;outline:none;font-family:'Inter',sans-serif;
@@ -117,20 +115,17 @@ header{
 .btn-dark:hover{background:#333}
 .btn-ghost{background:transparent;color:var(--mid);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:6px 12px;font-size:12px}
 .btn-ghost:hover{border-color:#bbb;color:var(--dark)}
-.btn-danger{background:var(--red-lt);color:var(--red);border:1.5px solid var(--red-bd);border-radius:var(--r-sm);padding:6px 12px;font-size:12px}
-.btn-danger:hover{background:var(--red);color:#fff}
 .btn-sm{padding:5px 10px;font-size:11px}
 .btn-save{padding:8px 18px;background:var(--orange);color:#fff;border:none;border-radius:var(--r-sm);font-size:13px;font-weight:700;cursor:pointer;transition:background .15s;white-space:nowrap;font-family:'Inter',sans-serif}
 .btn-save:hover{background:#df551f}
 .btn-save.saved{background:var(--green)}
-.btn-refresh{padding:7px 16px;height:34px;background:var(--dark);color:#fff;border:none;border-radius:var(--r-sm);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.btn-refresh{padding:7px 16px;height:34px;background:var(--dark);color:#fff;border:none;border-radius:var(--r-sm);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
 .btn-refresh:hover{background:#333}
 .admin-btn{height:34px;padding:0 12px;background:transparent;color:var(--mid);border:1.5px solid var(--border);border-radius:var(--r-sm);font-size:11px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
 .admin-btn:hover:not(:disabled){border-color:#bbb;color:var(--dark)}
 .admin-btn:disabled{opacity:.35;pointer-events:none}
-.admin-btn.btn-ai{background:transparent}
-.admin-btn[style*="red"]{border-color:var(--red-bd);color:var(--red)}
-.admin-btn[style*="red"]:hover:not(:disabled){background:var(--red);color:#fff}
+.admin-btn[data-danger]{border-color:var(--red-bd);color:var(--red)}
+.admin-btn[data-danger]:hover:not(:disabled){background:var(--red);color:#fff}
 
 /* ── TABS ── */
 .tabs-wrap{background:var(--card);border-bottom:1px solid var(--border)}
@@ -152,41 +147,22 @@ header{
 .tab-btn.active .tab-count{background:var(--orange);color:#fff}
 
 /* ── PROGRESS ── */
-.progress-wrap{
-  display:none;padding:8px 36px;
-  background:var(--card);border-bottom:1px solid var(--border);
-}
+.progress-wrap{display:none;padding:8px 36px;background:var(--card);border-bottom:1px solid var(--border)}
 .progress-track{height:6px;background:#eee;border-radius:99px;overflow:hidden}
-.progress-fill{
-  height:100%;background:linear-gradient(90deg,var(--orange),#fb923c);
-  transition:width .3s;border-radius:99px;
-  display:flex;align-items:center;justify-content:center;
-  color:#fff;font-size:11px;font-weight:700;min-width:40px;
-}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--orange),#fb923c);transition:width .3s;border-radius:99px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;min-width:40px}
 
 /* ── TOAST ── */
-.toast{
-  position:fixed;top:80px;left:50%;
-  transform:translateX(-50%) translateY(-10px);
-  background:#222;color:#fff;padding:10px 20px;border-radius:var(--r-sm);
-  font-size:13px;font-weight:500;z-index:900;
-  opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;
-  box-shadow:var(--sh-lg);white-space:nowrap;font-family:'Inter',sans-serif;
-}
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-10px);background:#222;color:#fff;padding:10px 20px;border-radius:var(--r-sm);font-size:13px;font-weight:500;z-index:900;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;box-shadow:var(--sh-lg);white-space:nowrap;font-family:'Inter',sans-serif}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{background:var(--green)}
 .toast.err{background:var(--red)}
 
 /* ── HERO ── */
-#hero{
-  padding:48px 36px 36px;max-width:1600px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 180px;gap:32px;align-items:start;
-}
+#hero{padding:48px 36px 36px;max-width:1600px;margin:0 auto;display:grid;grid-template-columns:1fr 180px;gap:32px;align-items:start}
 .hero-eyebrow{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:12px}
 #hero h1{font-size:clamp(28px,3.5vw,48px);font-weight:900;letter-spacing:-.035em;line-height:1.05;margin-bottom:14px}
 #hero h1 em{color:var(--orange);font-style:normal}
 .hero-sub{font-size:13px;color:var(--muted);line-height:1.7;max-width:440px;margin-bottom:22px}
-.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
 .hero-stats{display:flex;gap:28px;margin-top:28px;padding-top:20px;border-top:1px solid var(--border)}
 .stat-num{font-size:24px;font-weight:900;letter-spacing:-.04em}
 .stat-num.orange{color:var(--orange)}
@@ -197,25 +173,12 @@ header{
 .main-layout{display:flex;align-items:flex-start;max-width:1600px;margin:0 auto}
 
 /* ── BOOK GRID ── */
-.book-grid{
-  flex:1;display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(175px,1fr));
-  gap:18px;padding:24px 36px;min-width:0;
-}
-/* ── BOOK CARD ── */
-.book-card{
-  background:var(--card);border-radius:var(--r-lg);
-  box-shadow:var(--sh);display:flex;flex-direction:column;
-  overflow:hidden;cursor:pointer;
-  border:1px solid rgba(0,0,0,.04);
-  transition:transform .2s,box-shadow .2s;
-}
-.book-card:hover{transform:translateY(-5px);box-shadow:var(--sh-lg)}
+.book-grid{flex:1;display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:18px;padding:24px 36px;min-width:0}
 
-.card-cover{
-  aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;overflow:hidden;
-  background:linear-gradient(135deg,#c4b5fd,#818cf8);position:relative;
-}
+/* ── BOOK CARD ── */
+.book-card{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh);display:flex;flex-direction:column;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,.04);transition:transform .2s,box-shadow .2s}
+.book-card:hover{transform:translateY(-5px);box-shadow:var(--sh-lg)}
+.card-cover{aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg,#c4b5fd,#818cf8);position:relative}
 .book-card:nth-child(6n+1) .card-cover{background:linear-gradient(160deg,#2d1b69,#11998e)}
 .book-card:nth-child(6n+2) .card-cover{background:linear-gradient(160deg,#1a1a2e,#16213e)}
 .book-card:nth-child(6n+3) .card-cover{background:linear-gradient(160deg,#7f1d1d,#c0392b)}
@@ -224,84 +187,79 @@ header{
 .book-card:nth-child(6n+0) .card-cover{background:linear-gradient(160deg,#4b1248,#f10711)}
 .card-cover img{width:100%;height:100%;object-fit:cover;display:block}
 .card-cover-ph{font-size:40px;opacity:.35}
-.win-ribbon{
-  position:absolute;top:8px;right:8px;
-  background:var(--gold);color:#000;border-radius:99px;
-  font-size:9px;font-weight:800;padding:3px 8px;
-}
+.win-ribbon{position:absolute;top:8px;right:8px;background:var(--gold);color:#000;border-radius:99px;font-size:9px;font-weight:800;padding:3px 8px}
 
+/* ── CARD BODY ── */
 .card-body{padding:12px;flex:1;display:flex;flex-direction:column}
-.card-title{font-size:12.5px;font-weight:700;line-height:1.35;margin-bottom:3px}
-.card-author{font-size:11px;color:var(--muted);margin-bottom:6px;flex:1}
-.card-hint{font-size:10.5px;color:var(--orange);font-style:italic;margin-bottom:8px}
+.card-title{
+  font-size:13px;font-weight:700;line-height:1.35;margin-bottom:3px;
+  font-family:'Inter',sans-serif;color:var(--dark);letter-spacing:-.01em;
+}
+.card-author{
+  font-size:11px;color:var(--muted);margin-bottom:6px;flex:1;
+  font-family:'Inter',sans-serif;font-weight:400;
+}
+.card-hint{
+  font-size:10.5px;color:var(--orange);font-style:normal;
+  font-weight:500;margin-bottom:8px;font-family:'Inter',sans-serif;
+}
 
-.claim-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-bottom:6px}
+/* ── VOTER CHIPS — pill style ── */
+.claim-slots{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
 .slot{
-  padding:3px;background:var(--bg);border:1px solid var(--border);
-  border-radius:5px;font-size:9.5px;text-align:center;
-  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--muted);
+  font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;
+  padding:3px 9px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:99px;
+  text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  color:var(--muted);
 }
-.slot.taken{color:var(--dark);font-weight:600;background:#f0f4ff;border-color:#c5cfe8}
-.slot.winner{background:var(--gold);border-color:#d4aa00;color:#000;font-weight:800}
+.slot.taken{
+  color:var(--orange);font-weight:700;
+  background:var(--orange-lt);border-color:var(--orange-md);
+}
+.slot.winner{
+  background:var(--gold);border-color:#d4aa00;
+  color:#000;font-weight:800;border-radius:99px;
+}
 
-.btn-see-more{
-  width:100%;margin-bottom:6px;padding:5px;
-  background:none;border:1.5px dashed var(--border);border-radius:7px;
-  font-size:10px;font-weight:600;color:var(--muted);cursor:pointer;
-  transition:border-color .15s,color .15s;font-family:'Inter',sans-serif;
-}
+.btn-see-more{width:100%;margin-bottom:6px;padding:5px;background:none;border:1.5px dashed var(--border);border-radius:99px;font-size:10px;font-weight:600;color:var(--muted);cursor:pointer;transition:border-color .15s,color .15s;font-family:'Inter',sans-serif}
 .btn-see-more:hover{border-color:var(--orange);color:var(--orange)}
 
+/* ── WISH BUTTON ── */
 .btn-claim{
-  width:100%;padding:8px;background:var(--dark);color:#fff;
-  border:none;border-radius:var(--r-sm);font-size:11px;font-weight:700;
-  cursor:pointer;transition:background .15s;font-family:'Inter',sans-serif;
-  margin-top:2px;
+  width:100%;padding:10px;
+  background:var(--dark);color:#fff;
+  border:none;border-radius:10px;
+  font-size:12px;font-weight:700;
+  font-family:'Inter',sans-serif;letter-spacing:-.01em;
+  cursor:pointer;transition:all .2s;margin-top:6px;
 }
-.btn-claim:hover:not(:disabled){background:#333}
+.btn-claim:hover:not(:disabled){background:#333;transform:translateY(-1px)}
 .btn-claim.claimed{background:var(--orange-lt);color:var(--orange);border:1.5px solid var(--orange-md)}
-.btn-claim.claimed:hover{background:var(--orange);color:#fff}
-.btn-claim:disabled{background:var(--border);color:var(--muted);cursor:default}
-.win-badge{display:inline-block;background:var(--gold);color:#000;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:800;margin-left:4px;vertical-align:middle}
+.btn-claim.claimed:hover{background:var(--orange);color:#fff;transform:translateY(-1px)}
+.btn-claim:disabled{background:var(--border);color:var(--muted);cursor:default;transform:none}
 
 .empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--muted)}
 .empty-state .icon{font-size:52px;margin-bottom:14px}
 .empty-state p{font-size:15px}
 
 /* ── SIDEBAR ── */
-.user-panel{
-  width:260px;flex-shrink:0;
-  padding:24px 20px 24px 0;
-  position:sticky;top:70px;
-  max-height:calc(100vh - 90px);overflow-y:auto;
-}
-.sidebar-card{
-  background:var(--card);border-radius:var(--r-lg);
-  box-shadow:var(--sh);padding:16px;
-  border:1px solid rgba(0,0,0,.04);margin-bottom:14px;
-}
-.sidebar-hdr{
-  display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;
-}
+.user-panel{width:260px;flex-shrink:0;padding:24px 20px 24px 0;position:sticky;top:70px;max-height:calc(100vh - 90px);overflow-y:auto}
+.sidebar-card{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh);padding:16px;border:1px solid rgba(0,0,0,.04);margin-bottom:14px}
+.sidebar-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .sidebar-hdr h3{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
 .sidebar-pill{background:var(--orange-lt);color:var(--orange);border-radius:99px;font-size:10px;font-weight:800;padding:2px 9px}
-
 .user-panel-count{font-size:13px;color:var(--mid);margin-bottom:10px;font-weight:500}
 .user-panel-count strong{color:var(--orange);font-size:15px}
-
 .user-item{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f9f9f9;gap:6px}
 .user-name{font-size:11.5px;font-weight:500;color:var(--dark);flex:1;line-height:1.3}
 .user-status{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap;border:1px solid}
 .user-status.ok-badge{background:var(--green-lt);color:var(--green);border-color:var(--green-bd)}
 .user-status.missing-badge{background:var(--orange-lt);color:var(--orange);border-color:var(--orange-md)}
-
-/* won books */
 .won-books-divider{border:none;border-top:1.5px solid var(--border);margin:12px 0}
-.won-book-item{
-  display:flex;align-items:center;gap:10px;padding:8px;
-  background:#fffde7;border:1.5px solid var(--gold);border-radius:var(--r-sm);
-  margin-bottom:6px;cursor:pointer;transition:transform .15s;
-}
+.won-book-item{display:flex;align-items:center;gap:10px;padding:8px;background:#fffde7;border:1.5px solid var(--gold);border-radius:var(--r-sm);margin-bottom:6px;cursor:pointer;transition:transform .15s}
 .won-book-item:hover{transform:translateY(-2px)}
 .won-book-cover{width:34px;height:50px;object-fit:cover;border-radius:4px;flex-shrink:0}
 .won-book-cover-ph{width:34px;height:50px;background:#e8eaf6;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
@@ -312,11 +270,7 @@ header{
 .won-books-empty{font-size:12px;color:var(--muted);font-style:italic;text-align:center;padding:6px 0}
 
 /* ── FOOTER ── */
-footer{
-  margin-top:52px;background:var(--dark);
-  border-radius:24px 24px 0 0;padding:40px 36px;
-  display:flex;gap:28px;align-items:center;flex-wrap:wrap;
-}
+footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;padding:40px 36px;display:flex;gap:28px;align-items:center;flex-wrap:wrap}
 .footer-headline{font-size:clamp(22px,2.8vw,36px);font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1.1;flex:1}
 .footer-headline em{color:var(--orange);font-style:normal}
 .footer-sub{font-size:12px;color:#6b7280;margin-top:8px}
@@ -328,67 +282,32 @@ footer{
 /* ── MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.active{display:flex}
-.modal-box{
-  background:var(--card);border-radius:var(--r-lg);
-  width:100%;max-width:520px;max-height:88vh;overflow-y:auto;
-  box-shadow:var(--sh-lg);animation:fadeUp .2s ease;
-}
+.modal-box{background:var(--card);border-radius:var(--r-lg);width:100%;max-width:520px;max-height:88vh;overflow-y:auto;box-shadow:var(--sh-lg);animation:fadeUp .2s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-
 .modal-cover{width:100%;max-height:260px;object-fit:contain;display:block;background:linear-gradient(135deg,#e8eaf6,#c5cae9)}
 .modal-body{padding:22px}
 .modal-title{font-size:20px;font-weight:800;margin-bottom:4px;letter-spacing:-.02em}
 .modal-author{font-size:13px;color:var(--muted);margin-bottom:16px}
-.modal-desc{
-  font-size:13px;line-height:1.65;color:var(--mid);
-  background:var(--bg);padding:14px;border-radius:var(--r-sm);
-  border:1px solid var(--border);margin-bottom:16px;
-}
+.modal-desc{font-size:13px;line-height:1.65;color:var(--mid);background:var(--bg);padding:14px;border-radius:var(--r-sm);border:1px solid var(--border);margin-bottom:16px}
 .modal-claims-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
-.claim-item{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:9px 14px;background:var(--bg);border-radius:var(--r-sm);
-  margin-bottom:5px;font-size:13px;border:1px solid var(--border);
-}
+.claim-item{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:var(--bg);border-radius:var(--r-sm);margin-bottom:5px;font-size:13px;border:1px solid var(--border)}
 .claim-item.win{background:var(--gold);border-color:#d4aa00;font-weight:700}
-
-/* admin panel */
-.modal-admin{
-  display:none;margin:0 22px 22px;background:var(--bg);
-  border-radius:var(--r-sm);border:1.5px dashed var(--orange);padding:16px;
-}
+.modal-admin{display:none;margin:0 22px 22px;background:var(--bg);border-radius:var(--r-sm);border:1.5px dashed var(--orange);padding:16px}
 .modal-admin.active{display:block}
 .modal-admin h4{font-size:12px;color:var(--orange);margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
 .modal-admin a{font-size:12px;color:var(--orange);display:block;margin-bottom:7px;text-decoration:none}
 .modal-admin a:hover{text-decoration:underline}
-.modal-admin input[type="url"],
-.modal-admin input[type="text"],
-.modal-admin textarea,
-.modal-admin select{
-  width:100%;padding:8px 12px;border:1.5px solid var(--border);
-  border-radius:var(--r-sm);font-size:13px;margin-bottom:8px;
-  font-family:'Inter',sans-serif;resize:vertical;outline:none;
-  transition:border-color .15s;background:#fff;
-}
+.modal-admin input[type="url"],.modal-admin input[type="text"],.modal-admin textarea,.modal-admin select{width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-size:13px;margin-bottom:8px;font-family:'Inter',sans-serif;resize:vertical;outline:none;transition:border-color .15s;background:#fff}
 .modal-admin input:focus,.modal-admin textarea:focus,.modal-admin select:focus{border-color:var(--orange)}
 .modal-admin input[type="file"]{font-size:12px;margin-bottom:10px;display:block}
 .adm-row{display:flex;gap:8px;margin-bottom:8px}
-.adm-btn{
-  flex:1;padding:8px 12px;background:var(--dark);color:#fff;border:none;
-  border-radius:var(--r-sm);font-size:12px;font-weight:600;cursor:pointer;
-  transition:background .15s;font-family:'Inter',sans-serif;
-}
+.adm-btn{flex:1;padding:8px 12px;background:var(--dark);color:#fff;border:none;border-radius:var(--r-sm);font-size:12px;font-weight:600;cursor:pointer;transition:background .15s;font-family:'Inter',sans-serif}
 .adm-btn:hover{background:#333}
 .adm-btn.red{background:var(--red)}.adm-btn.red:hover{background:#b91c1c}
 .adm-btn.ora{background:var(--orange)}.adm-btn.ora:hover{background:#df551f}
 .adm-btn.green{background:var(--green)}.adm-btn.green:hover{background:#15803d}
 .modal-sep{border:none;border-top:1px solid var(--border);margin:14px 0}
-
-.modal-footer{
-  display:flex;gap:10px;padding:16px 22px;
-  border-top:1px solid var(--border);
-  position:sticky;bottom:0;background:var(--card);
-}
+.modal-footer{display:flex;gap:10px;padding:16px 22px;border-top:1px solid var(--border);position:sticky;bottom:0;background:var(--card)}
 .modal-footer button{flex:1;padding:12px;border:none;border-radius:var(--r-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
 .btn-ma{background:var(--dark);color:#fff}.btn-ma:hover{background:#333}
 .btn-ma.claimed{background:var(--orange-lt);color:var(--orange);border:1.5px solid var(--orange-md)}
@@ -434,7 +353,7 @@ footer{
 <!-- HEADER -->
 <header>
   <div class="header-inner">
-    <div class="logo">📚 Bog<span style="color:var(--orange)">snup</span> <small>⚡ Real-time</small></div>
+    <div class="logo">📚 Bog<span>snup</span> <small>⚡ Real-time</small></div>
     <span class="status-pill" id="firebaseStatus">Forbinder…</span>
     <div class="guide-text">
       Klik på en bog for info og tryk <em>"Jeg ønsker mig bogen"</em>. &nbsp;
@@ -480,11 +399,11 @@ footer{
       <button class="admin-btn" id="btnUpload"  disabled onclick="document.getElementById('csvFileInput').click()">📁 CSV</button>
       <button class="admin-btn" id="btnAddBook" disabled onclick="addNewBook()">➕ Tilføj bog</button>
       <button class="admin-btn" id="btnMembers" disabled onclick="openMembersModal()">👥 Medlemmer</button>
-      <button class="admin-btn btn-ai" id="btnFetch"  disabled onclick="fetchAllInfo()">✨ Hent info</button>
+      <button class="admin-btn" id="btnFetch"   disabled onclick="fetchAllInfo()">✨ Hent info</button>
       <button class="admin-btn" id="btnErrors"  disabled onclick="showFetchErrors()">⚠️ Vis fejl</button>
-      <button class="admin-btn" id="btnDebug"   disabled style="color:var(--orange);border-color:var(--orange-md)" onclick="debugFirebase()">🔍 Debug</button>
+      <button class="admin-btn" id="btnDebug"   disabled onclick="debugFirebase()">🔍 Debug</button>
       <button class="admin-btn" id="btnLottery" disabled onclick="runSmartLottery()">🎲 Lodtrækning</button>
-      <button class="admin-btn" id="btnReset"   disabled style="color:var(--red);border-color:var(--red-bd)" onclick="clearAllData()">🗑️ Slet Alt</button>
+      <button class="admin-btn" id="btnReset"   disabled data-danger onclick="clearAllData()">🗑️ Slet Alt</button>
     </div>
   </div>
 </div>
@@ -514,9 +433,9 @@ footer{
     <div class="hero-eyebrow">📚 Bogklub — Sæson 2026</div>
     <h1>Vælg din<br/><em>næste bog.</em></h1>
     <p class="hero-sub">Klik på en bog og tryk "Ønsker bogen" for at stemme. Du kan vinde bogen hvis du er den eneste der ønsker den — eller én bog hvis der er konkurrence.</p>
-    <div class="hero-actions">
-      <button class="btn btn-primary" id="btnLottery2" onclick="runSmartLottery()">🎲 Kør lodtrækning</button>
-      <button class="btn btn-dark" onclick="addNewBook()">➕ Tilføj bog</button>
+    <div id="heroAdminActions" style="display:none;gap:10px;flex-wrap:wrap;margin-bottom:4px">
+      <button class="btn btn-primary" onclick="runSmartLottery()">🎲 Kør lodtrækning</button>
+      <button class="btn btn-dark"    onclick="addNewBook()">➕ Tilføj bog</button>
     </div>
     <div class="hero-stats">
       <div><div class="stat-num" id="statTotal">–</div><div class="stat-lbl">Bøger i alt</div></div>
@@ -556,9 +475,11 @@ footer{
     <div class="num" id="footerStatNum">0</div>
     <div class="lbl">Har valgt</div>
   </div>
-  <div class="footer-actions">
-    <button class="btn btn-primary" onclick="runSmartLottery()" style="justify-content:center;padding:11px 26px;font-size:13px">🎲 Kør lodtrækning</button>
-    <button class="btn btn-ghost" onclick="document.getElementById('csvFileInput').click()" style="color:#9ca3af;border-color:#333;justify-content:center;padding:11px 26px;font-size:13px">📁 Eksporter CSV</button>
+  <div class="footer-actions" id="footerAdminActions" style="display:none">
+    <button class="btn btn-primary" onclick="runSmartLottery()"
+      style="justify-content:center;padding:11px 26px;font-size:13px">🎲 Kør lodtrækning</button>
+    <button class="btn btn-ghost" onclick="document.getElementById('csvFileInput').click()"
+      style="color:#9ca3af;border-color:#333;justify-content:center;padding:11px 26px;font-size:13px">📁 Eksporter CSV</button>
   </div>
 </footer>
 
@@ -654,51 +575,34 @@ footer{
   </div>
 </div>
 
-<!-- FIREBASE + APP SCRIPT -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script>
 const firebaseConfig={apiKey:"AIzaSyB-2_DMuUGVgckSMGMrdUaKVVQQ7hhCTvU",authDomain:"bogsnup2026.firebaseapp.com",databaseURL:"https://bogsnup2026-default-rtdb.europe-west1.firebasedatabase.app",projectId:"bogsnup2026",storageBucket:"bogsnup2026.firebasestorage.app",messagingSenderId:"751291661929",appId:"1:751291661929:web:40a3ab1793184d6718acf8"};
 let database,isFirebaseReady=false;
 try{firebase.initializeApp(firebaseConfig);database=firebase.database();isFirebaseReady=true;setStatus(true);database.ref('.info/connected').on('value',s=>setStatus(s.val()===true));}catch(e){console.error(e);setStatus(false);alert('⚠️ Firebase fejl: '+e.message);}
-function setStatus(ok){const el=document.getElementById('firebaseStatus');el.textContent=ok?'Forbundet':'Offline';el.className='status-pill'+(ok?' connected':' ');}
+function setStatus(ok){const el=document.getElementById('firebaseStatus');el.textContent=ok?'Forbundet':'Offline';el.className='status-pill'+(ok?' connected':'');}
 
 const DEFAULT_MEMBERS=['Alice Stenild','Annette Pallesen','Eva Aarris Späth','Eva Marianne Stokholm','Hanne Berit Schmidt Madsen','Heidi Olsen','Jeanette Okkels Klein','Jes Kristian Larsen','Jesper Kantner Larsen','Lise Toft','Magnus Munch Olsen','Mie Schannong Aagaard','Morten Rasmussen','Pernille Christensen','Pernille Falk-Jensen','Randi Andersen','Tarja Maria Kesti','Louise Grønne'];
 let REGISTERED_USERS=[...DEFAULT_MEMBERS];
 
 function userHasClaimed(registeredName){const regLower=registeredName.toLowerCase().trim();for(const book of books){for(const claim of(book.claims||[])){const cl=claim.toLowerCase().trim();if(cl===regLower)return true;if(cl.length>=5&&regLower.startsWith(cl+' '))return true;if(regLower.length>=5&&cl.startsWith(regLower+' '))return true;}}return false;}
 
-function updateHeroStats(){
-  const total=books.length;
-  const members=REGISTERED_USERS.length;
-  let chosen=0;
-  REGISTERED_USERS.forEach(name=>{if(userHasClaimed(name))chosen++;});
-  document.getElementById('statTotal').textContent=total;
-  document.getElementById('statMembers').textContent=members;
-  document.getElementById('statChosen').textContent=chosen;
-  document.getElementById('footerStatNum').textContent=chosen;
-  document.getElementById('sidebarPill').textContent=chosen+'/'+members;
-}
+function updateHeroStats(){const total=books.length;const members=REGISTERED_USERS.length;let chosen=0;REGISTERED_USERS.forEach(name=>{if(userHasClaimed(name))chosen++;});document.getElementById('statTotal').textContent=total;document.getElementById('statMembers').textContent=members;document.getElementById('statChosen').textContent=chosen;document.getElementById('footerStatNum').textContent=chosen;document.getElementById('sidebarPill').textContent=chosen+'/'+members;}
 
 function renderUserList(){
-  const listEl=document.getElementById('userList');
-  const countEl=document.getElementById('userPanelCount');
-  if(!listEl)return;
-  let chosen=0;
-  const rows=REGISTERED_USERS.map(name=>{const claimed=userHasClaimed(name);if(claimed)chosen++;return{name,claimed};});
+  const listEl=document.getElementById('userList');const countEl=document.getElementById('userPanelCount');if(!listEl)return;
+  let chosen=0;const rows=REGISTERED_USERS.map(name=>{const claimed=userHasClaimed(name);if(claimed)chosen++;return{name,claimed};});
   countEl.innerHTML='<strong>'+chosen+'</strong> / '+REGISTERED_USERS.length+' har valgt';
   listEl.innerHTML=rows.map(({name,claimed})=>`<div class="user-item"><span class="user-name">${esc(name)}</span><span class="user-status ${claimed?'ok-badge':'missing-badge'}">${claimed?'Har valgt':'Mangler'}</span></div>`).join('');
   updateHeroStats();
 }
 
 function renderMyWonBooks(){
-  const panel=document.getElementById('myWonBooks');
-  const list=document.getElementById('myWonBooksList');
-  if(!panel||!list)return;
-  const user=getUser()||localStorage.getItem(USER_KEY)||'';
-  if(!user){panel.style.display='none';return;}
-  const lotteryDone=books.some(b=>b.winner);
-  if(!lotteryDone){panel.style.display='none';return;}
+  const panel=document.getElementById('myWonBooks');const list=document.getElementById('myWonBooksList');if(!panel||!list)return;
+  const user=getUser()||localStorage.getItem(USER_KEY)||'';if(!user){panel.style.display='none';return;}
+  const lotteryDone=books.some(b=>b.winner);if(!lotteryDone){panel.style.display='none';return;}
   const userLower=user.toLowerCase().trim();
   const won=books.filter(b=>{if(!b.winner)return false;const w=b.winner.toLowerCase().trim();if(w===userLower)return true;if(w.length>=5&&userLower.startsWith(w+' '))return true;if(userLower.length>=5&&w.startsWith(userLower+' '))return true;return false;});
   panel.style.display='block';
@@ -709,39 +613,26 @@ function renderMyWonBooks(){
   </div>`).join('');
 }
 
-const USER_KEY='shufflerUserName';
-const ADMIN_PW='Bogsnup2026';
-const MAX_CLAIMS=10;
-const SHOW_SLOTS=6;
-const API_DELAY=800;
+const USER_KEY='shufflerUserName';const ADMIN_PW='Bogsnup2026';const MAX_CLAIMS=10;const SHOW_SLOTS=6;const API_DELAY=800;
 const PROXIES=[url=>`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,url=>`https://corsproxy.io/?${encodeURIComponent(url)}`];
 let books=[],currentBookId=null,isAdminMode=false,isNewBookMode=false,tempNewBook=null,activeTab='Voksenbog';
 
 function switchTab(type){activeTab=type;document.getElementById('tabVoksen').className='tab-btn'+(type==='Voksenbog'?' active':'');document.getElementById('tabBoern').className='tab-btn'+(type==='Børnebog'?' active':'');renderBooks();}
 function updateTabCounts(){document.getElementById('countVoksen').textContent=books.filter(b=>(b.type||'Voksenbog')==='Voksenbog').length;document.getElementById('countBoern').textContent=books.filter(b=>(b.type||'Voksenbog')==='Børnebog').length;}
 
-function hideBannerShowChip(name){
-  document.getElementById('nameBanner').classList.add('hidden');
-  document.getElementById('nameConfirmedText').textContent=name;
-  document.getElementById('nameAvatar').textContent=name.charAt(0).toUpperCase();
-  document.getElementById('nameConfirmed').classList.add('visible');
-}
+function hideBannerShowChip(name){document.getElementById('nameBanner').classList.add('hidden');document.getElementById('nameConfirmedText').textContent=name;document.getElementById('nameAvatar').textContent=name.charAt(0).toUpperCase();document.getElementById('nameConfirmed').classList.add('visible');}
 function showNameBanner(){document.getElementById('nameBanner').classList.remove('hidden');document.getElementById('nameConfirmed').classList.remove('visible');setTimeout(()=>document.getElementById('userFirstName').focus(),200);}
 function getUser(){const first=document.getElementById('userFirstName').value.trim();const last=document.getElementById('userLastName').value.trim();return(first+' '+last).trim();}
 function normalizeName(n){return n.trim().replace(/\s+/g,' ').replace(/\b\w/g,c=>c.toUpperCase());}
 function getAllClaimedNames(){const s=new Set();books.forEach(b=>(b.claims||[]).forEach(n=>s.add(n.toLowerCase())));return s;}
 
 async function saveUserName(){
-  const first=document.getElementById('userFirstName').value.trim();
-  const last=document.getElementById('userLastName').value.trim();
+  const first=document.getElementById('userFirstName').value.trim();const last=document.getElementById('userLastName').value.trim();
   if(!first){toast('Skriv dit fornavn','err');document.getElementById('userFirstName').focus();return;}
   if(!last){toast('Skriv dit efternavn','err');document.getElementById('userLastName').focus();return;}
-  const normalized=normalizeName(first+' '+last);
-  const existing=getAllClaimedNames();
-  const currentUser=localStorage.getItem(USER_KEY);
+  const normalized=normalizeName(first+' '+last);const existing=getAllClaimedNames();const currentUser=localStorage.getItem(USER_KEY);
   if(existing.has(normalized.toLowerCase())&&normalized.toLowerCase()!==(currentUser||'').toLowerCase()){const w=document.getElementById('nameWarning');w.style.display='block';w.textContent='"'+normalized+'" er allerede i brug.';return;}
-  document.getElementById('nameWarning').style.display='none';
-  localStorage.setItem(USER_KEY,normalized);
+  document.getElementById('nameWarning').style.display='none';localStorage.setItem(USER_KEY,normalized);
   if(currentUser&&currentUser!==normalized){let updated=false;for(const book of books){if(!book.claims)continue;const idx=book.claims.indexOf(currentUser);if(idx>-1){book.claims[idx]=normalized;if(book.winner===currentUser)book.winner=normalized;await saveBookToFirebase(book);updated=true;}}if(updated)toast('Navn opdateret!','ok');}
   const btn=document.getElementById('saveNameBtn');btn.textContent='✓ Gemt!';btn.classList.add('saved');setTimeout(()=>{btn.textContent='GEM NAVN';btn.classList.remove('saved');},2000);
   hideBannerShowChip(normalized);toast('Velkommen, '+normalized+'! 👋','ok');renderBooks();
@@ -775,16 +666,22 @@ function init(){
   else{let n=0;const iv=setInterval(()=>{if(isFirebaseReady){clearInterval(iv);setupFirebaseListeners();setupMemberListener();}else if(++n>=50){clearInterval(iv);toast('Firebase timeout','err');}},100);}
 }
 
-function toggleAdmin(){if(document.getElementById('adminPass').value===ADMIN_PW){isAdminMode=true;document.querySelectorAll('.admin-btn').forEach(b=>b.disabled=false);toast('Admin aktiveret ✅','ok');}else{toast('Forkert adgangskode','err');}}
+function toggleAdmin(){
+  if(document.getElementById('adminPass').value===ADMIN_PW){
+    isAdminMode=true;
+    document.querySelectorAll('.admin-btn').forEach(b=>b.disabled=false);
+    document.getElementById('heroAdminActions').style.display='flex';
+    document.getElementById('footerAdminActions').style.display='flex';
+    toast('Admin aktiveret ✅','ok');
+  }else{toast('Forkert adgangskode','err');}
+}
 
 function handleCSVUpload(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=async e=>{try{const lines=e.target.result.split('\n').filter(l=>l.trim());if(lines.length<2){toast('CSV skal have mindst 2 linjer','err');return;}const newBooks=lines.slice(1).map((line,i)=>{const p=line.split(/[;,]/).map(s=>s.trim());const raw=(p[2]||'').toLowerCase();const type=raw.includes('børn')?'Børnebog':'Voksenbog';return{id:'b-'+Date.now()+'-'+i,title:p[0]||'Ingen titel',author:p[1]||'Ukendt forfatter',type,desc:'Tryk "Hent info" for at hente beskrivelse.',cover:'',claims:[],winner:null,fetchAttempted:false,fetchSuccess:false,manualCover:false,manualDesc:false};});await saveAllBooksToFirebase(newBooks);}catch(err){toast('CSV fejl: '+err.message,'err');}};reader.readAsText(file);event.target.value='';}
 
 async function saveBookTitleAuthor(){const newTitle=document.getElementById('editBookTitle').value.trim();const newAuthor=document.getElementById('editBookAuthor').value.trim();if(!newTitle){toast('Titel må ikke være tom','err');return;}if(!currentBookId||isNewBookMode)return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.title=newTitle;book.author=newAuthor||'Ukendt forfatter';await saveBookToFirebase(book);document.getElementById('modalTitle').textContent=book.title;document.getElementById('modalAuthor').textContent=book.author;const q=encodeURIComponent(book.title);document.getElementById('lrSearchLink').href='https://www.lindhardtogringhof.dk/soeg/'+q;document.getElementById('carlsenSearchLink').href='https://www.carlsen.dk/soeg/'+q;document.getElementById('googleImagesLink').href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(book.title+' '+book.author+' bog forside');toast('✅ Titel og forfatter opdateret!','ok');}
-
 async function changeBookType(newType){if(!currentBookId||isNewBookMode)return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.type=newType;await saveBookToFirebase(book);updateTabCounts();toast('Kategori ændret!','ok');}
 
 function addNewBook(){if(!isAdminMode)return;isNewBookMode=true;tempNewBook={id:'b-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),title:'',author:'',type:activeTab,desc:'',cover:'',claims:[],winner:null,fetchAttempted:false,fetchSuccess:false,manualCover:false,manualDesc:false};currentBookId=tempNewBook.id;document.getElementById('modalImg').src='';document.getElementById('modalImg').style.display='none';document.getElementById('modalTitle').textContent='Ny bog';document.getElementById('modalAuthor').textContent='';document.getElementById('modalDesc').textContent='';document.getElementById('modalClaims').innerHTML='<p style="color:var(--muted);font-style:italic;font-size:13px;padding:6px 0">Gem bogen for at begynde at modtage ønsker</p>';document.getElementById('modalActionButton').style.display='none';document.getElementById('adminImageUpload').classList.add('active');document.getElementById('newBookFields').style.display='block';document.getElementById('editBookFields').style.display='none';document.getElementById('searchLinks').style.display='none';document.getElementById('saveNewBookRow').style.display='block';document.getElementById('btnClearDesc').style.display='none';document.getElementById('newBookTitle').value='';document.getElementById('newBookAuthor').value='';document.getElementById('newBookType').value=activeTab;document.getElementById('imageUrlInput').value='';document.getElementById('imageFileInput').value='';document.getElementById('descriptionTextarea').value='';document.getElementById('bookModal').classList.add('active');document.body.style.overflow='hidden';setTimeout(()=>document.getElementById('newBookTitle').focus(),80);}
-
 async function saveNewBook(){const title=document.getElementById('newBookTitle').value.trim();const author=document.getElementById('newBookAuthor').value.trim();const type=document.getElementById('newBookType').value;if(!title){toast('Skriv en titel','err');return;}tempNewBook.title=title;tempNewBook.author=author||'Ukendt forfatter';tempNewBook.type=type;const descInput=document.getElementById('descriptionTextarea').value.trim();if(descInput){tempNewBook.desc=descInput;tempNewBook.manualDesc=true;}if(!tempNewBook.desc)tempNewBook.desc='Ingen beskrivelse endnu.';if(!tempNewBook.cover){const coverUrl=document.getElementById('imageUrlInput').value.trim();if(coverUrl&&coverUrl.startsWith('http')){tempNewBook.cover=coverUrl;tempNewBook.manualCover=true;}}await saveBookToFirebase(tempNewBook);toast('✅ "'+tempNewBook.title+'" oprettet!','ok');isNewBookMode=false;currentBookId=null;tempNewBook=null;closeModal();}
 
 async function proxyFetch(targetUrl,timeoutMs=9000){for(const makeProxy of PROXIES){try{const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),timeoutMs);const res=await fetch(makeProxy(targetUrl),{signal:controller.signal});clearTimeout(timer);if(!res.ok)continue;const ct=res.headers.get('content-type')||'';let html;if(ct.includes('application/json')){const d=await res.json();html=d.contents||null;}else html=await res.text();if(html&&html.length>200)return html;}catch(e){console.warn('Proxy failed:',e.message);}await delay(300);}return null;}
@@ -792,63 +689,48 @@ function parseMeta(html){const doc=new DOMParser().parseFromString(html,'text/ht
 function trimDesc(d,max=800){if(!d||typeof d!=='string')return null;d=d.trim().replace(/\s+/g,' ');return d.length>max?d.slice(0,max-1)+'…':d;}
 
 async function fetchFromLindhardt(title,author){try{const html=await proxyFetch(`https://www.lindhardtogringhof.dk/soeg/${encodeURIComponent(title)}`);if(!html)return null;const doc=new DOMParser().parseFromString(html,'text/html');let productUrl=null;for(const sel of['a[href*="/bog/"]','.product-item a','article a','.product a']){const el=doc.querySelector(sel);if(el?.getAttribute('href')){productUrl=el.getAttribute('href');break;}}if(productUrl){const full=productUrl.startsWith('http')?productUrl:'https://www.lindhardtogringhof.dk'+productUrl;const bHtml=await proxyFetch(full);if(bHtml){const bd=new DOMParser().parseFromString(bHtml,'text/html');const descEl=bd.querySelector('.product-description,.description,.blurb,[class*="description"],[class*="synopsis"]');const rawDesc=descEl?.innerText?.trim()||null;const meta=parseMeta(bHtml);const desc=trimDesc((rawDesc?.length>20?rawDesc:null)||meta.desc);const imgEl=bd.querySelector('.product-cover img,.cover img,img[class*="cover"]');const cover=imgEl?.src||imgEl?.getAttribute('data-src')||meta.cover;if(desc||cover)return{desc,cover:cover?.replace('http://','https://')||null,pageUrl:full,source:'Lindhardt og Ringhof'};}}const meta=parseMeta(html);if(meta.desc||meta.cover)return{...meta,source:'Lindhardt og Ringhof (meta)'};}catch(e){console.warn('LR error:',e.message);}return null;}
-
 async function fetchFromCarlsen(title,author){try{const html=await proxyFetch(`https://www.carlsen.dk/soeg/${encodeURIComponent(title)}`);if(!html)return null;const doc=new DOMParser().parseFromString(html,'text/html');let productUrl=null;for(const sel of['a[href*="/bog/"]','a[href*="/product/"]','.product-item a','article a']){const el=doc.querySelector(sel);if(el?.getAttribute('href')){productUrl=el.getAttribute('href');break;}}if(productUrl){const full=productUrl.startsWith('http')?productUrl:'https://www.carlsen.dk'+productUrl;const bHtml=await proxyFetch(full);if(bHtml){const bd=new DOMParser().parseFromString(bHtml,'text/html');const descEl=bd.querySelector('.product-description,.description,.blurb,[class*="description"],[class*="synopsis"]');const rawDesc=descEl?.innerText?.trim()||null;const meta=parseMeta(bHtml);const desc=trimDesc((rawDesc?.length>20?rawDesc:null)||meta.desc);const imgEl=bd.querySelector('.product-cover img,.cover img,img[class*="cover"]');const cover=imgEl?.src||imgEl?.getAttribute('data-src')||meta.cover;if(desc||cover)return{desc,cover:cover?.replace('http://','https://')||null,pageUrl:full,source:'Carlsen'};}}const meta=parseMeta(html);if(meta.desc||meta.cover)return{...meta,source:'Carlsen (meta)'};}catch(e){console.warn('Carlsen error:',e.message);}return null;}
-
 async function fetchFromGoogle(title,author){const queries=[`intitle:"${title}" inauthor:"${author}"`,`"${title}" "${author}"`,`intitle:"${title}"`,`${title} ${author}`];for(const q of queries){try{const res=await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&maxResults=8`);if(!res.ok)continue;const data=await res.json();if(!data.items?.length)continue;const tl=title.toLowerCase();let best=data.items[0];for(const item of data.items){const t=(item.volumeInfo.title||'').toLowerCase();if(t===tl||t.startsWith(tl)){best=item;break;}}const info=best.volumeInfo;const links=info.imageLinks||{};let cover=(links.extraLarge||links.large||links.medium||links.small||links.thumbnail||'').replace('http:','https:').replace('&edge=curl','').replace('zoom=1','zoom=3');const desc=info.description||info.subtitle||null;if(desc||cover)return{desc:trimDesc(desc),cover:cover||null,author:info.authors?.join(', ')||null,source:'Google Books'};}catch(e){console.warn('Google Books error:',e.message);}}return null;}
-
 async function fetchFromOpenLibrary(title,author){try{const res=await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(title+' '+author)}&limit=10&fields=key,title,author_name,cover_i`);if(!res.ok)return null;const data=await res.json();if(!data.docs?.length)return null;const tl=title.toLowerCase();let best=data.docs[0];for(const doc of data.docs){const t=(doc.title||'').toLowerCase();if(t===tl||t.startsWith(tl)){best=doc;break;}}const cover=best.cover_i?`https://covers.openlibrary.org/b/id/${best.cover_i}-L.jpg`:null;let desc=null;if(best.key){try{const wr=await fetch(`https://openlibrary.org${best.key}.json`);if(wr.ok){const w=await wr.json();const raw=typeof w.description==='string'?w.description:(w.description?.value||null);if(raw)desc=trimDesc(raw);}}catch{}}if(cover||desc)return{desc,cover,author:best.author_name?.join(', ')||null,source:'Open Library'};}catch(e){console.warn('OL error:',e.message);}return null;}
-
 async function fetchFromOpenLibraryTitleOnly(title){try{const res=await fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&limit=5&fields=key,title,author_name,cover_i`);if(!res.ok)return null;const data=await res.json();if(!data.docs?.length)return null;const best=data.docs[0];const cover=best.cover_i?`https://covers.openlibrary.org/b/id/${best.cover_i}-L.jpg`:null;if(cover)return{desc:null,cover,author:best.author_name?.join(', ')||null,source:'Open Library (titel)'};}catch(e){console.warn('OL title error:',e.message);}return null;}
 
 async function fetchAllInfo(){if(!books.length){toast('Upload en CSV-fil først','err');return;}const btn=document.getElementById('btnFetch');const wrap=document.getElementById('progressContainer');const bar=document.getElementById('progressBar');btn.disabled=true;btn.textContent='⏳ Henter…';wrap.style.display='block';let ok=0,fail=0;for(let i=0;i<books.length;i++){const book=books[i];bar.style.width=Math.round(((i+1)/books.length)*100)+'%';bar.textContent=(i+1)+'/'+books.length+' – '+book.title;if(book.manualCover&&book.manualDesc){await delay(20);continue;}const needDesc=!book.manualDesc;const needCover=!book.manualCover;const apply=result=>{if(!result)return false;let changed=false;if(needDesc&&result.desc?.length>10){book.desc=result.desc;changed=true;}if(needCover&&result.cover?.startsWith('http')){book.cover=result.cover.replace('http://','https://');changed=true;}if(result.pageUrl&&!book.pageUrl)book.pageUrl=result.pageUrl;if(result.author&&book.author==='Ukendt forfatter')book.author=result.author;if(changed){book.fetchSuccess=true;book.fetchSource=result.source;}return changed;};const stillNeedDesc=()=>needDesc&&(!book.desc||book.desc.startsWith('Tryk'));const stillNeedCover=()=>needCover&&!book.cover;const stillNeedAny=()=>stillNeedDesc()||stillNeedCover();if(stillNeedAny()){await delay(400);apply(await fetchFromLindhardt(book.title,book.author));}if(stillNeedAny()){await delay(400);apply(await fetchFromCarlsen(book.title,book.author));}if(stillNeedAny()){await delay(300);apply(await fetchFromGoogle(book.title,book.author));}if(stillNeedAny()){await delay(300);apply(await fetchFromOpenLibrary(book.title,book.author));}if(stillNeedCover()){await delay(200);apply(await fetchFromOpenLibraryTitleOnly(book.title));}if(!book.fetchSuccess){book.fetchError='Ikke fundet';fail++;}else ok++;book.fetchAttempted=true;await saveBookToFirebase(book);if(i<books.length-1)await delay(API_DELAY);}btn.disabled=false;btn.textContent='✨ Hent info';wrap.style.display='none';if(fail===0)toast('🎉 Alle '+ok+' bøger hentet!','ok');else if(ok===0)toast('❌ Ingen bøger fundet','err');else toast('✅ '+ok+' ok — ❌ '+fail+' fejlede','ok');}
 function showFetchErrors(){const failed=books.filter(b=>b.fetchAttempted&&!b.fetchSuccess);if(!failed.length){toast('Ingen fejl!','ok');return;}alert('❌ '+failed.length+' fejlede:\n\n'+failed.map(b=>'• "'+b.title+'"\n  → '+(b.fetchError||'Ikke fundet')).join('\n\n'));}
-
 async function debugFirebase(){let r='🔍 Firebase Debug\n═══════════════\n';r+='Bøger: '+books.length+' | Max ønsker: '+MAX_CLAIMS+'\n';if(isFirebaseReady){try{const snap=await database.ref('books').once('value');r+='Firebase bøger: '+(snap.val()?Object.keys(snap.val()).length:0)+'\n';await database.ref('test').set({ts:Date.now()});r+='Skriveadgang: ✅\n';await database.ref('test').remove();}catch(e){r+='Fejl: '+e.message+'\n';}}alert(r);}
-
 async function manualRefresh(){if(!isFirebaseReady){toast('Firebase ikke forbundet','err');return;}const snap=await database.ref('books').once('value');const data=snap.val();books=data?Object.keys(data).map(k=>({firebaseKey:k,...data[k]})):[];updateTabCounts();renderBooks();toast('✅ '+books.length+' bøger genindlæst','ok');}
-
 async function runSmartLottery(){if(!books.length){toast('Ingen bøger','err');return;}const total=books.reduce((s,b)=>s+(b.claims?.length||0),0);if(!total){toast('Ingen ønsker endnu','err');return;}if(!confirm('Kør lodtrækning for '+books.length+' bøger ('+total+' ønsker)?'))return;books.forEach(b=>b.winner=null);books.forEach(b=>{if(b.claims?.length===1)b.winner=b.claims[0];});const popular=books.filter(b=>b.claims?.length>1);shuffleArray(popular);const wonCompetitive=new Set();popular.forEach(b=>{const eligible=b.claims.filter(u=>!wonCompetitive.has(u));if(eligible.length>0){const win=eligible[Math.floor(Math.random()*eligible.length)];b.winner=win;wonCompetitive.add(win);}else{const totalWins=u=>books.filter(bk=>bk.winner===u).length;const minWins=Math.min(...b.claims.map(totalWins));const least=b.claims.filter(u=>totalWins(u)===minWins);const win=least[Math.floor(Math.random()*least.length)];b.winner=win;wonCompetitive.add(win);}});await saveAllBooksToFirebase(books);const winners=new Set(books.filter(b=>b.winner).map(b=>b.winner));toast('🎉 '+books.filter(b=>b.winner).length+' bøger tildelt til '+winners.size+' vindere','ok');}
-
 async function clearAllData(){if(!confirm('Slet ALLE data?'))return;if(!confirm('Bekræft: slet alt permanent'))return;await deleteAllBooksFromFirebase();toast('Alle data slettet','ok');}
 
 async function toggleClaim(bookId){const user=getUser();if(!user){toast('Skriv og GEM dit navn først','err');return;}const book=books.find(b=>b.id===bookId);if(!book)return;if(!book.claims)book.claims=[];const idx=book.claims.indexOf(user);if(idx>-1){book.claims.splice(idx,1);if(book.winner===user)book.winner=null;}else{if(book.claims.length>=MAX_CLAIMS){toast('Bogen har allerede '+MAX_CLAIMS+' ønsker','err');return;}book.claims.push(user);}await saveBookToFirebase(book);}
 function handleModalClaim(){if(currentBookId&&!isNewBookMode)toggleClaim(currentBookId);}
 
 function renderBooks(){
-  const grid=document.getElementById('bookGrid');
-  const user=getUser();
-  const filtered=books.filter(b=>(b.type||'Voksenbog')===activeTab);
-  updateTabCounts();
-  if(!filtered.length){
-    const icon=activeTab==='Børnebog'?'🧒':'📚';
-    const label=activeTab==='Børnebog'?'Børnebøger':'Voksenbøger';
-    grid.innerHTML=`<div class="empty-state"><div class="icon">${icon}</div><p>Ingen ${label} endnu.</p></div>`;
-    renderUserList();renderMyWonBooks();return;
-  }
-  grid.innerHTML='';
-  filtered.forEach(book=>grid.appendChild(createBookCard(book,user)));
-  renderUserList();renderMyWonBooks();
+  const grid=document.getElementById('bookGrid');const user=getUser();const filtered=books.filter(b=>(b.type||'Voksenbog')===activeTab);updateTabCounts();
+  if(!filtered.length){const icon=activeTab==='Børnebog'?'🧒':'📚';const label=activeTab==='Børnebog'?'Børnebøger':'Voksenbøger';grid.innerHTML=`<div class="empty-state"><div class="icon">${icon}</div><p>Ingen ${label} endnu.</p></div>`;renderUserList();renderMyWonBooks();return;}
+  grid.innerHTML='';filtered.forEach(book=>grid.appendChild(createBookCard(book,user)));renderUserList();renderMyWonBooks();
 }
 
 function createBookCard(book,user){
-  const card=document.createElement('div');
-  card.className='book-card';card.dataset.id=book.id;
-  card.addEventListener('click',()=>openModal(book.id));
-  const claims=book.claims||[];
-  const isClaimed=user&&claims.includes(user);
-  const lotteryDone=books.some(b=>b.winner);
-  const visibleClaims=claims.slice(0,SHOW_SLOTS);
-  const hiddenCount=claims.length-SHOW_SLOTS;
-  const slots=Array(SHOW_SLOTS).fill(0).map((_,i)=>{const c=visibleClaims[i];const w=book.winner===c&&c;return'<div class="slot'+(c?' taken':'')+(w?' winner':'')+'">'+( c?esc(c.split(' ')[0]):'–')+(w?' 🏆':'')+'</div>';}).join('');
+  const card=document.createElement('div');card.className='book-card';card.dataset.id=book.id;card.addEventListener('click',()=>openModal(book.id));
+  const claims=book.claims||[];const isClaimed=user&&claims.includes(user);const lotteryDone=books.some(b=>b.winner);
+  const visibleClaims=claims.slice(0,SHOW_SLOTS);const hiddenCount=claims.length-SHOW_SLOTS;
+
+  // ✅ Pill-style voter chips
+  const chips=visibleClaims.map(c=>{
+    const isWinner=book.winner===c;
+    return`<span class="slot taken${isWinner?' winner':''}">${esc(c.split(' ')[0])}${isWinner?' 🏆':''}</span>`;
+  }).join('');
+  const emptySlots=Array(Math.max(0,3-visibleClaims.length)).fill('<span class="slot">–</span>').join('');
+
   let btnCls='btn-claim',btnTxt='Jeg ønsker mig bogen her',dis=false;
   if(!user){btnTxt='Gem dit navn først';dis=true;}
   else if(isClaimed){btnCls+=' claimed';btnTxt='Fjern ønske';}
   else if(claims.length>=MAX_CLAIMS){btnTxt='Fuld ('+MAX_CLAIMS+'/'+MAX_CLAIMS+')';dis=true;}
-  const claimBtn=document.createElement('button');
-  claimBtn.className=btnCls;claimBtn.textContent=btnTxt;
+
+  const claimBtn=document.createElement('button');claimBtn.className=btnCls;claimBtn.textContent=btnTxt;
   if(dis)claimBtn.disabled=true;
   claimBtn.addEventListener('click',e=>{e.stopPropagation();toggleClaim(book.id);});
+
   card.innerHTML=`
     <div class="card-cover">
       ${book.cover?`<img src="${esc(book.cover)}" alt="${esc(book.title)}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=card-cover-ph>📖</div>'">`:'<div class="card-cover-ph">📖</div>'}
@@ -858,32 +740,27 @@ function createBookCard(book,user){
       <div class="card-title">${esc(book.title)}</div>
       <div class="card-author">${esc(book.author)}</div>
       <div class="card-hint">ℹ️ Klik for beskrivelse</div>
-      <div class="claim-slots">${slots}</div>
+      <div class="claim-slots">${chips}${emptySlots}</div>
       <div class="see-more-wrap"></div>
       <div class="claim-btn-wrap"></div>
     </div>`;
-  if(hiddenCount>0){const seeMoreBtn=document.createElement('button');seeMoreBtn.className='btn-see-more';seeMoreBtn.textContent='👁️ Se alle '+claims.length+' ønsker';seeMoreBtn.addEventListener('click',e=>{e.stopPropagation();openModal(book.id);});card.querySelector('.see-more-wrap').appendChild(seeMoreBtn);}
+
+  if(hiddenCount>0){const b=document.createElement('button');b.className='btn-see-more';b.textContent='👁️ Se alle '+claims.length+' ønsker';b.addEventListener('click',e=>{e.stopPropagation();openModal(book.id);});card.querySelector('.see-more-wrap').appendChild(b);}
   if(!lotteryDone)card.querySelector('.claim-btn-wrap').appendChild(claimBtn);
   return card;
 }
 
 function openModal(bookId){isNewBookMode=false;currentBookId=bookId;const book=books.find(b=>b.id===bookId);if(!book)return;updateModalContent(book);document.getElementById('bookModal').classList.add('active');document.body.style.overflow='hidden';}
 function updateModalContent(book){
-  const user=getUser();
-  const img=document.getElementById('modalImg');img.src=book.cover||'';img.style.display=book.cover?'block':'none';
-  document.getElementById('modalTitle').textContent=book.title;
-  document.getElementById('modalAuthor').textContent=book.author;
-  document.getElementById('modalDesc').textContent=book.desc||'Ingen beskrivelse.';
+  const user=getUser();const img=document.getElementById('modalImg');img.src=book.cover||'';img.style.display=book.cover?'block':'none';
+  document.getElementById('modalTitle').textContent=book.title;document.getElementById('modalAuthor').textContent=book.author;document.getElementById('modalDesc').textContent=book.desc||'Ingen beskrivelse.';
   const claims=book.claims||[];
   document.getElementById('modalClaims').innerHTML=claims.length?claims.map(c=>`<div class="claim-item${book.winner===c?' win':''}"><span>${esc(c)}</span>${book.winner===c?'<span>🏆 VINDER</span>':''}</div>`).join(''):'<p style="color:var(--muted);font-style:italic;font-size:13px;padding:6px 0">Ingen ønsker endnu</p>';
-  const btn=document.getElementById('modalActionButton');
-  const isClaimed=user&&claims.includes(user);
-  const lotteryDone=books.some(b=>b.winner);
-  if(lotteryDone){btn.style.display='none';}
-  else{btn.style.display='';if(!user){btn.textContent='Gem dit navn først';btn.disabled=true;btn.className='btn-ma';}else if(isClaimed){btn.textContent='Fjern ønske';btn.disabled=false;btn.className='btn-ma claimed';}else if(claims.length>=MAX_CLAIMS){btn.textContent='Fuld ('+MAX_CLAIMS+'/'+MAX_CLAIMS+')';btn.disabled=true;btn.className='btn-ma';}else{btn.textContent='Jeg ønsker mig bogen her';btn.disabled=false;btn.className='btn-ma';}}
+  const btn=document.getElementById('modalActionButton');const isClaimed=user&&claims.includes(user);const lotteryDone=books.some(b=>b.winner);
+  if(lotteryDone){btn.style.display='none';}else{btn.style.display='';if(!user){btn.textContent='Gem dit navn først';btn.disabled=true;btn.className='btn-ma';}else if(isClaimed){btn.textContent='Fjern ønske';btn.disabled=false;btn.className='btn-ma claimed';}else if(claims.length>=MAX_CLAIMS){btn.textContent='Fuld ('+MAX_CLAIMS+'/'+MAX_CLAIMS+')';btn.disabled=true;btn.className='btn-ma';}else{btn.textContent='Jeg ønsker mig bogen her';btn.disabled=false;btn.className='btn-ma';}}
   document.getElementById('newBookFields').style.display='none';document.getElementById('saveNewBookRow').style.display='none';document.getElementById('btnClearDesc').style.display='';
   const adm=document.getElementById('adminImageUpload');
-  if(isAdminMode){adm.classList.add('active');document.getElementById('editBookFields').style.display='block';document.getElementById('searchLinks').style.display='';document.getElementById('editBookTitle').value=book.title;document.getElementById('editBookAuthor').value=book.author;document.getElementById('imageUrlInput').value='';document.getElementById('imageFileInput').value='';document.getElementById('descriptionTextarea').value=book.desc||'';document.getElementById('bookTypeSelect').value=book.type||'Voksenbog';const q=encodeURIComponent(book.title);document.getElementById('lrSearchLink').href='https://www.lindhardtogringhof.dk/soeg/'+q;document.getElementById('carlsenSearchLink').href='https://www.carlsen.dk/soeg/'+q;document.getElementById('googleImagesLink').href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(book.title+' '+book.author+' bog forside');const pageLink=document.getElementById('pageUrlLink');if(book.pageUrl){pageLink.href=book.pageUrl;pageLink.style.display='block';}else{pageLink.style.display='none';}}else{adm.classList.remove('active');document.getElementById('editBookFields').style.display='none';}
+  if(isAdminMode){adm.classList.add('active');document.getElementById('editBookFields').style.display='block';document.getElementById('searchLinks').style.display='';document.getElementById('editBookTitle').value=book.title;document.getElementById('editBookAuthor').value=book.author;document.getElementById('imageUrlInput').value='';document.getElementById('imageFileInput').value='';document.getElementById('descriptionTextarea').value=book.desc||'';document.getElementById('bookTypeSelect').value=book.type||'Voksenbog';const q=encodeURIComponent(book.title);document.getElementById('lrSearchLink').href='https://www.lindhardtogringhof.dk/soeg/'+q;document.getElementById('carlsenSearchLink').href='https://www.carlsen.dk/soeg/'+q;document.getElementById('googleImagesLink').href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(book.title+' '+book.author+' bog forside');const pl=document.getElementById('pageUrlLink');if(book.pageUrl){pl.href=book.pageUrl;pl.style.display='block';}else{pl.style.display='none';}}else{adm.classList.remove('active');document.getElementById('editBookFields').style.display='none';}
 }
 function closeModal(){if(isNewBookMode){isNewBookMode=false;tempNewBook=null;}document.getElementById('bookModal').classList.remove('active');document.body.style.overflow='';currentBookId=null;}
 
