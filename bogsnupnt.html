@@ -80,8 +80,6 @@ header{background:var(--card);border-bottom:1px solid var(--border);position:sti
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{background:var(--green)}
 .toast.err{background:var(--red)}
-
-/* ── HERO ── */
 #hero{padding:48px 30px 36px;max-width:1600px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
 .hero-left{display:flex;flex-direction:column;}
 .hero-eyebrow{font-family:var(--font);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:12px;}
@@ -92,42 +90,20 @@ header{background:var(--card);border-bottom:1px solid var(--border);position:sti
 .stat-num{font-family:var(--font);font-size:28px;font-weight:900;letter-spacing:-.04em;color:var(--dark);}
 .stat-num.orange{color:var(--orange)}
 .stat-lbl{font-family:var(--font);font-size:12px;color:var(--muted);margin-top:2px;}
-
-/* ── MOST WANTED — 3 equal frames, same constraints as book covers ── */
 .hero-right{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start;}
 .mw-card{cursor:pointer;transition:transform .2s ease;}
 .mw-card:hover{transform:translateY(-4px);}
-.mw-frame{
-  aspect-ratio:2/3;          /* ✅ same as .card-cover */
-  width:100%;
-  position:relative;
-  overflow:hidden;           /* ✅ clips image to frame — same as .card-cover */
-  border:2.5px solid var(--dark);
-  border-radius:10px;
-  background:#e8e8e8;
-  box-shadow:3px 3px 0px var(--dark);
-  margin-bottom:8px;
-  transition:box-shadow .2s ease;
-}
+.mw-frame{aspect-ratio:2/3;width:100%;position:relative;overflow:hidden;border:2.5px solid var(--dark);border-radius:10px;background:#e8e8e8;box-shadow:3px 3px 0px var(--dark);margin-bottom:8px;transition:box-shadow .2s ease;}
 .mw-card:hover .mw-frame{box-shadow:5px 5px 0px var(--dark);}
 .mw-1 .mw-frame{box-shadow:3px 3px 0px var(--orange);}
 .mw-card.mw-1:hover .mw-frame{box-shadow:5px 5px 0px var(--orange);}
-.mw-frame img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;          /* ✅ same as .card-cover img */
-  display:block;
-}
+.mw-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .mw-frame-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;opacity:.15;}
 .mw-rank{position:absolute;top:8px;left:8px;background:var(--dark);color:#fff;border-radius:6px;font-size:13px;font-weight:900;padding:4px 10px;z-index:2;font-family:var(--font);}
 .mw-1 .mw-rank{background:var(--orange);font-size:15px;padding:5px 12px;}
 .mw-wishes{position:absolute;bottom:8px;right:8px;background:var(--dark);color:#fff;border-radius:6px;font-size:10px;font-weight:700;padding:3px 8px;z-index:2;font-family:var(--font);}
 .mw-title{font-family:var(--font);font-size:11.5px;font-weight:800;color:var(--dark);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .mw-author{font-family:var(--font);font-size:10px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-
-/* ── MAIN ── */
 .main-layout{display:flex;align-items:flex-start;max-width:1600px;margin:0 auto}
 .book-grid{flex:1;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;padding:24px 30px;min-width:0}
 .book-card{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);display:flex;flex-direction:column;overflow:hidden;cursor:pointer;transition:transform .18s,box-shadow .18s}
@@ -160,8 +136,6 @@ header{background:var(--card);border-bottom:1px solid var(--border);position:sti
 .empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--muted)}
 .empty-state .icon{font-size:56px;margin-bottom:14px}
 .empty-state p{font-size:16px}
-
-/* ── SIDEBAR ── */
 .user-panel{width:260px;flex-shrink:0;padding:24px 20px 24px 0;position:sticky;top:70px;max-height:calc(100vh - 90px);overflow-y:auto}
 .sidebar-card{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh);padding:16px;border:1px solid rgba(0,0,0,.04);margin-bottom:14px}
 .sidebar-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -183,8 +157,6 @@ header{background:var(--card);border-bottom:1px solid var(--border);position:sti
 .won-book-author{font-size:10px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .won-book-badge{font-size:9px;font-weight:700;color:#b8860b;margin-top:2px}
 .won-books-empty{font-size:12px;color:var(--muted);font-style:italic;text-align:center;padding:6px 0}
-
-/* ── FOOTER ── */
 footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;padding:40px 30px;display:flex;gap:28px;align-items:center;flex-wrap:wrap}
 .footer-headline{font-family:var(--font);font-size:clamp(22px,2.8vw,36px);font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1.1;flex:1;}
 .footer-headline em{color:var(--orange);font-style:normal}
@@ -193,8 +165,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 .footer-stat .num{font-family:var(--font);font-size:38px;font-weight:900;letter-spacing:-.04em;}
 .footer-stat .lbl{font-size:11px;font-weight:500;opacity:.85;margin-top:1px}
 .footer-actions{display:flex;flex-direction:column;gap:8px;flex-shrink:0}
-
-/* ── MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.active{display:flex}
 .modal-box{background:var(--card);border-radius:var(--r);width:100%;max-width:520px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:fadeUp .2s ease}
@@ -243,8 +213,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 .member-add-btn{padding:8px 14px;background:var(--green);color:#fff;border:none;border-radius:var(--r-sm);font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font)}
 .member-add-btn:hover{opacity:.85}
 .member-lbl{font-family:var(--font);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px;}
-
-/* ── RESPONSIVE ── */
 @media(max-width:960px){
   #hero{grid-template-columns:1fr;gap:24px;}
   .hero-right{grid-template-columns:repeat(3,1fr);}
@@ -263,7 +231,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="header-inner">
     <div class="logo">📚 Bog<span>snup</span> <small>⚡ Real-time</small></div>
@@ -280,7 +247,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
   </div>
 </header>
 
-<!-- NAME BANNER -->
 <div class="name-banner" id="nameBanner">
   <div class="name-banner-inner">
     <div class="step-badge">1</div>
@@ -301,7 +267,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
   </div>
 </div>
 
-<!-- CONTROLS BAR -->
 <div class="controls-bar-wrap">
   <div class="controls-bar">
     <button class="btn-refresh" onclick="manualRefresh()">🔄 Genindlæs</button>
@@ -321,7 +286,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
   </div>
 </div>
 
-<!-- TABS -->
 <div class="tabs-wrap">
   <div class="tabs-inner">
     <button class="tab-btn active" id="tabVoksen" onclick="switchTab('Voksenbog')">
@@ -339,7 +303,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 </div>
 <div class="toast" id="toast"></div>
 
-<!-- HERO -->
 <section id="hero">
   <div class="hero-left">
     <div class="hero-eyebrow">📚 Bogklub — Sæson 2026</div>
@@ -355,46 +318,40 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
       <div><div class="stat-num orange" id="statChosen">–</div><div class="stat-lbl">Har valgt</div></div>
     </div>
   </div>
-
-  <!-- 3 equal black-framed books — same cover constraints as book cards -->
   <div class="hero-right" id="mostWantedSection">
     <div class="mw-card mw-2" id="mwCard2" onclick="mostWanted[1]&&openModal(mostWanted[1].id)">
       <div class="mw-frame">
-        <img id="mw2img" src="" alt="" style="display:none"
-             onerror="this.style.display='none';document.getElementById('mw2ph').style.display='flex'">
+        <img id="mw2img" src="" alt="" style="display:none" onerror="this.style.display='none';document.getElementById('mw2ph').style.display='flex'">
         <div id="mw2ph" class="mw-frame-ph">📖</div>
         <div class="mw-rank" id="mw2rank" style="display:none">🥈 #2</div>
         <div class="mw-wishes" id="mw2wishes" style="display:none">–</div>
       </div>
-      <div class="mw-title"  id="mw2title"></div>
+      <div class="mw-title" id="mw2title"></div>
       <div class="mw-author" id="mw2author"></div>
     </div>
     <div class="mw-card mw-1" id="mwCard1" onclick="mostWanted[0]&&openModal(mostWanted[0].id)">
       <div class="mw-frame">
-        <img id="mw1img" src="" alt="" style="display:none"
-             onerror="this.style.display='none';document.getElementById('mw1ph').style.display='flex'">
+        <img id="mw1img" src="" alt="" style="display:none" onerror="this.style.display='none';document.getElementById('mw1ph').style.display='flex'">
         <div id="mw1ph" class="mw-frame-ph">📖</div>
         <div class="mw-rank" id="mw1rank" style="display:none">🥇 #1</div>
         <div class="mw-wishes" id="mw1wishes" style="display:none">–</div>
       </div>
-      <div class="mw-title"  id="mw1title"></div>
+      <div class="mw-title" id="mw1title"></div>
       <div class="mw-author" id="mw1author"></div>
     </div>
     <div class="mw-card mw-3" id="mwCard3" onclick="mostWanted[2]&&openModal(mostWanted[2].id)">
       <div class="mw-frame">
-        <img id="mw3img" src="" alt="" style="display:none"
-             onerror="this.style.display='none';document.getElementById('mw3ph').style.display='flex'">
+        <img id="mw3img" src="" alt="" style="display:none" onerror="this.style.display='none';document.getElementById('mw3ph').style.display='flex'">
         <div id="mw3ph" class="mw-frame-ph">📖</div>
         <div class="mw-rank" id="mw3rank" style="display:none">🥉 #3</div>
         <div class="mw-wishes" id="mw3wishes" style="display:none">–</div>
       </div>
-      <div class="mw-title"  id="mw3title"></div>
+      <div class="mw-title" id="mw3title"></div>
       <div class="mw-author" id="mw3author"></div>
     </div>
   </div>
 </section>
 
-<!-- MAIN -->
 <div class="main-layout">
   <div class="book-grid" id="bookGrid"></div>
   <aside class="user-panel">
@@ -413,7 +370,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
   </aside>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div>
     <div class="footer-headline">Hold dig<br/>til <em>bøgerne.</em></div>
@@ -424,14 +380,11 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
     <div class="lbl">Har valgt</div>
   </div>
   <div class="footer-actions" id="footerAdminActions" style="display:none">
-    <button class="btn btn-primary" onclick="runSmartLottery()"
-      style="justify-content:center;padding:11px 26px;font-size:13px">🎲 Kør lodtrækning</button>
-    <button class="btn btn-dark" onclick="document.getElementById('csvFileInput').click()"
-      style="justify-content:center;padding:11px 26px;font-size:13px">📁 Eksporter CSV</button>
+    <button class="btn btn-primary" onclick="runSmartLottery()" style="justify-content:center;padding:11px 26px;font-size:13px">🎲 Kør lodtrækning</button>
+    <button class="btn btn-dark" onclick="document.getElementById('csvFileInput').click()" style="justify-content:center;padding:11px 26px;font-size:13px">📁 Eksporter CSV</button>
   </div>
 </footer>
 
-<!-- BOOK MODAL -->
 <div class="modal-overlay" id="bookModal">
   <div class="modal-box">
     <img id="modalImg" class="modal-cover" src="" alt="" style="display:none">
@@ -445,7 +398,7 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
     <div class="modal-admin" id="adminImageUpload">
       <div id="newBookFields" style="display:none">
         <h4>📖 Ny bog – grundoplysninger</h4>
-        <input type="text" id="newBookTitle"  placeholder="Titel *">
+        <input type="text" id="newBookTitle" placeholder="Titel *">
         <input type="text" id="newBookAuthor" placeholder="Forfatter">
         <label style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;display:block;text-transform:uppercase;letter-spacing:.06em">Kategori</label>
         <select id="newBookType">
@@ -456,7 +409,7 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
       </div>
       <div id="editBookFields" style="display:none">
         <h4>✏️ Rediger titel & forfatter</h4>
-        <input type="text" id="editBookTitle"  placeholder="Titel *">
+        <input type="text" id="editBookTitle" placeholder="Titel *">
         <input type="text" id="editBookAuthor" placeholder="Forfatter">
         <div class="adm-row">
           <button class="adm-btn green" onclick="saveBookTitleAuthor()">💾 Gem titel & forfatter</button>
@@ -465,10 +418,10 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
       </div>
       <div id="searchLinks">
         <h4>🔗 Find bogen</h4>
-        <a id="lrSearchLink"      href="#" target="_blank">🔍 Lindhardt og Ringhof</a>
+        <a id="lrSearchLink" href="#" target="_blank">🔍 Lindhardt og Ringhof</a>
         <a id="carlsenSearchLink" href="#" target="_blank">🔍 Carlsen</a>
-        <a id="googleImagesLink"  href="#" target="_blank">🔍 Google Images (forside)</a>
-        <a id="pageUrlLink"       href="#" target="_blank" style="display:none;color:var(--green)">📖 Åbn bogside</a>
+        <a id="googleImagesLink" href="#" target="_blank">🔍 Google Images (forside)</a>
+        <a id="pageUrlLink" href="#" target="_blank" style="display:none;color:var(--green)">📖 Åbn bogside</a>
         <hr class="modal-sep">
         <h4>🏷️ Ændr kategori</h4>
         <select id="bookTypeSelect" onchange="changeBookType(this.value)" style="margin-bottom:0">
@@ -480,7 +433,7 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
       <h4>📸 Forside (Admin)</h4>
       <input type="url" id="imageUrlInput" placeholder="Billede-URL (https://…)">
       <div class="adm-row">
-        <button class="adm-btn"     onclick="uploadImageFromUrl()">Gem URL</button>
+        <button class="adm-btn" onclick="uploadImageFromUrl()">Gem URL</button>
         <button class="adm-btn red" onclick="removeBookCover()">Fjern billede</button>
       </div>
       <input type="file" id="imageFileInput" accept="image/*">
@@ -489,7 +442,7 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
       <h4>✏️ Beskrivelse (Admin)</h4>
       <textarea id="descriptionTextarea" rows="5" placeholder="Skriv beskrivelse…"></textarea>
       <div class="adm-row">
-        <button class="adm-btn"     onclick="saveManualDescription()">Gem beskrivelse</button>
+        <button class="adm-btn" onclick="saveManualDescription()">Gem beskrivelse</button>
         <button class="adm-btn ora" id="btnClearDesc" onclick="clearDescription()">Nulstil</button>
       </div>
       <div id="saveNewBookRow" style="display:none;margin-top:14px">
@@ -503,7 +456,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
   </div>
 </div>
 
-<!-- MEMBERS MODAL -->
 <div class="modal-overlay" id="membersModal">
   <div class="modal-box" style="max-width:500px">
     <div class="modal-body">
@@ -511,7 +463,7 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
       <div style="font-size:13px;color:var(--muted);margin-bottom:18px">Tilføj, rediger eller fjern deltagere. Ændringer gemmes automatisk i Firebase.</div>
       <div class="member-add-row">
         <input type="text" id="newMemberFirst" placeholder="Fornavn" onkeydown="if(event.key==='Enter') document.getElementById('newMemberLast').focus()">
-        <input type="text" id="newMemberLast"  placeholder="Efternavn" onkeydown="if(event.key==='Enter') addMember()">
+        <input type="text" id="newMemberLast" placeholder="Efternavn" onkeydown="if(event.key==='Enter') addMember()">
         <button class="member-add-btn" onclick="addMember()">➕ Tilføj</button>
       </div>
       <div class="member-lbl">Nuværende medlemmer (<span id="memberCount">0</span>)</div>
@@ -523,7 +475,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
   </div>
 </div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script>
@@ -573,22 +524,10 @@ function renderMostWanted(){
     const auth=document.getElementById('mw'+rank+'author');
     const cnt=document.getElementById('mw'+rank+'wishes');
     const rnk=document.getElementById('mw'+rank+'rank');
-    if(!book){
-      if(img)img.style.display='none';
-      if(ph)ph.style.display='flex';
-      if(title)title.textContent='';
-      if(auth)auth.textContent='';
-      if(cnt)cnt.style.display='none';
-      if(rnk)rnk.style.display='none';
-      return;
-    }
-    if(book.cover){img.src=book.cover;img.style.display='block';ph.style.display='none';}
-    else{img.style.display='none';ph.style.display='flex';}
-    title.textContent=book.title;
-    auth.textContent=book.author;
-    cnt.textContent=(book.claims?.length||0)+' ønsker';
-    cnt.style.display='block';
-    rnk.style.display='block';
+    if(!book){if(img)img.style.display='none';if(ph)ph.style.display='flex';if(title)title.textContent='';if(auth)auth.textContent='';if(cnt)cnt.style.display='none';if(rnk)rnk.style.display='none';return;}
+    if(book.cover){img.src=book.cover;img.style.display='block';ph.style.display='none';}else{img.style.display='none';ph.style.display='flex';}
+    title.textContent=book.title;auth.textContent=book.author;
+    cnt.textContent=(book.claims?.length||0)+' ønsker';cnt.style.display='block';rnk.style.display='block';
   });
 }
 
@@ -625,6 +564,7 @@ function setupMemberListener(){database.ref('members').on('value',snap=>{const d
 async function saveMembersToFirebase(memberArray){if(!isFirebaseReady)return;try{await database.ref('members').set(memberArray);}catch(e){toast('Fejl ved gemning: '+e.message,'err');}}
 async function addMember(){const first=document.getElementById('newMemberFirst').value.trim();const last=document.getElementById('newMemberLast').value.trim();if(!first){toast('Skriv et fornavn','err');return;}if(!last){toast('Skriv et efternavn','err');return;}const fullName=normalizeName(first+' '+last);if(REGISTERED_USERS.some(u=>u.toLowerCase()===fullName.toLowerCase())){toast('"'+fullName+'" er allerede på listen','err');return;}await saveMembersToFirebase([...REGISTERED_USERS,fullName]);document.getElementById('newMemberFirst').value='';document.getElementById('newMemberLast').value='';document.getElementById('newMemberFirst').focus();toast('✅ "'+fullName+'" tilføjet!','ok');}
 async function removeMember(name){if(!confirm('Fjern "'+name+'" fra listen?'))return;await saveMembersToFirebase(REGISTERED_USERS.filter(u=>u!==name));toast('"'+name+'" fjernet','ok');}
+
 function startEditMember(index){const row=document.getElementById('member-row-'+index);const oldName=REGISTERED_USERS[index];row.innerHTML=`<input type="text" id="member-edit-input-${index}" value="${esc(oldName)}" style="flex:1;padding:6px 10px;border:1.5px solid var(--orange);border-radius:7px;font-size:13px;outline:none;min-width:0;font-family:var(--font)" onkeydown="if(event.key==='Enter')saveEditMember(${index},'${esc(oldName).replace(/'/g,"\\'")}');if(event.key==='Escape')renderMemberAdminList()"><div style="display:flex;gap:6px;flex-shrink:0;margin-left:8px"><button onclick="saveEditMember(${index},'${esc(oldName).replace(/'/g,"\\'")}' )" style="padding:4px 10px;background:var(--green);color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)">💾 Gem</button><button onclick="renderMemberAdminList()" style="padding:4px 10px;background:var(--muted);color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)">Annuller</button></div>`;const inp=document.getElementById('member-edit-input-'+index);inp.focus();inp.select();}
 async function saveEditMember(index,oldName){const input=document.getElementById('member-edit-input-'+index);if(!input)return;const newName=normalizeName(input.value.trim());if(!newName){toast('Navn må ikke være tomt','err');return;}if(newName.toLowerCase()===oldName.toLowerCase()){renderMemberAdminList();return;}if(REGISTERED_USERS.some((u,i)=>i!==index&&u.toLowerCase()===newName.toLowerCase())){toast('"'+newName+'" er allerede på listen','err');return;}const updated=[...REGISTERED_USERS];updated[index]=newName;await saveMembersToFirebase(updated);toast('✅ "'+oldName+'" → "'+newName+'"','ok');}
 function renderMemberAdminList(){const list=document.getElementById('memberAdminList');const countEl=document.getElementById('memberCount');if(!list)return;if(countEl)countEl.textContent=REGISTERED_USERS.length;if(!REGISTERED_USERS.length){list.innerHTML='<div style="padding:16px;text-align:center;color:var(--muted);font-style:italic;font-size:13px">Ingen medlemmer endnu</div>';return;}list.innerHTML=REGISTERED_USERS.map((name,i)=>`<div class="member-row" id="member-row-${i}"><span class="member-row-name">${esc(name)}</span>${isAdminMode?`<div class="member-row-btns"><button class="member-btn-edit" onclick="startEditMember(${i})">✏️ Rediger</button><button class="member-btn-remove" onclick="removeMember('${esc(name)}')">🗑️ Fjern</button></div>`:''}</div>`).join('');}
