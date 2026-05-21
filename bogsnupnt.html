@@ -20,6 +20,8 @@
 }
 html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:100vh;font-size:14px}
+
+/* ── HEADER ── */
 header{background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.07);}
 .header-inner{display:flex;align-items:center;gap:14px;padding:0 30px;height:60px;max-width:1600px;margin:0 auto;flex-wrap:wrap;}
 .logo{font-size:20px;font-weight:800;letter-spacing:-.4px;white-space:nowrap;}
@@ -36,6 +38,8 @@ header{background:var(--card);border-bottom:1px solid var(--border);position:sti
 .name-confirmed.visible{display:flex}
 .name-avatar{width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}
 .edit-hint{font-size:10px;opacity:.6}
+
+/* ── NAME BANNER ── */
 .name-banner{background:linear-gradient(135deg,#fff8e1,#fffde7);border-bottom:2px solid #ffe082;transition:max-height .4s ease;overflow:hidden;max-height:200px;}
 .name-banner.hidden{max-height:0;border-bottom-color:transparent}
 .name-banner-inner{max-width:1600px;margin:0 auto;padding:12px 30px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
@@ -51,6 +55,8 @@ header{background:var(--card);border-bottom:1px solid var(--border);position:sti
 .btn-save{padding:8px 18px;background:var(--orange);color:#fff;border:none;border-radius:var(--r-sm);font-size:13px;font-weight:700;cursor:pointer;transition:background .15s;white-space:nowrap;font-family:var(--font)}
 .btn-save:hover{background:#df551f}
 .btn-save.saved{background:var(--green)}
+
+/* ── CONTROLS BAR ── */
 .controls-bar-wrap{background:var(--card);border-bottom:1px solid var(--border)}
 .controls-bar{padding:8px 30px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;max-width:1600px;margin:0 auto;}
 #adminArea{display:none;align-items:center;gap:6px;flex-wrap:wrap;border-left:2px solid var(--border);padding-left:12px;}
@@ -66,6 +72,8 @@ header{background:var(--card);border-bottom:1px solid var(--border);position:sti
 .admin-btn:hover:not(:disabled){opacity:.85}
 .admin-btn:disabled{opacity:.4;pointer-events:none}
 .admin-btn[data-danger]{background:var(--red)}
+
+/* ── TABS ── */
 .tabs-wrap{background:var(--card);border-bottom:3px solid var(--border);box-shadow:0 3px 10px rgba(0,0,0,.06);}
 .tabs-inner{max-width:1600px;margin:0 auto;padding:0 30px;display:flex}
 .tab-btn{padding:16px 32px;border:none;background:none;font-size:15px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:5px solid transparent;margin-bottom:-3px;transition:color .15s,border-color .15s;display:flex;align-items:center;gap:8px;font-family:var(--font);}
@@ -82,44 +90,62 @@ header{background:var(--card);border-bottom:1px solid var(--border);position:sti
 .toast.err{background:var(--red)}
 
 /* ── HERO ── */
-#hero{padding:48px 30px 36px;max-width:1600px;margin:0 auto;}
+#hero{
+  padding:48px 30px 36px;
+  max-width:1600px;margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  align-items:center;
+}
+.hero-left{display:flex;flex-direction:column;}
 .hero-eyebrow{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:12px;}
-#hero h1{font-family:var(--font);font-size:clamp(42px,5vw,72px);font-weight:900;letter-spacing:-.03em;line-height:1.0;margin-bottom:16px;color:var(--dark);}
+#hero h1{font-family:var(--font);font-size:clamp(36px,4.5vw,64px);font-weight:900;letter-spacing:-.03em;line-height:1.0;margin-bottom:16px;color:var(--dark);}
 #hero h1 em{color:var(--orange);font-style:normal}
-.hero-sub{font-size:14px;color:var(--muted);line-height:1.7;max-width:600px;margin-bottom:28px;}
-.hero-stats{display:flex;gap:36px;margin-top:28px;padding-top:24px;border-top:1px solid var(--border);}
-.stat-num{font-family:var(--font);font-size:32px;font-weight:900;letter-spacing:-.04em;color:var(--dark);}
+.hero-sub{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px;}
+.hero-stats{display:flex;gap:32px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border);}
+.stat-num{font-family:var(--font);font-size:28px;font-weight:900;letter-spacing:-.04em;color:var(--dark);}
 .stat-num.orange{color:var(--orange)}
 .stat-lbl{font-size:12px;color:var(--muted);margin-top:2px;}
 
-/* ── MOST WANTED — BLACK FRAMES ── */
-#mostWantedSection{margin-bottom:44px;}
-.mw-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:16px;}
-.mw-grid{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:16px;align-items:flex-end;}
-.mw-card{cursor:pointer;transition:transform .2s ease;}
-.mw-card:hover{transform:translateY(-5px);}
+/* ── MOST WANTED — right side, same height as hero ── */
+.hero-right{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  height:100%;
+  min-height:280px;
+}
+.mw-card{
+  cursor:pointer;
+  transition:transform .2s ease;
+  display:flex;flex-direction:column;
+  height:100%;
+}
+.mw-card:hover{transform:translateY(-4px);}
 .mw-frame{
-  border:3px solid #1C1C1C;
-  border-radius:14px;
+  border:2.5px solid var(--dark);
+  border-radius:10px;
   overflow:hidden;
   position:relative;
-  aspect-ratio:2/3;
-  background:#e8e8e8;
-  box-shadow:4px 4px 0px #1C1C1C;
-  margin-bottom:10px;
+  flex:1;
+  background:var(--card);
+  box-shadow:3px 3px 0px var(--dark);
+  margin-bottom:8px;
   transition:box-shadow .2s ease;
+  min-height:200px;
 }
-.mw-card:hover .mw-frame{box-shadow:6px 6px 0px #1C1C1C;}
-.mw-1 .mw-frame{border:3.5px solid #1C1C1C;box-shadow:5px 5px 0px var(--orange);}
-.mw-card.mw-1:hover .mw-frame{box-shadow:8px 8px 0px var(--orange);}
-.mw-frame img{width:100%;height:100%;object-fit:cover;display:block;}
-.mw-frame-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;opacity:.2;background:#e0e0e0;}
-.mw-rank{position:absolute;top:8px;left:8px;background:#1C1C1C;color:#fff;border-radius:6px;font-size:10px;font-weight:800;padding:3px 8px;}
+.mw-card:hover .mw-frame{box-shadow:5px 5px 0px var(--dark);}
+.mw-1 .mw-frame{box-shadow:3px 3px 0px var(--orange);}
+.mw-card.mw-1:hover .mw-frame{box-shadow:5px 5px 0px var(--orange);}
+.mw-frame img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;}
+.mw-frame-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;opacity:.15;background:#e8e8e8;}
+.mw-rank{position:absolute;top:8px;left:8px;background:var(--dark);color:#fff;border-radius:5px;font-size:9px;font-weight:800;padding:2px 7px;z-index:1;}
 .mw-1 .mw-rank{background:var(--orange);}
-.mw-wishes{position:absolute;bottom:8px;right:8px;background:#1C1C1C;color:#fff;border-radius:6px;font-size:10px;font-weight:700;padding:3px 8px;}
-.mw-title{font-size:12.5px;font-weight:800;color:var(--dark);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.mw-1 .mw-title{font-size:13.5px;}
-.mw-author{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mw-wishes{position:absolute;bottom:8px;right:8px;background:var(--dark);color:#fff;border-radius:5px;font-size:9px;font-weight:700;padding:2px 7px;z-index:1;}
+.mw-title{font-size:11px;font-weight:800;color:var(--dark);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mw-author{font-size:10px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mw-empty-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:flex;align-items:center;justify-content:center;height:100%;text-align:center;padding:20px;}
 
 /* ── MAIN ── */
 .main-layout{display:flex;align-items:flex-start;max-width:1600px;margin:0 auto}
@@ -141,7 +167,7 @@ header{background:var(--card);border-bottom:1px solid var(--border);position:sti
 .card-author{font-size:11px;color:var(--muted);margin-bottom:6px;flex:1;}
 .card-hint{font-size:10.5px;color:var(--blue);font-style:italic;margin-bottom:8px;}
 .claim-slots{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
-.slot{font-size:9.5px;font-weight:600;padding:3px 9px;background:var(--bg);border:1px solid var(--border);border-radius:99px;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--muted);}
+.slot{font-size:9.5px;font-weight:600;padding:3px 9px;background:var(--bg);border:1px solid var(--border);border-radius:99px;color:var(--muted);}
 .slot.taken{color:var(--orange);font-weight:700;background:var(--orange-lt);border-color:var(--orange-md);}
 .slot.winner{background:var(--gold);border-color:#d4aa00;color:#000;font-weight:800;}
 .btn-see-more{width:100%;margin-bottom:6px;padding:5px;background:none;border:1.5px dashed var(--border);border-radius:99px;font-size:10px;font-weight:600;color:var(--muted);cursor:pointer;transition:border-color .15s,color .15s;font-family:var(--font)}
@@ -240,17 +266,16 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 
 /* ── RESPONSIVE ── */
 @media(max-width:960px){
+  #hero{grid-template-columns:1fr;gap:24px;}
+  .hero-right{grid-template-columns:repeat(3,1fr);min-height:180px;}
   .main-layout{flex-direction:column}
   .user-panel{width:100%;position:static;max-height:none;padding:16px 20px 0}
   .book-grid{padding:16px 20px}
-  #hero{padding:28px 20px}
-  .mw-grid{gap:10px}
   .header-inner,.name-banner-inner,.controls-bar,.tabs-inner{padding-left:16px;padding-right:16px}
   footer{padding:28px 16px}
 }
 @media(max-width:600px){
-  .mw-grid{gap:8px}
-  .mw-title{font-size:10px}
+  .hero-right{gap:8px;}
   .tab-btn{padding:12px 16px;font-size:13px}
   .member-add-row{flex-wrap:wrap}
 }
@@ -337,66 +362,61 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 <!-- HERO -->
 <section id="hero">
 
-  <!-- MOST WANTED — 3 books with black frames, live from Firebase -->
-  <div id="mostWantedSection" style="display:none">
-    <div class="mw-label">🔥 Mest ønskede bøger</div>
-    <div class="mw-grid">
-
-      <!-- 2nd place -->
-      <div class="mw-card mw-2" id="mwCard2" onclick="mostWanted[1]&&openModal(mostWanted[1].id)">
-        <div class="mw-frame">
-          <img id="mw2img" src="" alt="" style="display:none"
-               onerror="this.style.display='none';document.getElementById('mw2ph').style.display='flex'">
-          <div id="mw2ph" class="mw-frame-ph">📖</div>
-          <div class="mw-rank">🥈 #2</div>
-          <div class="mw-wishes" id="mw2wishes">0 ønsker</div>
-        </div>
-        <div class="mw-title"  id="mw2title">–</div>
-        <div class="mw-author" id="mw2author">–</div>
-      </div>
-
-      <!-- 1st place -->
-      <div class="mw-card mw-1" id="mwCard1" onclick="mostWanted[0]&&openModal(mostWanted[0].id)">
-        <div class="mw-frame">
-          <img id="mw1img" src="" alt="" style="display:none"
-               onerror="this.style.display='none';document.getElementById('mw1ph').style.display='flex'">
-          <div id="mw1ph" class="mw-frame-ph">📖</div>
-          <div class="mw-rank">🥇 #1</div>
-          <div class="mw-wishes" id="mw1wishes">0 ønsker</div>
-        </div>
-        <div class="mw-title"  id="mw1title">–</div>
-        <div class="mw-author" id="mw1author">–</div>
-      </div>
-
-      <!-- 3rd place -->
-      <div class="mw-card mw-3" id="mwCard3" onclick="mostWanted[2]&&openModal(mostWanted[2].id)">
-        <div class="mw-frame">
-          <img id="mw3img" src="" alt="" style="display:none"
-               onerror="this.style.display='none';document.getElementById('mw3ph').style.display='flex'">
-          <div id="mw3ph" class="mw-frame-ph">📖</div>
-          <div class="mw-rank">🥉 #3</div>
-          <div class="mw-wishes" id="mw3wishes">0 ønsker</div>
-        </div>
-        <div class="mw-title"  id="mw3title">–</div>
-        <div class="mw-author" id="mw3author">–</div>
-      </div>
-
+  <!-- LEFT -->
+  <div class="hero-left">
+    <div class="hero-eyebrow">📚 Bogklub — Sæson 2026</div>
+    <h1>Vælg din<br/><em>næste bog.</em></h1>
+    <p class="hero-sub">Klik på en bog og tryk "Ønsker bogen" for at stemme. Du kan vinde bogen hvis du er den eneste der ønsker den — eller én bog hvis der er konkurrence.</p>
+    <div id="heroAdminActions" style="display:none;gap:10px;flex-wrap:wrap;margin-bottom:4px">
+      <button class="btn btn-primary" onclick="runSmartLottery()">🎲 Kør lodtrækning</button>
+      <button class="btn btn-dark"    onclick="addNewBook()">➕ Tilføj bog</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num" id="statTotal">–</div><div class="stat-lbl">Bøger i alt</div></div>
+      <div><div class="stat-num" id="statMembers">–</div><div class="stat-lbl">Deltagere</div></div>
+      <div><div class="stat-num orange" id="statChosen">–</div><div class="stat-lbl">Har valgt</div></div>
     </div>
   </div>
 
-  <div class="hero-eyebrow">📚 Bogklub — Sæson 2026</div>
-  <h1>Vælg din<br/><em>næste bog.</em></h1>
-  <p class="hero-sub">Klik på en bog og tryk "Ønsker bogen" for at stemme. Du kan vinde bogen hvis du er den eneste der ønsker den — eller én bog hvis der er konkurrence.</p>
+  <!-- RIGHT: 3 black-framed book covers -->
+  <div class="hero-right" id="mostWantedSection">
 
-  <div id="heroAdminActions" style="display:none;gap:10px;flex-wrap:wrap;margin-bottom:4px">
-    <button class="btn btn-primary" onclick="runSmartLottery()">🎲 Kør lodtrækning</button>
-    <button class="btn btn-dark"    onclick="addNewBook()">➕ Tilføj bog</button>
-  </div>
+    <div class="mw-card mw-2" id="mwCard2" onclick="mostWanted[1]&&openModal(mostWanted[1].id)">
+      <div class="mw-frame">
+        <img id="mw2img" src="" alt="" style="display:none"
+             onerror="this.style.display='none';document.getElementById('mw2ph').style.display='flex'">
+        <div id="mw2ph" class="mw-frame-ph">📖</div>
+        <div class="mw-rank" id="mw2rank" style="display:none">🥈 #2</div>
+        <div class="mw-wishes" id="mw2wishes" style="display:none">–</div>
+      </div>
+      <div class="mw-title"  id="mw2title"></div>
+      <div class="mw-author" id="mw2author"></div>
+    </div>
 
-  <div class="hero-stats">
-    <div><div class="stat-num" id="statTotal">–</div><div class="stat-lbl">Bøger i alt</div></div>
-    <div><div class="stat-num" id="statMembers">–</div><div class="stat-lbl">Deltagere</div></div>
-    <div><div class="stat-num orange" id="statChosen">–</div><div class="stat-lbl">Har valgt</div></div>
+    <div class="mw-card mw-1" id="mwCard1" onclick="mostWanted[0]&&openModal(mostWanted[0].id)">
+      <div class="mw-frame">
+        <img id="mw1img" src="" alt="" style="display:none"
+             onerror="this.style.display='none';document.getElementById('mw1ph').style.display='flex'">
+        <div id="mw1ph" class="mw-frame-ph">📖</div>
+        <div class="mw-rank" id="mw1rank" style="display:none">🥇 #1</div>
+        <div class="mw-wishes" id="mw1wishes" style="display:none">–</div>
+      </div>
+      <div class="mw-title"  id="mw1title"></div>
+      <div class="mw-author" id="mw1author"></div>
+    </div>
+
+    <div class="mw-card mw-3" id="mwCard3" onclick="mostWanted[2]&&openModal(mostWanted[2].id)">
+      <div class="mw-frame">
+        <img id="mw3img" src="" alt="" style="display:none"
+             onerror="this.style.display='none';document.getElementById('mw3ph').style.display='flex'">
+        <div id="mw3ph" class="mw-frame-ph">📖</div>
+        <div class="mw-rank" id="mw3rank" style="display:none">🥉 #3</div>
+        <div class="mw-wishes" id="mw3wishes" style="display:none">–</div>
+      </div>
+      <div class="mw-title"  id="mw3title"></div>
+      <div class="mw-author" id="mw3author"></div>
+    </div>
+
   </div>
 </section>
 
@@ -567,29 +587,35 @@ function renderMyWonBooks(){
   </div>`).join('');
 }
 
-/* ── MOST WANTED — reads live from Firebase books array ── */
+/* ── MOST WANTED ── */
 let mostWanted=[];
 function renderMostWanted(){
   const sorted=[...books].filter(b=>(b.claims?.length||0)>0).sort((a,b)=>(b.claims?.length||0)-(a.claims?.length||0)).slice(0,3);
   mostWanted=sorted;
-  const section=document.getElementById('mostWantedSection');
-  if(!sorted.length){section.style.display='none';return;}
-  section.style.display='block';
   [1,2,3].forEach(rank=>{
     const book=sorted[rank-1];
-    const card=document.getElementById('mwCard'+rank);
     const img=document.getElementById('mw'+rank+'img');
     const ph=document.getElementById('mw'+rank+'ph');
     const title=document.getElementById('mw'+rank+'title');
     const auth=document.getElementById('mw'+rank+'author');
     const cnt=document.getElementById('mw'+rank+'wishes');
-    if(!book){if(card)card.style.display='none';return;}
-    if(card)card.style.display='block';
+    const rnk=document.getElementById('mw'+rank+'rank');
+    if(!book){
+      if(img)img.style.display='none';
+      if(ph){ph.style.display='flex';}
+      if(title)title.textContent='';
+      if(auth)auth.textContent='';
+      if(cnt)cnt.style.display='none';
+      if(rnk)rnk.style.display='none';
+      return;
+    }
     if(book.cover){img.src=book.cover;img.style.display='block';ph.style.display='none';}
     else{img.style.display='none';ph.style.display='flex';}
     title.textContent=book.title;
     auth.textContent=book.author;
     cnt.textContent=(book.claims?.length||0)+' ønsker';
+    cnt.style.display='block';
+    rnk.style.display='block';
   });
 }
 
