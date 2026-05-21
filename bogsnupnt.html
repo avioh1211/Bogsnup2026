@@ -230,7 +230,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 </style>
 </head>
 <body>
-
 <header>
   <div class="header-inner">
     <div class="logo">📚 Bog<span>snup</span> <small>⚡ Real-time</small></div>
@@ -246,27 +245,23 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
     </div>
   </div>
 </header>
-
 <div class="name-banner" id="nameBanner">
   <div class="name-banner-inner">
     <div class="step-badge">1</div>
     <div class="name-label">Skriv dit fulde navn: 👉</div>
     <div class="name-field-group">
       <label class="name-field-label">Fornavn</label>
-      <input type="text" id="userFirstName" placeholder="Fornavn…" autocomplete="given-name"
-             onkeydown="if(event.key==='Enter') document.getElementById('userLastName').focus()">
+      <input type="text" id="userFirstName" placeholder="Fornavn…" autocomplete="given-name" onkeydown="if(event.key==='Enter') document.getElementById('userLastName').focus()">
     </div>
     <div class="name-field-group">
       <label class="name-field-label">Efternavn</label>
-      <input type="text" id="userLastName" placeholder="Efternavn…" autocomplete="family-name"
-             onkeydown="if(event.key==='Enter') saveUserName()">
+      <input type="text" id="userLastName" placeholder="Efternavn…" autocomplete="family-name" onkeydown="if(event.key==='Enter') saveUserName()">
     </div>
     <button class="btn-save" id="saveNameBtn" onclick="saveUserName()">GEM NAVN</button>
     <div id="nameWarning"></div>
     <div class="name-hint">Skriv dit fulde fornavn og efternavn — tryk derefter GEM NAVN.</div>
   </div>
 </div>
-
 <div class="controls-bar-wrap">
   <div class="controls-bar">
     <button class="btn-refresh" onclick="manualRefresh()">🔄 Genindlæs</button>
@@ -274,35 +269,27 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
       <input type="password" id="adminPass" placeholder="Admin-kode">
       <button class="admin-btn" onclick="toggleAdmin()">🔓 Login</button>
       <input type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="handleCSVUpload(event)">
-      <button class="admin-btn" id="btnUpload"  disabled onclick="document.getElementById('csvFileInput').click()">📁 CSV</button>
+      <button class="admin-btn" id="btnUpload" disabled onclick="document.getElementById('csvFileInput').click()">📁 CSV</button>
       <button class="admin-btn" id="btnAddBook" disabled onclick="addNewBook()">➕ Tilføj bog</button>
       <button class="admin-btn" id="btnMembers" disabled onclick="openMembersModal()">👥 Medlemmer</button>
-      <button class="admin-btn" id="btnFetch"   disabled onclick="fetchAllInfo()">✨ Hent info</button>
-      <button class="admin-btn" id="btnErrors"  disabled onclick="showFetchErrors()">⚠️ Vis fejl</button>
-      <button class="admin-btn" id="btnDebug"   disabled onclick="debugFirebase()">🔍 Debug</button>
+      <button class="admin-btn" id="btnFetch" disabled onclick="fetchAllInfo()">✨ Hent info</button>
+      <button class="admin-btn" id="btnErrors" disabled onclick="showFetchErrors()">⚠️ Vis fejl</button>
+      <button class="admin-btn" id="btnDebug" disabled onclick="debugFirebase()">🔍 Debug</button>
       <button class="admin-btn" id="btnLottery" disabled onclick="runSmartLottery()">🎲 Lodtrækning</button>
-      <button class="admin-btn" id="btnReset"   disabled data-danger onclick="clearAllData()">🗑️ Slet Alt</button>
+      <button class="admin-btn" id="btnReset" disabled data-danger onclick="clearAllData()">🗑️ Slet Alt</button>
     </div>
   </div>
 </div>
-
 <div class="tabs-wrap">
   <div class="tabs-inner">
-    <button class="tab-btn active" id="tabVoksen" onclick="switchTab('Voksenbog')">
-      📚 Voksenbøger <span class="tab-count" id="countVoksen">0</span>
-    </button>
-    <button class="tab-btn" id="tabBoern" onclick="switchTab('Børnebog')">
-      🧒 Børnebøger <span class="tab-count" id="countBoern">0</span>
-    </button>
+    <button class="tab-btn active" id="tabVoksen" onclick="switchTab('Voksenbog')">📚 Voksenbøger <span class="tab-count" id="countVoksen">0</span></button>
+    <button class="tab-btn" id="tabBoern" onclick="switchTab('Børnebog')">🧒 Børnebøger <span class="tab-count" id="countBoern">0</span></button>
   </div>
 </div>
 <div class="progress-wrap" id="progressContainer">
-  <div class="progress-track">
-    <div class="progress-fill" id="progressBar" style="width:0%">0%</div>
-  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressBar" style="width:0%">0%</div></div>
 </div>
 <div class="toast" id="toast"></div>
-
 <section id="hero">
   <div class="hero-left">
     <div class="hero-eyebrow">📚 Bogklub — Sæson 2026</div>
@@ -310,7 +297,7 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
     <p class="hero-sub">Klik på en bog og tryk "Ønsker bogen" for at stemme. Du kan vinde bogen hvis du er den eneste der ønsker den — eller én bog hvis der er konkurrence.</p>
     <div id="heroAdminActions" style="display:none;gap:10px;flex-wrap:wrap;margin-bottom:4px">
       <button class="btn btn-primary" onclick="runSmartLottery()">🎲 Kør lodtrækning</button>
-      <button class="btn btn-dark"    onclick="addNewBook()">➕ Tilføj bog</button>
+      <button class="btn btn-dark" onclick="addNewBook()">➕ Tilføj bog</button>
     </div>
     <div class="hero-stats">
       <div><div class="stat-num" id="statTotal">–</div><div class="stat-lbl">Bøger i alt</div></div>
@@ -351,7 +338,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
     </div>
   </div>
 </section>
-
 <div class="main-layout">
   <div class="book-grid" id="bookGrid"></div>
   <aside class="user-panel">
@@ -369,7 +355,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
     </div>
   </aside>
 </div>
-
 <footer>
   <div>
     <div class="footer-headline">Hold dig<br/>til <em>bøgerne.</em></div>
@@ -384,14 +369,13 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
     <button class="btn btn-dark" onclick="document.getElementById('csvFileInput').click()" style="justify-content:center;padding:11px 26px;font-size:13px">📁 Eksporter CSV</button>
   </div>
 </footer>
-
 <div class="modal-overlay" id="bookModal">
   <div class="modal-box">
     <img id="modalImg" class="modal-cover" src="" alt="" style="display:none">
     <div class="modal-body">
-      <div class="modal-title"  id="modalTitle"></div>
+      <div class="modal-title" id="modalTitle"></div>
       <div class="modal-author" id="modalAuthor"></div>
-      <div class="modal-desc"   id="modalDesc"></div>
+      <div class="modal-desc" id="modalDesc"></div>
       <div class="modal-claims-lbl">Ønsker (maks 10)</div>
       <div id="modalClaims"></div>
     </div>
@@ -401,19 +385,14 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
         <input type="text" id="newBookTitle" placeholder="Titel *">
         <input type="text" id="newBookAuthor" placeholder="Forfatter">
         <label style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;display:block;text-transform:uppercase;letter-spacing:.06em">Kategori</label>
-        <select id="newBookType">
-          <option value="Voksenbog">📚 Voksenbog</option>
-          <option value="Børnebog">🧒 Børnebog</option>
-        </select>
+        <select id="newBookType"><option value="Voksenbog">📚 Voksenbog</option><option value="Børnebog">🧒 Børnebog</option></select>
         <hr class="modal-sep">
       </div>
       <div id="editBookFields" style="display:none">
         <h4>✏️ Rediger titel & forfatter</h4>
         <input type="text" id="editBookTitle" placeholder="Titel *">
         <input type="text" id="editBookAuthor" placeholder="Forfatter">
-        <div class="adm-row">
-          <button class="adm-btn green" onclick="saveBookTitleAuthor()">💾 Gem titel & forfatter</button>
-        </div>
+        <div class="adm-row"><button class="adm-btn green" onclick="saveBookTitleAuthor()">💾 Gem titel & forfatter</button></div>
         <hr class="modal-sep">
       </div>
       <div id="searchLinks">
@@ -424,10 +403,7 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
         <a id="pageUrlLink" href="#" target="_blank" style="display:none;color:var(--green)">📖 Åbn bogside</a>
         <hr class="modal-sep">
         <h4>🏷️ Ændr kategori</h4>
-        <select id="bookTypeSelect" onchange="changeBookType(this.value)" style="margin-bottom:0">
-          <option value="Voksenbog">📚 Voksenbog</option>
-          <option value="Børnebog">🧒 Børnebog</option>
-        </select>
+        <select id="bookTypeSelect" onchange="changeBookType(this.value)" style="margin-bottom:0"><option value="Voksenbog">📚 Voksenbog</option><option value="Børnebog">🧒 Børnebog</option></select>
         <hr class="modal-sep">
       </div>
       <h4>📸 Forside (Admin)</h4>
@@ -455,7 +431,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="membersModal">
   <div class="modal-box" style="max-width:500px">
     <div class="modal-body">
@@ -469,12 +444,9 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
       <div class="member-lbl">Nuværende medlemmer (<span id="memberCount">0</span>)</div>
       <div class="members-modal-list" id="memberAdminList"></div>
     </div>
-    <div class="modal-footer">
-      <button class="btn-mc" onclick="closeMembersModal()">Luk</button>
-    </div>
+    <div class="modal-footer"><button class="btn-mc" onclick="closeMembersModal()">Luk</button></div>
   </div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script>
@@ -482,14 +454,10 @@ const firebaseConfig={apiKey:"AIzaSyB-2_DMuUGVgckSMGMrdUaKVVQQ7hhCTvU",authDomai
 let database,isFirebaseReady=false;
 try{firebase.initializeApp(firebaseConfig);database=firebase.database();isFirebaseReady=true;setStatus(true);database.ref('.info/connected').on('value',s=>setStatus(s.val()===true));}catch(e){console.error(e);setStatus(false);alert('⚠️ Firebase fejl: '+e.message);}
 function setStatus(ok){const el=document.getElementById('firebaseStatus');el.textContent=ok?'Forbundet':'Offline';el.className='status-pill'+(ok?'':' offline');}
-
 const DEFAULT_MEMBERS=['Alice Stenild','Annette Pallesen','Eva Aarris Späth','Eva Marianne Stokholm','Hanne Berit Schmidt Madsen','Heidi Olsen','Jeanette Okkels Klein','Jes Kristian Larsen','Jesper Kantner Larsen','Lise Toft','Magnus Munch Olsen','Mie Schannong Aagaard','Morten Rasmussen','Pernille Christensen','Pernille Falk-Jensen','Randi Andersen','Tarja Maria Kesti','Louise Grønne'];
 let REGISTERED_USERS=[...DEFAULT_MEMBERS];
-
 function userHasClaimed(registeredName){const regLower=registeredName.toLowerCase().trim();for(const book of books){for(const claim of(book.claims||[])){const cl=claim.toLowerCase().trim();if(cl===regLower)return true;if(cl.length>=5&&regLower.startsWith(cl+' '))return true;if(regLower.length>=5&&cl.startsWith(regLower+' '))return true;}}return false;}
-
 function updateHeroStats(){const total=books.length;const members=REGISTERED_USERS.length;let chosen=0;REGISTERED_USERS.forEach(name=>{if(userHasClaimed(name))chosen++;});document.getElementById('statTotal').textContent=total;document.getElementById('statMembers').textContent=members;document.getElementById('statChosen').textContent=chosen;document.getElementById('footerStatNum').textContent=chosen;document.getElementById('sidebarPill').textContent=chosen+'/'+members;}
-
 function renderUserList(){
   const listEl=document.getElementById('userList');const countEl=document.getElementById('userPanelCount');if(!listEl)return;
   let chosen=0;const rows=REGISTERED_USERS.map(name=>{const claimed=userHasClaimed(name);if(claimed)chosen++;return{name,claimed};});
@@ -497,7 +465,6 @@ function renderUserList(){
   listEl.innerHTML=rows.map(({name,claimed})=>`<div class="user-item"><span class="user-name">${esc(name)}</span><span class="user-status ${claimed?'ok-badge':'missing-badge'}">${claimed?'Har valgt':'Mangler'}</span></div>`).join('');
   updateHeroStats();
 }
-
 function renderMyWonBooks(){
   const panel=document.getElementById('myWonBooks');const list=document.getElementById('myWonBooksList');if(!panel||!list)return;
   const user=getUser()||localStorage.getItem(USER_KEY)||'';if(!user){panel.style.display='none';return;}
@@ -511,7 +478,6 @@ function renderMyWonBooks(){
     <div class="won-book-info"><div class="won-book-title">${esc(b.title)}</div><div class="won-book-author">${esc(b.author)}</div><div class="won-book-badge">🏆 Du har vundet!</div></div>
   </div>`).join('');
 }
-
 let mostWanted=[];
 function renderMostWanted(){
   const sorted=[...books].filter(b=>(b.claims?.length||0)>0).sort((a,b)=>(b.claims?.length||0)-(a.claims?.length||0)).slice(0,3);
@@ -530,11 +496,9 @@ function renderMostWanted(){
     cnt.textContent=(book.claims?.length||0)+' ønsker';cnt.style.display='block';rnk.style.display='block';
   });
 }
-
 const USER_KEY='shufflerUserName';const ADMIN_PW='Bogsnup2026';const MAX_CLAIMS=10;const SHOW_SLOTS=6;const API_DELAY=800;
 const PROXIES=[url=>`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,url=>`https://corsproxy.io/?${encodeURIComponent(url)}`];
 let books=[],currentBookId=null,isAdminMode=false,isNewBookMode=false,tempNewBook=null,activeTab='Voksenbog';
-
 function switchTab(type){activeTab=type;document.getElementById('tabVoksen').className='tab-btn'+(type==='Voksenbog'?' active':'');document.getElementById('tabBoern').className='tab-btn'+(type==='Børnebog'?' active':'');renderBooks();}
 function updateTabCounts(){document.getElementById('countVoksen').textContent=books.filter(b=>(b.type||'Voksenbog')==='Voksenbog').length;document.getElementById('countBoern').textContent=books.filter(b=>(b.type||'Voksenbog')==='Børnebog').length;}
 function hideBannerShowChip(name){document.getElementById('nameBanner').classList.add('hidden');document.getElementById('nameConfirmedText').textContent=name;document.getElementById('nameAvatar').textContent=name.charAt(0).toUpperCase();document.getElementById('nameConfirmed').classList.add('visible');}
@@ -542,7 +506,6 @@ function showNameBanner(){document.getElementById('nameBanner').classList.remove
 function getUser(){const first=document.getElementById('userFirstName').value.trim();const last=document.getElementById('userLastName').value.trim();return(first+' '+last).trim();}
 function normalizeName(n){return n.trim().replace(/\s+/g,' ').replace(/\b\w/g,c=>c.toUpperCase());}
 function getAllClaimedNames(){const s=new Set();books.forEach(b=>(b.claims||[]).forEach(n=>s.add(n.toLowerCase())));return s;}
-
 async function saveUserName(){
   const first=document.getElementById('userFirstName').value.trim();const last=document.getElementById('userLastName').value.trim();
   if(!first){toast('Skriv dit fornavn','err');document.getElementById('userFirstName').focus();return;}
@@ -554,26 +517,19 @@ async function saveUserName(){
   const btn=document.getElementById('saveNameBtn');btn.textContent='✓ Gemt!';btn.classList.add('saved');setTimeout(()=>{btn.textContent='GEM NAVN';btn.classList.remove('saved');},2000);
   hideBannerShowChip(normalized);toast('Velkommen, '+normalized+'! 👋','ok');renderBooks();
 }
-
 function setupFirebaseListeners(){database.ref('books').on('value',snap=>{const data=snap.val();books=data?Object.keys(data).map(k=>({firebaseKey:k,...data[k]})):[];updateTabCounts();renderBooks();if(currentBookId&&!isNewBookMode){const b=books.find(b=>b.id===currentBookId);if(b)updateModalContent(b);}});}
 async function saveBookToFirebase(book){if(!isFirebaseReady)return;try{const data={...book};delete data.firebaseKey;if(book.firebaseKey){await database.ref('books/'+book.firebaseKey).set(data);}else{const r=await database.ref('books').push(data);book.firebaseKey=r.key;}}catch(e){toast('Gemningsfejl: '+e.message,'err');}}
 async function saveAllBooksToFirebase(arr){if(!isFirebaseReady){toast('Firebase ikke klar','err');return false;}try{const upd={};arr.forEach(book=>{const key=book.firebaseKey||database.ref('books').push().key;const d={...book};delete d.firebaseKey;upd['/books/'+key]=d;});await database.ref().update(upd);toast('✅ '+arr.length+' bøger gemt','ok');return true;}catch(e){toast('Fejl: '+e.message,'err');return false;}}
 async function deleteAllBooksFromFirebase(){await database.ref('books').remove();books=[];renderBooks();}
-
 function setupMemberListener(){database.ref('members').on('value',snap=>{const data=snap.val();if(data&&Array.isArray(data))REGISTERED_USERS=data;else if(data&&typeof data==='object')REGISTERED_USERS=Object.values(data);else{saveMembersToFirebase(DEFAULT_MEMBERS);REGISTERED_USERS=[...DEFAULT_MEMBERS];}renderUserList();renderMemberAdminList();});}
 async function saveMembersToFirebase(memberArray){if(!isFirebaseReady)return;try{await database.ref('members').set(memberArray);}catch(e){toast('Fejl ved gemning: '+e.message,'err');}}
 async function addMember(){const first=document.getElementById('newMemberFirst').value.trim();const last=document.getElementById('newMemberLast').value.trim();if(!first){toast('Skriv et fornavn','err');return;}if(!last){toast('Skriv et efternavn','err');return;}const fullName=normalizeName(first+' '+last);if(REGISTERED_USERS.some(u=>u.toLowerCase()===fullName.toLowerCase())){toast('"'+fullName+'" er allerede på listen','err');return;}await saveMembersToFirebase([...REGISTERED_USERS,fullName]);document.getElementById('newMemberFirst').value='';document.getElementById('newMemberLast').value='';document.getElementById('newMemberFirst').focus();toast('✅ "'+fullName+'" tilføjet!','ok');}
 async function removeMember(name){if(!confirm('Fjern "'+name+'" fra listen?'))return;await saveMembersToFirebase(REGISTERED_USERS.filter(u=>u!==name));toast('"'+name+'" fjernet','ok');}
-
 function startEditMember(index){const row=document.getElementById('member-row-'+index);const oldName=REGISTERED_USERS[index];row.innerHTML=`<input type="text" id="member-edit-input-${index}" value="${esc(oldName)}" style="flex:1;padding:6px 10px;border:1.5px solid var(--orange);border-radius:7px;font-size:13px;outline:none;min-width:0;font-family:var(--font)" onkeydown="if(event.key==='Enter')saveEditMember(${index},'${esc(oldName).replace(/'/g,"\\'")}');if(event.key==='Escape')renderMemberAdminList()"><div style="display:flex;gap:6px;flex-shrink:0;margin-left:8px"><button onclick="saveEditMember(${index},'${esc(oldName).replace(/'/g,"\\'")}' )" style="padding:4px 10px;background:var(--green);color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)">💾 Gem</button><button onclick="renderMemberAdminList()" style="padding:4px 10px;background:var(--muted);color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)">Annuller</button></div>`;const inp=document.getElementById('member-edit-input-'+index);inp.focus();inp.select();}
-
 async function saveEditMember(index,oldName){const input=document.getElementById('member-edit-input-'+index);if(!input)return;const newName=normalizeName(input.value.trim());if(!newName){toast('Navn må ikke være tomt','err');return;}if(newName.toLowerCase()===oldName.toLowerCase()){renderMemberAdminList();return;}if(REGISTERED_USERS.some((u,i)=>i!==index&&u.toLowerCase()===newName.toLowerCase())){toast('"'+newName+'" er allerede på listen','err');return;}const updated=[...REGISTERED_USERS];updated[index]=newName;await saveMembersToFirebase(updated);toast('✅ "'+oldName+'" → "'+newName+'"','ok');}
-
 function renderMemberAdminList(){const list=document.getElementById('memberAdminList');const countEl=document.getElementById('memberCount');if(!list)return;if(countEl)countEl.textContent=REGISTERED_USERS.length;if(!REGISTERED_USERS.length){list.innerHTML='<div style="padding:16px;text-align:center;color:var(--muted);font-style:italic;font-size:13px">Ingen medlemmer endnu</div>';return;}list.innerHTML=REGISTERED_USERS.map((name,i)=>`<div class="member-row" id="member-row-${i}"><span class="member-row-name">${esc(name)}</span>${isAdminMode?`<div class="member-row-btns"><button class="member-btn-edit" onclick="startEditMember(${i})">✏️ Rediger</button><button class="member-btn-remove" onclick="removeMember('${esc(name)}')">🗑️ Fjern</button></div>`:''}</div>`).join('');}
-
 function openMembersModal(){renderMemberAdminList();document.getElementById('membersModal').classList.add('active');document.body.style.overflow='hidden';setTimeout(()=>document.getElementById('newMemberFirst').focus(),80);}
 function closeMembersModal(){document.getElementById('membersModal').classList.remove('active');document.body.style.overflow='';}
-
 function init(){
   const saved=localStorage.getItem(USER_KEY);
   if(saved){const parts=saved.trim().split(' ');const last=parts.length>1?parts.slice(1).join(' '):'';document.getElementById('userFirstName').value=parts[0]||'';document.getElementById('userLastName').value=last;hideBannerShowChip(saved);}
@@ -584,7 +540,6 @@ function init(){
   if(isFirebaseReady){setupFirebaseListeners();setupMemberListener();}
   else{let n=0;const iv=setInterval(()=>{if(isFirebaseReady){clearInterval(iv);setupFirebaseListeners();setupMemberListener();}else if(++n>=50){clearInterval(iv);toast('Firebase timeout','err');}},100);}
 }
-
 function toggleAdmin(){
   if(document.getElementById('adminPass').value===ADMIN_PW){
     isAdminMode=true;
@@ -595,54 +550,33 @@ function toggleAdmin(){
     toast('Admin aktiveret ✅','ok');
   }else{toast('Forkert adgangskode','err');}
 }
-
 function handleCSVUpload(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=async e=>{try{const lines=e.target.result.split('\n').filter(l=>l.trim());if(lines.length<2){toast('CSV skal have mindst 2 linjer','err');return;}const newBooks=lines.slice(1).map((line,i)=>{const p=line.split(/[;,]/).map(s=>s.trim());const raw=(p[2]||'').toLowerCase();const type=raw.includes('børn')?'Børnebog':'Voksenbog';return{id:'b-'+Date.now()+'-'+i,title:p[0]||'Ingen titel',author:p[1]||'Ukendt forfatter',type,desc:'Tryk "Hent info" for at hente beskrivelse.',cover:'',claims:[],winner:null,fetchAttempted:false,fetchSuccess:false,manualCover:false,manualDesc:false};});await saveAllBooksToFirebase(newBooks);}catch(err){toast('CSV fejl: '+err.message,'err');}};reader.readAsText(file);event.target.value='';}
-
 async function saveBookTitleAuthor(){const newTitle=document.getElementById('editBookTitle').value.trim();const newAuthor=document.getElementById('editBookAuthor').value.trim();if(!newTitle){toast('Titel må ikke være tom','err');return;}if(!currentBookId||isNewBookMode)return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.title=newTitle;book.author=newAuthor||'Ukendt forfatter';await saveBookToFirebase(book);document.getElementById('modalTitle').textContent=book.title;document.getElementById('modalAuthor').textContent=book.author;const q=encodeURIComponent(book.title);document.getElementById('lrSearchLink').href='https://www.lindhardtogringhof.dk/soeg/'+q;document.getElementById('carlsenSearchLink').href='https://www.carlsen.dk/soeg/'+q;document.getElementById('googleImagesLink').href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(book.title+' '+book.author+' bog forside');toast('✅ Titel og forfatter opdateret!','ok');}
-
 async function changeBookType(newType){if(!currentBookId||isNewBookMode)return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.type=newType;await saveBookToFirebase(book);updateTabCounts();toast('Kategori ændret!','ok');}
-
 function addNewBook(){if(!isAdminMode)return;isNewBookMode=true;tempNewBook={id:'b-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),title:'',author:'',type:activeTab,desc:'',cover:'',claims:[],winner:null,fetchAttempted:false,fetchSuccess:false,manualCover:false,manualDesc:false};currentBookId=tempNewBook.id;document.getElementById('modalImg').src='';document.getElementById('modalImg').style.display='none';document.getElementById('modalTitle').textContent='Ny bog';document.getElementById('modalAuthor').textContent='';document.getElementById('modalDesc').textContent='';document.getElementById('modalClaims').innerHTML='<p style="color:var(--muted);font-style:italic;font-size:13px;padding:6px 0">Gem bogen for at begynde at modtage ønsker</p>';document.getElementById('modalActionButton').style.display='none';document.getElementById('adminImageUpload').classList.add('active');document.getElementById('newBookFields').style.display='block';document.getElementById('editBookFields').style.display='none';document.getElementById('searchLinks').style.display='none';document.getElementById('saveNewBookRow').style.display='block';document.getElementById('btnClearDesc').style.display='none';document.getElementById('newBookTitle').value='';document.getElementById('newBookAuthor').value='';document.getElementById('newBookType').value=activeTab;document.getElementById('imageUrlInput').value='';document.getElementById('imageFileInput').value='';document.getElementById('descriptionTextarea').value='';document.getElementById('bookModal').classList.add('active');document.body.style.overflow='hidden';setTimeout(()=>document.getElementById('newBookTitle').focus(),80);}
-
 async function saveNewBook(){const title=document.getElementById('newBookTitle').value.trim();const author=document.getElementById('newBookAuthor').value.trim();const type=document.getElementById('newBookType').value;if(!title){toast('Skriv en titel','err');return;}tempNewBook.title=title;tempNewBook.author=author||'Ukendt forfatter';tempNewBook.type=type;const descInput=document.getElementById('descriptionTextarea').value.trim();if(descInput){tempNewBook.desc=descInput;tempNewBook.manualDesc=true;}if(!tempNewBook.desc)tempNewBook.desc='Ingen beskrivelse endnu.';if(!tempNewBook.cover){const coverUrl=document.getElementById('imageUrlInput').value.trim();if(coverUrl&&coverUrl.startsWith('http')){tempNewBook.cover=coverUrl;tempNewBook.manualCover=true;}}await saveBookToFirebase(tempNewBook);toast('✅ "'+tempNewBook.title+'" oprettet!','ok');isNewBookMode=false;currentBookId=null;tempNewBook=null;closeModal();}
-
 async function proxyFetch(targetUrl,timeoutMs=9000){for(const makeProxy of PROXIES){try{const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),timeoutMs);const res=await fetch(makeProxy(targetUrl),{signal:controller.signal});clearTimeout(timer);if(!res.ok)continue;const ct=res.headers.get('content-type')||'';let html;if(ct.includes('application/json')){const d=await res.json();html=d.contents||null;}else html=await res.text();if(html&&html.length>200)return html;}catch(e){console.warn('Proxy failed:',e.message);}await delay(300);}return null;}
-
 function parseMeta(html){const doc=new DOMParser().parseFromString(html,'text/html');const get=sel=>doc.querySelector(sel)?.getAttribute('content')?.trim()||null;const desc=get('meta[property="og:description"]')||get('meta[name="description"]')||get('meta[name="twitter:description"]');const cover=get('meta[property="og:image"]')||get('meta[name="twitter:image"]');return{desc:desc&&desc.length>10?desc:null,cover:cover&&cover.startsWith('http')?cover:null};}
 function trimDesc(d,max=800){if(!d||typeof d!=='string')return null;d=d.trim().replace(/\s+/g,' ');return d.length>max?d.slice(0,max-1)+'…':d;}
-
 async function fetchFromLindhardt(title,author){try{const html=await proxyFetch(`https://www.lindhardtogringhof.dk/soeg/${encodeURIComponent(title)}`);if(!html)return null;const doc=new DOMParser().parseFromString(html,'text/html');let productUrl=null;for(const sel of['a[href*="/bog/"]','.product-item a','article a','.product a']){const el=doc.querySelector(sel);if(el?.getAttribute('href')){productUrl=el.getAttribute('href');break;}}if(productUrl){const full=productUrl.startsWith('http')?productUrl:'https://www.lindhardtogringhof.dk'+productUrl;const bHtml=await proxyFetch(full);if(bHtml){const bd=new DOMParser().parseFromString(bHtml,'text/html');const descEl=bd.querySelector('.product-description,.description,.blurb,[class*="description"],[class*="synopsis"]');const rawDesc=descEl?.innerText?.trim()||null;const meta=parseMeta(bHtml);const desc=trimDesc((rawDesc?.length>20?rawDesc:null)||meta.desc);const imgEl=bd.querySelector('.product-cover img,.cover img,img[class*="cover"]');const cover=imgEl?.src||imgEl?.getAttribute('data-src')||meta.cover;if(desc||cover)return{desc,cover:cover?.replace('http://','https://')||null,pageUrl:full,source:'Lindhardt og Ringhof'};}}const meta=parseMeta(html);if(meta.desc||meta.cover)return{...meta,source:'Lindhardt og Ringhof (meta)'};}catch(e){console.warn('LR error:',e.message);}return null;}
-
 async function fetchFromCarlsen(title,author){try{const html=await proxyFetch(`https://www.carlsen.dk/soeg/${encodeURIComponent(title)}`);if(!html)return null;const doc=new DOMParser().parseFromString(html,'text/html');let productUrl=null;for(const sel of['a[href*="/bog/"]','a[href*="/product/"]','.product-item a','article a']){const el=doc.querySelector(sel);if(el?.getAttribute('href')){productUrl=el.getAttribute('href');break;}}if(productUrl){const full=productUrl.startsWith('http')?productUrl:'https://www.carlsen.dk'+productUrl;const bHtml=await proxyFetch(full);if(bHtml){const bd=new DOMParser().parseFromString(bHtml,'text/html');const descEl=bd.querySelector('.product-description,.description,.blurb,[class*="description"],[class*="synopsis"]');const rawDesc=descEl?.innerText?.trim()||null;const meta=parseMeta(bHtml);const desc=trimDesc((rawDesc?.length>20?rawDesc:null)||meta.desc);const imgEl=bd.querySelector('.product-cover img,.cover img,img[class*="cover"]');const cover=imgEl?.src||imgEl?.getAttribute('data-src')||meta.cover;if(desc||cover)return{desc,cover:cover?.replace('http://','https://')||null,pageUrl:full,source:'Carlsen'};}}const meta=parseMeta(html);if(meta.desc||meta.cover)return{...meta,source:'Carlsen (meta)'};}catch(e){console.warn('Carlsen error:',e.message);}return null;}
-
 async function fetchFromGoogle(title,author){const queries=[`intitle:"${title}" inauthor:"${author}"`,`"${title}" "${author}"`,`intitle:"${title}"`,`${title} ${author}`];for(const q of queries){try{const res=await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&maxResults=8`);if(!res.ok)continue;const data=await res.json();if(!data.items?.length)continue;const tl=title.toLowerCase();let best=data.items[0];for(const item of data.items){const t=(item.volumeInfo.title||'').toLowerCase();if(t===tl||t.startsWith(tl)){best=item;break;}}const info=best.volumeInfo;const links=info.imageLinks||{};let cover=(links.extraLarge||links.large||links.medium||links.small||links.thumbnail||'').replace('http:','https:').replace('&edge=curl','').replace('zoom=1','zoom=3');const desc=info.description||info.subtitle||null;if(desc||cover)return{desc:trimDesc(desc),cover:cover||null,author:info.authors?.join(', ')||null,source:'Google Books'};}catch(e){console.warn('Google Books error:',e.message);}}return null;}
-
 async function fetchFromOpenLibrary(title,author){try{const res=await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(title+' '+author)}&limit=10&fields=key,title,author_name,cover_i`);if(!res.ok)return null;const data=await res.json();if(!data.docs?.length)return null;const tl=title.toLowerCase();let best=data.docs[0];for(const doc of data.docs){const t=(doc.title||'').toLowerCase();if(t===tl||t.startsWith(tl)){best=doc;break;}}const cover=best.cover_i?`https://covers.openlibrary.org/b/id/${best.cover_i}-L.jpg`:null;let desc=null;if(best.key){try{const wr=await fetch(`https://openlibrary.org${best.key}.json`);if(wr.ok){const w=await wr.json();const raw=typeof w.description==='string'?w.description:(w.description?.value||null);if(raw)desc=trimDesc(raw);}}catch{}}if(cover||desc)return{desc,cover,author:best.author_name?.join(', ')||null,source:'Open Library'};}catch(e){console.warn('OL error:',e.message);}return null;}
-
 async function fetchFromOpenLibraryTitleOnly(title){try{const res=await fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&limit=5&fields=key,title,author_name,cover_i`);if(!res.ok)return null;const data=await res.json();if(!data.docs?.length)return null;const best=data.docs[0];const cover=best.cover_i?`https://covers.openlibrary.org/b/id/${best.cover_i}-L.jpg`:null;if(cover)return{desc:null,cover,author:best.author_name?.join(', ')||null,source:'Open Library (titel)'};}catch(e){console.warn('OL title error:',e.message);}return null;}
-
 async function fetchAllInfo(){if(!books.length){toast('Upload en CSV-fil først','err');return;}const btn=document.getElementById('btnFetch');const wrap=document.getElementById('progressContainer');const bar=document.getElementById('progressBar');btn.disabled=true;btn.textContent='⏳ Henter…';wrap.style.display='block';let ok=0,fail=0;for(let i=0;i<books.length;i++){const book=books[i];bar.style.width=Math.round(((i+1)/books.length)*100)+'%';bar.textContent=(i+1)+'/'+books.length+' – '+book.title;if(book.manualCover&&book.manualDesc){await delay(20);continue;}const needDesc=!book.manualDesc;const needCover=!book.manualCover;const apply=result=>{if(!result)return false;let changed=false;if(needDesc&&result.desc?.length>10){book.desc=result.desc;changed=true;}if(needCover&&result.cover?.startsWith('http')){book.cover=result.cover.replace('http://','https://');changed=true;}if(result.pageUrl&&!book.pageUrl)book.pageUrl=result.pageUrl;if(result.author&&book.author==='Ukendt forfatter')book.author=result.author;if(changed){book.fetchSuccess=true;book.fetchSource=result.source;}return changed;};const stillNeedDesc=()=>needDesc&&(!book.desc||book.desc.startsWith('Tryk'));const stillNeedCover=()=>needCover&&!book.cover;const stillNeedAny=()=>stillNeedDesc()||stillNeedCover();if(stillNeedAny()){await delay(400);apply(await fetchFromLindhardt(book.title,book.author));}if(stillNeedAny()){await delay(400);apply(await fetchFromCarlsen(book.title,book.author));}if(stillNeedAny()){await delay(300);apply(await fetchFromGoogle(book.title,book.author));}if(stillNeedAny()){await delay(300);apply(await fetchFromOpenLibrary(book.title,book.author));}if(stillNeedCover()){await delay(200);apply(await fetchFromOpenLibraryTitleOnly(book.title));}if(!book.fetchSuccess){book.fetchError='Ikke fundet';fail++;}else ok++;book.fetchAttempted=true;await saveBookToFirebase(book);if(i<books.length-1)await delay(API_DELAY);}btn.disabled=false;btn.textContent='✨ Hent info';wrap.style.display='none';if(fail===0)toast('🎉 Alle '+ok+' bøger hentet!','ok');else if(ok===0)toast('❌ Ingen bøger fundet','err');else toast('✅ '+ok+' ok — ❌ '+fail+' fejlede','ok');}
-
 function showFetchErrors(){const failed=books.filter(b=>b.fetchAttempted&&!b.fetchSuccess);if(!failed.length){toast('Ingen fejl!','ok');return;}alert('❌ '+failed.length+' fejlede:\n\n'+failed.map(b=>'• "'+b.title+'"\n  → '+(b.fetchError||'Ikke fundet')).join('\n\n'));}
-
 async function debugFirebase(){let r='🔍 Firebase Debug\n═══════════════\n';r+='Bøger: '+books.length+' | Max ønsker: '+MAX_CLAIMS+'\n';if(isFirebaseReady){try{const snap=await database.ref('books').once('value');r+='Firebase bøger: '+(snap.val()?Object.keys(snap.val()).length:0)+'\n';await database.ref('test').set({ts:Date.now()});r+='Skriveadgang: ✅\n';await database.ref('test').remove();}catch(e){r+='Fejl: '+e.message+'\n';}}alert(r);}
-
 async function manualRefresh(){if(!isFirebaseReady){toast('Firebase ikke forbundet','err');return;}const snap=await database.ref('books').once('value');const data=snap.val();books=data?Object.keys(data).map(k=>({firebaseKey:k,...data[k]})):[];updateTabCounts();renderBooks();toast('✅ '+books.length+' bøger genindlæst','ok');}
-
 async function runSmartLottery(){if(!books.length){toast('Ingen bøger','err');return;}const total=books.reduce((s,b)=>s+(b.claims?.length||0),0);if(!total){toast('Ingen ønsker endnu','err');return;}if(!confirm('Kør lodtrækning for '+books.length+' bøger ('+total+' ønsker)?'))return;books.forEach(b=>b.winner=null);books.forEach(b=>{if(b.claims?.length===1)b.winner=b.claims[0];});const popular=books.filter(b=>b.claims?.length>1);shuffleArray(popular);const wonCompetitive=new Set();popular.forEach(b=>{const eligible=b.claims.filter(u=>!wonCompetitive.has(u));if(eligible.length>0){const win=eligible[Math.floor(Math.random()*eligible.length)];b.winner=win;wonCompetitive.add(win);}else{const totalWins=u=>books.filter(bk=>bk.winner===u).length;const minWins=Math.min(...b.claims.map(totalWins));const least=b.claims.filter(u=>totalWins(u)===minWins);const win=least[Math.floor(Math.random()*least.length)];b.winner=win;wonCompetitive.add(win);}});await saveAllBooksToFirebase(books);const winners=new Set(books.filter(b=>b.winner).map(b=>b.winner));toast('🎉 '+books.filter(b=>b.winner).length+' bøger tildelt til '+winners.size+' vindere','ok');}
-
 async function clearAllData(){if(!confirm('Slet ALLE data?'))return;if(!confirm('Bekræft: slet alt permanent'))return;await deleteAllBooksFromFirebase();toast('Alle data slettet','ok');}
-
 async function toggleClaim(bookId){const user=getUser();if(!user){toast('Skriv og GEM dit navn først','err');return;}const book=books.find(b=>b.id===bookId);if(!book)return;if(!book.claims)book.claims=[];const idx=book.claims.indexOf(user);if(idx>-1){book.claims.splice(idx,1);if(book.winner===user)book.winner=null;}else{if(book.claims.length>=MAX_CLAIMS){toast('Bogen har allerede '+MAX_CLAIMS+' ønsker','err');return;}book.claims.push(user);}await saveBookToFirebase(book);}
 function handleModalClaim(){if(currentBookId&&!isNewBookMode)toggleClaim(currentBookId);}
-
 function renderBooks(){
   const grid=document.getElementById('bookGrid');const user=getUser();const filtered=books.filter(b=>(b.type||'Voksenbog')===activeTab);updateTabCounts();
   renderMostWanted();
   if(!filtered.length){const icon=activeTab==='Børnebog'?'🧒':'📚';const label=activeTab==='Børnebog'?'Børnebøger':'Voksenbøger';grid.innerHTML=`<div class="empty-state"><div class="icon">${icon}</div><p>Ingen ${label} endnu.</p></div>`;renderUserList();renderMyWonBooks();return;}
   grid.innerHTML='';filtered.forEach(book=>grid.appendChild(createBookCard(book,user)));renderUserList();renderMyWonBooks();
 }
-
 function createBookCard(book,user){
   const card=document.createElement('div');card.className='book-card';card.dataset.id=book.id;card.addEventListener('click',()=>openModal(book.id));
   const claims=book.claims||[];const isClaimed=user&&claims.includes(user);const lotteryDone=books.some(b=>b.winner);
@@ -669,9 +603,7 @@ function createBookCard(book,user){
   if(!lotteryDone)card.querySelector('.claim-btn-wrap').appendChild(claimBtn);
   return card;
 }
-
 function openModal(bookId){isNewBookMode=false;currentBookId=bookId;const book=books.find(b=>b.id===bookId);if(!book)return;updateModalContent(book);document.getElementById('bookModal').classList.add('active');document.body.style.overflow='hidden';}
-
 function updateModalContent(book){
   const user=getUser();const img=document.getElementById('modalImg');img.src=book.cover||'';img.style.display=book.cover?'block':'none';
   document.getElementById('modalTitle').textContent=book.title;document.getElementById('modalAuthor').textContent=book.author;document.getElementById('modalDesc').textContent=book.desc||'Ingen beskrivelse.';
@@ -682,19 +614,12 @@ function updateModalContent(book){
   const adm=document.getElementById('adminImageUpload');
   if(isAdminMode){adm.classList.add('active');document.getElementById('editBookFields').style.display='block';document.getElementById('searchLinks').style.display='';document.getElementById('editBookTitle').value=book.title;document.getElementById('editBookAuthor').value=book.author;document.getElementById('imageUrlInput').value='';document.getElementById('imageFileInput').value='';document.getElementById('descriptionTextarea').value=book.desc||'';document.getElementById('bookTypeSelect').value=book.type||'Voksenbog';const q=encodeURIComponent(book.title);document.getElementById('lrSearchLink').href='https://www.lindhardtogringhof.dk/soeg/'+q;document.getElementById('carlsenSearchLink').href='https://www.carlsen.dk/soeg/'+q;document.getElementById('googleImagesLink').href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(book.title+' '+book.author+' bog forside');const pl=document.getElementById('pageUrlLink');if(book.pageUrl){pl.href=book.pageUrl;pl.style.display='block';}else{pl.style.display='none';}}else{adm.classList.remove('active');document.getElementById('editBookFields').style.display='none';}
 }
-
 function closeModal(){if(isNewBookMode){isNewBookMode=false;tempNewBook=null;}document.getElementById('bookModal').classList.remove('active');document.body.style.overflow='';currentBookId=null;}
-
 async function uploadImageFromUrl(){const url=document.getElementById('imageUrlInput').value.trim();if(!url.startsWith('http')){toast('Ugyldig URL','err');return;}if(isNewBookMode&&tempNewBook){tempNewBook.cover=url;tempNewBook.manualCover=true;const img=document.getElementById('modalImg');img.src=url;img.style.display='block';toast('Billede-URL klar!','ok');return;}if(!currentBookId)return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.cover=url;book.manualCover=true;await saveBookToFirebase(book);const img=document.getElementById('modalImg');img.src=url;img.style.display='block';document.getElementById('imageUrlInput').value='';toast('Forside opdateret!','ok');}
-
 async function uploadImageFromFile(){const file=document.getElementById('imageFileInput').files[0];if(!file){toast('Vælg en fil','err');return;}if(file.size>2*1024*1024){toast('Maks 2MB','err');return;}const reader=new FileReader();reader.onload=async e=>{const dataUrl=e.target.result;if(isNewBookMode&&tempNewBook){tempNewBook.cover=dataUrl;tempNewBook.manualCover=true;const img=document.getElementById('modalImg');img.src=dataUrl;img.style.display='block';toast('Billede klar!','ok');return;}if(!currentBookId)return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.cover=dataUrl;book.manualCover=true;await saveBookToFirebase(book);const img=document.getElementById('modalImg');img.src=dataUrl;img.style.display='block';toast('Billede uploadet!','ok');};reader.readAsDataURL(file);}
-
 async function removeBookCover(){if(isNewBookMode&&tempNewBook){tempNewBook.cover='';tempNewBook.manualCover=false;document.getElementById('modalImg').style.display='none';toast('Billede fjernet','ok');return;}if(!currentBookId||!confirm('Fjern forsidebillede?'))return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.cover='';book.manualCover=false;await saveBookToFirebase(book);document.getElementById('modalImg').style.display='none';toast('Forside fjernet','ok');}
-
 async function saveManualDescription(){const desc=document.getElementById('descriptionTextarea').value.trim();if(!desc){toast('Skriv en beskrivelse','err');return;}if(isNewBookMode&&tempNewBook){tempNewBook.desc=desc;tempNewBook.manualDesc=true;document.getElementById('modalDesc').textContent=desc;toast('Beskrivelse klar!','ok');return;}if(!currentBookId)return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.desc=desc;book.manualDesc=true;await saveBookToFirebase(book);document.getElementById('modalDesc').textContent=desc;toast('Beskrivelse gemt!','ok');}
-
 async function clearDescription(){if(!currentBookId||!confirm('Nulstil beskrivelse?'))return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.desc='Tryk "Hent info" for at hente beskrivelse.';book.manualDesc=false;await saveBookToFirebase(book);document.getElementById('modalDesc').textContent=book.desc;document.getElementById('descriptionTextarea').value=book.desc;toast('Nulstillet','ok');}
-
 let toastTimer;
 function toast(msg,type=''){const el=document.getElementById('toast');el.textContent=msg;el.className='toast show'+(type?' '+type:'');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3500);}
 function delay(ms){return new Promise(r=>setTimeout(r,ms));}
