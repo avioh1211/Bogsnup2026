@@ -93,15 +93,33 @@ header{background:var(--card);border-bottom:1px solid var(--border);position:sti
 .stat-num.orange{color:var(--orange)}
 .stat-lbl{font-family:var(--font);font-size:12px;color:var(--muted);margin-top:2px;}
 
-/* ── MOST WANTED — 3 equal frames ── */
+/* ── MOST WANTED — 3 equal frames, same constraints as book covers ── */
 .hero-right{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start;}
 .mw-card{cursor:pointer;transition:transform .2s ease;}
 .mw-card:hover{transform:translateY(-4px);}
-.mw-frame{aspect-ratio:2/3;width:100%;border:2.5px solid var(--dark);border-radius:10px;overflow:hidden;position:relative;background:#e8e8e8;box-shadow:3px 3px 0px var(--dark);margin-bottom:8px;transition:box-shadow .2s ease;}
+.mw-frame{
+  aspect-ratio:2/3;          /* ✅ same as .card-cover */
+  width:100%;
+  position:relative;
+  overflow:hidden;           /* ✅ clips image to frame — same as .card-cover */
+  border:2.5px solid var(--dark);
+  border-radius:10px;
+  background:#e8e8e8;
+  box-shadow:3px 3px 0px var(--dark);
+  margin-bottom:8px;
+  transition:box-shadow .2s ease;
+}
 .mw-card:hover .mw-frame{box-shadow:5px 5px 0px var(--dark);}
 .mw-1 .mw-frame{box-shadow:3px 3px 0px var(--orange);}
 .mw-card.mw-1:hover .mw-frame{box-shadow:5px 5px 0px var(--orange);}
-.mw-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.mw-frame img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;          /* ✅ same as .card-cover img */
+  display:block;
+}
 .mw-frame-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;opacity:.15;}
 .mw-rank{position:absolute;top:8px;left:8px;background:var(--dark);color:#fff;border-radius:6px;font-size:13px;font-weight:900;padding:4px 10px;z-index:2;font-family:var(--font);}
 .mw-1 .mw-rank{background:var(--orange);font-size:15px;padding:5px 12px;}
@@ -323,8 +341,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 
 <!-- HERO -->
 <section id="hero">
-
-  <!-- LEFT -->
   <div class="hero-left">
     <div class="hero-eyebrow">📚 Bogklub — Sæson 2026</div>
     <h1>Vælg din<br/><em>næste bog.</em></h1>
@@ -340,7 +356,7 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
     </div>
   </div>
 
-  <!-- RIGHT: 3 equal black-framed books -->
+  <!-- 3 equal black-framed books — same cover constraints as book cards -->
   <div class="hero-right" id="mostWantedSection">
     <div class="mw-card mw-2" id="mwCard2" onclick="mostWanted[1]&&openModal(mostWanted[1].id)">
       <div class="mw-frame">
