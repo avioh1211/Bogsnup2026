@@ -1,4 +1,19 @@
-<!DOCTYPE html>
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
 <html lang="da">
 <head>
 <meta charset="UTF-8"/>
@@ -20,94 +35,37 @@
 }
 html{scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;font-size:14px}
-
-/* ── NAV ── */
-header{
-  position:sticky;top:0;z-index:200;
-  background:rgba(250,248,245,.93);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-}
-.header-inner{
-  display:flex;align-items:center;gap:14px;
-  padding:0 36px;height:60px;max-width:1600px;margin:0 auto;flex-wrap:wrap;
-}
+header{position:sticky;top:0;z-index:200;background:rgba(250,248,245,.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.header-inner{display:flex;align-items:center;gap:14px;padding:0 36px;height:60px;max-width:1600px;margin:0 auto;flex-wrap:wrap;}
 .logo{font-size:18px;font-weight:900;letter-spacing:-.04em;white-space:nowrap}
 .logo span{color:var(--orange)}
 .logo small{font-size:12px;font-weight:400;color:var(--muted);margin-left:4px}
-
-.status-pill{
-  display:flex;align-items:center;gap:5px;
-  font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;
-  background:var(--red-lt);color:var(--red);border:1px solid var(--red-bd);
-  white-space:nowrap;transition:all .3s;
-}
+.status-pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--red-lt);color:var(--red);border:1px solid var(--red-bd);white-space:nowrap;transition:all .3s;}
 .status-pill.connected{background:var(--green-lt);color:var(--green);border-color:var(--green-bd)}
 .status-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-
 .guide-text{font-size:12px;color:var(--muted);line-height:1.4;flex:1;display:none}
 @media(min-width:1024px){.guide-text{display:block}}
-
-.name-confirmed{
-  display:none;align-items:center;gap:6px;
-  background:var(--dark);color:#fff;
-  border-radius:99px;padding:4px 14px 4px 4px;
-  font-size:12px;font-weight:600;cursor:pointer;transition:background .15s;
-}
+.name-confirmed{display:none;align-items:center;gap:6px;background:var(--dark);color:#fff;border-radius:99px;padding:4px 14px 4px 4px;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s;}
 .name-confirmed:hover{background:#333}
 .name-confirmed.visible{display:flex}
-.name-avatar{
-  width:24px;height:24px;border-radius:50%;
-  background:var(--orange);color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:800;
-}
+.name-avatar{width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}
 .edit-hint{font-size:10px;opacity:.6}
-
-/* ── NAME BANNER ── */
-.name-banner{
-  background:#fffbea;border-bottom:1px solid #f0e6a0;
-  transition:max-height .4s ease,padding .4s ease;overflow:hidden;max-height:200px;
-}
+.name-banner{background:#fffbea;border-bottom:1px solid #f0e6a0;transition:max-height .4s ease,padding .4s ease;overflow:hidden;max-height:200px;}
 .name-banner.hidden{max-height:0;border-bottom-color:transparent}
-.name-banner-inner{
-  max-width:1600px;margin:0 auto;
-  padding:12px 36px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-}
-.step-badge{
-  background:var(--orange);color:#fff;border-radius:50%;
-  width:22px;height:22px;display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:800;flex-shrink:0;
-}
+.name-banner-inner{max-width:1600px;margin:0 auto;padding:12px 36px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.step-badge{background:var(--orange);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
 .name-label{font-size:13px;font-weight:600;color:#5d4037;white-space:nowrap}
 .name-field-group{display:flex;flex-direction:column;gap:3px}
 .name-field-label{font-size:10px;font-weight:700;color:#795548;text-transform:uppercase;letter-spacing:.5px}
-.name-field-group input{
-  padding:8px 13px;border:1.5px solid #e0ddd5;border-radius:var(--r-sm);
-  font-size:13px;font-family:'Inter',sans-serif;background:#fff;outline:none;
-  transition:border-color .15s;width:130px;
-}
+.name-field-group input{padding:8px 13px;border:1.5px solid #e0ddd5;border-radius:var(--r-sm);font-size:13px;font-family:'Inter',sans-serif;background:#fff;outline:none;transition:border-color .15s;width:130px;}
 .name-field-group input:focus{border-color:var(--orange)}
 #nameWarning{display:none;font-size:12px;color:var(--red);font-weight:500;width:100%}
 .name-hint{font-size:11px;color:#795548;width:100%}
-
-/* ── ADMIN BAR ── */
 .controls-bar-wrap{background:var(--card);border-bottom:1px solid var(--border)}
-.controls-bar{
-  padding:8px 36px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;
-  max-width:1600px;margin:0 auto;
-}
-#adminArea{
-  display:none;align-items:center;gap:6px;flex-wrap:wrap;
-  border-left:2px solid var(--border);padding-left:12px;
-}
-#adminArea input[type="password"]{
-  padding:6px 10px;border:1.5px solid var(--border);border-radius:var(--r-sm);
-  font-size:12px;height:34px;width:110px;outline:none;font-family:'Inter',sans-serif;
-}
-
-/* ── BUTTONS ── */
+.controls-bar{padding:8px 36px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;max-width:1600px;margin:0 auto;}
+#adminArea{display:none;align-items:center;gap:6px;flex-wrap:wrap;border-left:2px solid var(--border);padding-left:12px;}
+#adminArea input[type="password"]{padding:6px 10px;border:1.5px solid var(--border);border-radius:var(--r-sm);font-size:12px;height:34px;width:110px;outline:none;font-family:'Inter',sans-serif;}
 .btn{cursor:pointer;font-family:'Inter',sans-serif;border:none;display:inline-flex;align-items:center;gap:4px;transition:all .15s;font-weight:600;white-space:nowrap}
 .btn-primary{background:var(--orange);color:#fff;border-radius:var(--r-sm);padding:8px 18px;font-size:12px}
 .btn-primary:hover{background:#df551f}
@@ -126,38 +84,20 @@ header{
 .admin-btn:disabled{opacity:.35;pointer-events:none}
 .admin-btn[data-danger]{border-color:var(--red-bd);color:var(--red)}
 .admin-btn[data-danger]:hover:not(:disabled){background:var(--red);color:#fff}
-
-/* ── TABS ── */
 .tabs-wrap{background:var(--card);border-bottom:1px solid var(--border)}
 .tabs-inner{max-width:1600px;margin:0 auto;padding:0 36px;display:flex}
-.tab-btn{
-  padding:12px 24px;border:none;background:none;
-  font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;
-  border-bottom:2.5px solid transparent;margin-bottom:-1px;
-  transition:color .15s,border-color .15s;
-  display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;
-}
+.tab-btn{padding:12px 24px;border:none;background:none;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;}
 .tab-btn:hover{color:var(--mid)}
 .tab-btn.active{color:var(--dark);font-weight:700;border-bottom-color:var(--orange)}
-.tab-count{
-  background:var(--border);color:var(--muted);
-  border-radius:99px;font-size:10px;font-weight:800;
-  padding:2px 7px;transition:all .15s;
-}
+.tab-count{background:var(--border);color:var(--muted);border-radius:99px;font-size:10px;font-weight:800;padding:2px 7px;transition:all .15s;}
 .tab-btn.active .tab-count{background:var(--orange);color:#fff}
-
-/* ── PROGRESS ── */
 .progress-wrap{display:none;padding:8px 36px;background:var(--card);border-bottom:1px solid var(--border)}
 .progress-track{height:6px;background:#eee;border-radius:99px;overflow:hidden}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--orange),#fb923c);transition:width .3s;border-radius:99px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;min-width:40px}
-
-/* ── TOAST ── */
 .toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-10px);background:#222;color:#fff;padding:10px 20px;border-radius:var(--r-sm);font-size:13px;font-weight:500;z-index:900;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;box-shadow:var(--sh-lg);white-space:nowrap;font-family:'Inter',sans-serif}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{background:var(--green)}
 .toast.err{background:var(--red)}
-
-/* ── HERO ── */
 #hero{padding:48px 36px 36px;max-width:1600px;margin:0 auto;display:grid;grid-template-columns:1fr 180px;gap:32px;align-items:start}
 .hero-eyebrow{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:12px}
 #hero h1{font-size:clamp(28px,3.5vw,48px);font-weight:900;letter-spacing:-.035em;line-height:1.05;margin-bottom:14px}
@@ -168,14 +108,8 @@ header{
 .stat-num.orange{color:var(--orange)}
 .stat-lbl{font-size:11px;color:var(--muted);margin-top:1px}
 .hero-visual{width:100%;aspect-ratio:1;background:var(--orange-lt);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:60px}
-
-/* ── MAIN LAYOUT ── */
 .main-layout{display:flex;align-items:flex-start;max-width:1600px;margin:0 auto}
-
-/* ── BOOK GRID ── */
 .book-grid{flex:1;display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:18px;padding:24px 36px;min-width:0}
-
-/* ── BOOK CARD ── */
 .book-card{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh);display:flex;flex-direction:column;overflow:hidden;cursor:pointer;border:1px solid rgba(0,0,0,.04);transition:transform .2s,box-shadow .2s}
 .book-card:hover{transform:translateY(-5px);box-shadow:var(--sh-lg)}
 .card-cover{aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg,#c4b5fd,#818cf8);position:relative}
@@ -188,64 +122,24 @@ header{
 .card-cover img{width:100%;height:100%;object-fit:cover;display:block}
 .card-cover-ph{font-size:40px;opacity:.35}
 .win-ribbon{position:absolute;top:8px;right:8px;background:var(--gold);color:#000;border-radius:99px;font-size:9px;font-weight:800;padding:3px 8px}
-
-/* ── CARD BODY ── */
 .card-body{padding:12px;flex:1;display:flex;flex-direction:column}
-.card-title{
-  font-size:13px;font-weight:700;line-height:1.35;margin-bottom:3px;
-  font-family:'Inter',sans-serif;color:var(--dark);letter-spacing:-.01em;
-}
-.card-author{
-  font-size:11px;color:var(--muted);margin-bottom:6px;flex:1;
-  font-family:'Inter',sans-serif;font-weight:400;
-}
-.card-hint{
-  font-size:10.5px;color:var(--orange);font-style:normal;
-  font-weight:500;margin-bottom:8px;font-family:'Inter',sans-serif;
-}
-
-/* ── VOTER CHIPS — pill style ── */
+.card-title{font-size:13px;font-weight:700;line-height:1.35;margin-bottom:3px;font-family:'Inter',sans-serif;color:var(--dark);letter-spacing:-.01em;}
+.card-author{font-size:11px;color:var(--muted);margin-bottom:6px;flex:1;font-family:'Inter',sans-serif;font-weight:400;}
+.card-hint{font-size:10.5px;color:var(--orange);font-style:normal;font-weight:500;margin-bottom:8px;font-family:'Inter',sans-serif;}
 .claim-slots{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
-.slot{
-  font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;
-  padding:3px 9px;
-  background:var(--bg);
-  border:1px solid var(--border);
-  border-radius:99px;
-  text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
-  color:var(--muted);
-}
-.slot.taken{
-  color:var(--orange);font-weight:700;
-  background:var(--orange-lt);border-color:var(--orange-md);
-}
-.slot.winner{
-  background:var(--gold);border-color:#d4aa00;
-  color:#000;font-weight:800;border-radius:99px;
-}
-
+.slot{font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;padding:3px 9px;background:var(--bg);border:1px solid var(--border);border-radius:99px;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--muted);}
+.slot.taken{color:var(--orange);font-weight:700;background:var(--orange-lt);border-color:var(--orange-md);}
+.slot.winner{background:var(--gold);border-color:#d4aa00;color:#000;font-weight:800;border-radius:99px;}
 .btn-see-more{width:100%;margin-bottom:6px;padding:5px;background:none;border:1.5px dashed var(--border);border-radius:99px;font-size:10px;font-weight:600;color:var(--muted);cursor:pointer;transition:border-color .15s,color .15s;font-family:'Inter',sans-serif}
 .btn-see-more:hover{border-color:var(--orange);color:var(--orange)}
-
-/* ── WISH BUTTON ── */
-.btn-claim{
-  width:100%;padding:10px;
-  background:var(--dark);color:#fff;
-  border:none;border-radius:10px;
-  font-size:12px;font-weight:700;
-  font-family:'Inter',sans-serif;letter-spacing:-.01em;
-  cursor:pointer;transition:all .2s;margin-top:6px;
-}
+.btn-claim{width:100%;padding:10px;background:var(--dark);color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:700;font-family:'Inter',sans-serif;letter-spacing:-.01em;cursor:pointer;transition:all .2s;margin-top:6px;}
 .btn-claim:hover:not(:disabled){background:#333;transform:translateY(-1px)}
 .btn-claim.claimed{background:var(--orange-lt);color:var(--orange);border:1.5px solid var(--orange-md)}
 .btn-claim.claimed:hover{background:var(--orange);color:#fff;transform:translateY(-1px)}
 .btn-claim:disabled{background:var(--border);color:var(--muted);cursor:default;transform:none}
-
 .empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--muted)}
 .empty-state .icon{font-size:52px;margin-bottom:14px}
 .empty-state p{font-size:15px}
-
-/* ── SIDEBAR ── */
 .user-panel{width:260px;flex-shrink:0;padding:24px 20px 24px 0;position:sticky;top:70px;max-height:calc(100vh - 90px);overflow-y:auto}
 .sidebar-card{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh);padding:16px;border:1px solid rgba(0,0,0,.04);margin-bottom:14px}
 .sidebar-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -258,7 +152,6 @@ header{
 .user-status{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap;border:1px solid}
 .user-status.ok-badge{background:var(--green-lt);color:var(--green);border-color:var(--green-bd)}
 .user-status.missing-badge{background:var(--orange-lt);color:var(--orange);border-color:var(--orange-md)}
-.won-books-divider{border:none;border-top:1.5px solid var(--border);margin:12px 0}
 .won-book-item{display:flex;align-items:center;gap:10px;padding:8px;background:#fffde7;border:1.5px solid var(--gold);border-radius:var(--r-sm);margin-bottom:6px;cursor:pointer;transition:transform .15s}
 .won-book-item:hover{transform:translateY(-2px)}
 .won-book-cover{width:34px;height:50px;object-fit:cover;border-radius:4px;flex-shrink:0}
@@ -268,8 +161,6 @@ header{
 .won-book-author{font-size:10px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .won-book-badge{font-size:9px;font-weight:700;color:#b8860b;margin-top:2px}
 .won-books-empty{font-size:12px;color:var(--muted);font-style:italic;text-align:center;padding:6px 0}
-
-/* ── FOOTER ── */
 footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;padding:40px 36px;display:flex;gap:28px;align-items:center;flex-wrap:wrap}
 .footer-headline{font-size:clamp(22px,2.8vw,36px);font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1.1;flex:1}
 .footer-headline em{color:var(--orange);font-style:normal}
@@ -278,8 +169,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 .footer-stat .num{font-size:38px;font-weight:900;letter-spacing:-.04em}
 .footer-stat .lbl{font-size:11px;font-weight:500;opacity:.85;margin-top:1px}
 .footer-actions{display:flex;flex-direction:column;gap:8px;flex-shrink:0}
-
-/* ── MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.active{display:flex}
 .modal-box{background:var(--card);border-radius:var(--r-lg);width:100%;max-width:520px;max-height:88vh;overflow-y:auto;box-shadow:var(--sh-lg);animation:fadeUp .2s ease}
@@ -313,8 +202,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 .btn-ma.claimed{background:var(--orange-lt);color:var(--orange);border:1.5px solid var(--orange-md)}
 .btn-ma.claimed:hover{background:var(--orange);color:#fff}
 .btn-mc{background:var(--bg);color:var(--mid);border:1px solid var(--border)}.btn-mc:hover{border-color:#bbb;color:var(--dark)}
-
-/* members modal */
 .members-modal-list{max-height:360px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--bg)}
 .member-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);gap:8px}
 .member-row:last-child{border-bottom:none}
@@ -330,8 +217,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 .member-add-btn{padding:8px 14px;background:var(--green);color:#fff;border:none;border-radius:var(--r-sm);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
 .member-add-btn:hover{background:#15803d}
 .member-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
-
-/* ── RESPONSIVE ── */
 @media(max-width:960px){
   .main-layout{flex-direction:column}
   .user-panel{width:100%;position:static;max-height:none;padding:16px 20px 0}
@@ -342,7 +227,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
   footer{padding:28px 16px}
 }
 @media(max-width:600px){
-  .name-fields-row{flex-wrap:wrap}
   .tab-btn{padding:11px 16px;font-size:12px}
   .member-add-row{flex-wrap:wrap}
 }
@@ -350,7 +234,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="header-inner">
     <div class="logo">📚 Bog<span>snup</span> <small>⚡ Real-time</small></div>
@@ -367,7 +250,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
   </div>
 </header>
 
-<!-- NAME BANNER -->
 <div class="name-banner" id="nameBanner">
   <div class="name-banner-inner">
     <div class="step-badge">1</div>
@@ -388,7 +270,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
   </div>
 </div>
 
-<!-- CONTROLS BAR -->
 <div class="controls-bar-wrap">
   <div class="controls-bar">
     <button class="btn-refresh" onclick="manualRefresh()">🔄 Genindlæs</button>
@@ -408,7 +289,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
   </div>
 </div>
 
-<!-- TABS -->
 <div class="tabs-wrap">
   <div class="tabs-inner">
     <button class="tab-btn active" id="tabVoksen" onclick="switchTab('Voksenbog')">
@@ -427,7 +307,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
 
 <div class="toast" id="toast"></div>
 
-<!-- HERO -->
 <section id="hero">
   <div>
     <div class="hero-eyebrow">📚 Bogklub — Sæson 2026</div>
@@ -446,11 +325,12 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
   <div class="hero-visual">📖</div>
 </section>
 
-<!-- MAIN -->
 <div class="main-layout">
   <div class="book-grid" id="bookGrid"></div>
   <aside class="user-panel">
-    <div class="sidebar-card">
+
+    <!-- ✅ DELTAGERLISTE — hidden by default, admin only -->
+    <div class="sidebar-card" id="deltakerCard" style="display:none">
       <div class="sidebar-hdr">
         <h3>👥 Deltagere</h3>
         <span class="sidebar-pill" id="sidebarPill">0/0</span>
@@ -458,14 +338,16 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
       <div class="user-panel-count" id="userPanelCount">Indlæser…</div>
       <div id="userList"></div>
     </div>
+
+    <!-- Won books — visible for all -->
     <div class="sidebar-card" id="myWonBooks" style="display:none">
       <div class="sidebar-hdr"><h3>🏆 Dine vundne bøger</h3></div>
       <div id="myWonBooksList"></div>
     </div>
+
   </aside>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div>
     <div class="footer-headline">Hold dig<br/>til <em>bøgerne.</em></div>
@@ -575,7 +457,6 @@ footer{margin-top:52px;background:var(--dark);border-radius:24px 24px 0 0;paddin
   </div>
 </div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script>
@@ -666,28 +547,27 @@ function init(){
   else{let n=0;const iv=setInterval(()=>{if(isFirebaseReady){clearInterval(iv);setupFirebaseListeners();setupMemberListener();}else if(++n>=50){clearInterval(iv);toast('Firebase timeout','err');}},100);}
 }
 
+// ✅ toggleAdmin — shows all admin-only UI including deltagerliste
 function toggleAdmin(){
   if(document.getElementById('adminPass').value===ADMIN_PW){
     isAdminMode=true;
     document.querySelectorAll('.admin-btn').forEach(b=>b.disabled=false);
     document.getElementById('heroAdminActions').style.display='flex';
     document.getElementById('footerAdminActions').style.display='flex';
+    document.getElementById('deltakerCard').style.display='block'; // ✅ show deltagerliste
     toast('Admin aktiveret ✅','ok');
   }else{toast('Forkert adgangskode','err');}
 }
 
 function handleCSVUpload(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=async e=>{try{const lines=e.target.result.split('\n').filter(l=>l.trim());if(lines.length<2){toast('CSV skal have mindst 2 linjer','err');return;}const newBooks=lines.slice(1).map((line,i)=>{const p=line.split(/[;,]/).map(s=>s.trim());const raw=(p[2]||'').toLowerCase();const type=raw.includes('børn')?'Børnebog':'Voksenbog';return{id:'b-'+Date.now()+'-'+i,title:p[0]||'Ingen titel',author:p[1]||'Ukendt forfatter',type,desc:'Tryk "Hent info" for at hente beskrivelse.',cover:'',claims:[],winner:null,fetchAttempted:false,fetchSuccess:false,manualCover:false,manualDesc:false};});await saveAllBooksToFirebase(newBooks);}catch(err){toast('CSV fejl: '+err.message,'err');}};reader.readAsText(file);event.target.value='';}
-
 async function saveBookTitleAuthor(){const newTitle=document.getElementById('editBookTitle').value.trim();const newAuthor=document.getElementById('editBookAuthor').value.trim();if(!newTitle){toast('Titel må ikke være tom','err');return;}if(!currentBookId||isNewBookMode)return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.title=newTitle;book.author=newAuthor||'Ukendt forfatter';await saveBookToFirebase(book);document.getElementById('modalTitle').textContent=book.title;document.getElementById('modalAuthor').textContent=book.author;const q=encodeURIComponent(book.title);document.getElementById('lrSearchLink').href='https://www.lindhardtogringhof.dk/soeg/'+q;document.getElementById('carlsenSearchLink').href='https://www.carlsen.dk/soeg/'+q;document.getElementById('googleImagesLink').href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(book.title+' '+book.author+' bog forside');toast('✅ Titel og forfatter opdateret!','ok');}
 async function changeBookType(newType){if(!currentBookId||isNewBookMode)return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.type=newType;await saveBookToFirebase(book);updateTabCounts();toast('Kategori ændret!','ok');}
-
 function addNewBook(){if(!isAdminMode)return;isNewBookMode=true;tempNewBook={id:'b-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),title:'',author:'',type:activeTab,desc:'',cover:'',claims:[],winner:null,fetchAttempted:false,fetchSuccess:false,manualCover:false,manualDesc:false};currentBookId=tempNewBook.id;document.getElementById('modalImg').src='';document.getElementById('modalImg').style.display='none';document.getElementById('modalTitle').textContent='Ny bog';document.getElementById('modalAuthor').textContent='';document.getElementById('modalDesc').textContent='';document.getElementById('modalClaims').innerHTML='<p style="color:var(--muted);font-style:italic;font-size:13px;padding:6px 0">Gem bogen for at begynde at modtage ønsker</p>';document.getElementById('modalActionButton').style.display='none';document.getElementById('adminImageUpload').classList.add('active');document.getElementById('newBookFields').style.display='block';document.getElementById('editBookFields').style.display='none';document.getElementById('searchLinks').style.display='none';document.getElementById('saveNewBookRow').style.display='block';document.getElementById('btnClearDesc').style.display='none';document.getElementById('newBookTitle').value='';document.getElementById('newBookAuthor').value='';document.getElementById('newBookType').value=activeTab;document.getElementById('imageUrlInput').value='';document.getElementById('imageFileInput').value='';document.getElementById('descriptionTextarea').value='';document.getElementById('bookModal').classList.add('active');document.body.style.overflow='hidden';setTimeout(()=>document.getElementById('newBookTitle').focus(),80);}
 async function saveNewBook(){const title=document.getElementById('newBookTitle').value.trim();const author=document.getElementById('newBookAuthor').value.trim();const type=document.getElementById('newBookType').value;if(!title){toast('Skriv en titel','err');return;}tempNewBook.title=title;tempNewBook.author=author||'Ukendt forfatter';tempNewBook.type=type;const descInput=document.getElementById('descriptionTextarea').value.trim();if(descInput){tempNewBook.desc=descInput;tempNewBook.manualDesc=true;}if(!tempNewBook.desc)tempNewBook.desc='Ingen beskrivelse endnu.';if(!tempNewBook.cover){const coverUrl=document.getElementById('imageUrlInput').value.trim();if(coverUrl&&coverUrl.startsWith('http')){tempNewBook.cover=coverUrl;tempNewBook.manualCover=true;}}await saveBookToFirebase(tempNewBook);toast('✅ "'+tempNewBook.title+'" oprettet!','ok');isNewBookMode=false;currentBookId=null;tempNewBook=null;closeModal();}
 
 async function proxyFetch(targetUrl,timeoutMs=9000){for(const makeProxy of PROXIES){try{const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),timeoutMs);const res=await fetch(makeProxy(targetUrl),{signal:controller.signal});clearTimeout(timer);if(!res.ok)continue;const ct=res.headers.get('content-type')||'';let html;if(ct.includes('application/json')){const d=await res.json();html=d.contents||null;}else html=await res.text();if(html&&html.length>200)return html;}catch(e){console.warn('Proxy failed:',e.message);}await delay(300);}return null;}
 function parseMeta(html){const doc=new DOMParser().parseFromString(html,'text/html');const get=sel=>doc.querySelector(sel)?.getAttribute('content')?.trim()||null;const desc=get('meta[property="og:description"]')||get('meta[name="description"]')||get('meta[name="twitter:description"]');const cover=get('meta[property="og:image"]')||get('meta[name="twitter:image"]');return{desc:desc&&desc.length>10?desc:null,cover:cover&&cover.startsWith('http')?cover:null};}
 function trimDesc(d,max=800){if(!d||typeof d!=='string')return null;d=d.trim().replace(/\s+/g,' ');return d.length>max?d.slice(0,max-1)+'…':d;}
-
 async function fetchFromLindhardt(title,author){try{const html=await proxyFetch(`https://www.lindhardtogringhof.dk/soeg/${encodeURIComponent(title)}`);if(!html)return null;const doc=new DOMParser().parseFromString(html,'text/html');let productUrl=null;for(const sel of['a[href*="/bog/"]','.product-item a','article a','.product a']){const el=doc.querySelector(sel);if(el?.getAttribute('href')){productUrl=el.getAttribute('href');break;}}if(productUrl){const full=productUrl.startsWith('http')?productUrl:'https://www.lindhardtogringhof.dk'+productUrl;const bHtml=await proxyFetch(full);if(bHtml){const bd=new DOMParser().parseFromString(bHtml,'text/html');const descEl=bd.querySelector('.product-description,.description,.blurb,[class*="description"],[class*="synopsis"]');const rawDesc=descEl?.innerText?.trim()||null;const meta=parseMeta(bHtml);const desc=trimDesc((rawDesc?.length>20?rawDesc:null)||meta.desc);const imgEl=bd.querySelector('.product-cover img,.cover img,img[class*="cover"]');const cover=imgEl?.src||imgEl?.getAttribute('data-src')||meta.cover;if(desc||cover)return{desc,cover:cover?.replace('http://','https://')||null,pageUrl:full,source:'Lindhardt og Ringhof'};}}const meta=parseMeta(html);if(meta.desc||meta.cover)return{...meta,source:'Lindhardt og Ringhof (meta)'};}catch(e){console.warn('LR error:',e.message);}return null;}
 async function fetchFromCarlsen(title,author){try{const html=await proxyFetch(`https://www.carlsen.dk/soeg/${encodeURIComponent(title)}`);if(!html)return null;const doc=new DOMParser().parseFromString(html,'text/html');let productUrl=null;for(const sel of['a[href*="/bog/"]','a[href*="/product/"]','.product-item a','article a']){const el=doc.querySelector(sel);if(el?.getAttribute('href')){productUrl=el.getAttribute('href');break;}}if(productUrl){const full=productUrl.startsWith('http')?productUrl:'https://www.carlsen.dk'+productUrl;const bHtml=await proxyFetch(full);if(bHtml){const bd=new DOMParser().parseFromString(bHtml,'text/html');const descEl=bd.querySelector('.product-description,.description,.blurb,[class*="description"],[class*="synopsis"]');const rawDesc=descEl?.innerText?.trim()||null;const meta=parseMeta(bHtml);const desc=trimDesc((rawDesc?.length>20?rawDesc:null)||meta.desc);const imgEl=bd.querySelector('.product-cover img,.cover img,img[class*="cover"]');const cover=imgEl?.src||imgEl?.getAttribute('data-src')||meta.cover;if(desc||cover)return{desc,cover:cover?.replace('http://','https://')||null,pageUrl:full,source:'Carlsen'};}}const meta=parseMeta(html);if(meta.desc||meta.cover)return{...meta,source:'Carlsen (meta)'};}catch(e){console.warn('Carlsen error:',e.message);}return null;}
 async function fetchFromGoogle(title,author){const queries=[`intitle:"${title}" inauthor:"${author}"`,`"${title}" "${author}"`,`intitle:"${title}"`,`${title} ${author}`];for(const q of queries){try{const res=await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&maxResults=8`);if(!res.ok)continue;const data=await res.json();if(!data.items?.length)continue;const tl=title.toLowerCase();let best=data.items[0];for(const item of data.items){const t=(item.volumeInfo.title||'').toLowerCase();if(t===tl||t.startsWith(tl)){best=item;break;}}const info=best.volumeInfo;const links=info.imageLinks||{};let cover=(links.extraLarge||links.large||links.medium||links.small||links.thumbnail||'').replace('http:','https:').replace('&edge=curl','').replace('zoom=1','zoom=3');const desc=info.description||info.subtitle||null;if(desc||cover)return{desc:trimDesc(desc),cover:cover||null,author:info.authors?.join(', ')||null,source:'Google Books'};}catch(e){console.warn('Google Books error:',e.message);}}return null;}
@@ -714,23 +594,11 @@ function createBookCard(book,user){
   const card=document.createElement('div');card.className='book-card';card.dataset.id=book.id;card.addEventListener('click',()=>openModal(book.id));
   const claims=book.claims||[];const isClaimed=user&&claims.includes(user);const lotteryDone=books.some(b=>b.winner);
   const visibleClaims=claims.slice(0,SHOW_SLOTS);const hiddenCount=claims.length-SHOW_SLOTS;
-
-  // ✅ Pill-style voter chips
-  const chips=visibleClaims.map(c=>{
-    const isWinner=book.winner===c;
-    return`<span class="slot taken${isWinner?' winner':''}">${esc(c.split(' ')[0])}${isWinner?' 🏆':''}</span>`;
-  }).join('');
+  const chips=visibleClaims.map(c=>{const isWinner=book.winner===c;return`<span class="slot taken${isWinner?' winner':''}">${esc(c.split(' ')[0])}${isWinner?' 🏆':''}</span>`;}).join('');
   const emptySlots=Array(Math.max(0,3-visibleClaims.length)).fill('<span class="slot">–</span>').join('');
-
   let btnCls='btn-claim',btnTxt='Jeg ønsker mig bogen her',dis=false;
-  if(!user){btnTxt='Gem dit navn først';dis=true;}
-  else if(isClaimed){btnCls+=' claimed';btnTxt='Fjern ønske';}
-  else if(claims.length>=MAX_CLAIMS){btnTxt='Fuld ('+MAX_CLAIMS+'/'+MAX_CLAIMS+')';dis=true;}
-
-  const claimBtn=document.createElement('button');claimBtn.className=btnCls;claimBtn.textContent=btnTxt;
-  if(dis)claimBtn.disabled=true;
-  claimBtn.addEventListener('click',e=>{e.stopPropagation();toggleClaim(book.id);});
-
+  if(!user){btnTxt='Gem dit navn først';dis=true;}else if(isClaimed){btnCls+=' claimed';btnTxt='Fjern ønske';}else if(claims.length>=MAX_CLAIMS){btnTxt='Fuld ('+MAX_CLAIMS+'/'+MAX_CLAIMS+')';dis=true;}
+  const claimBtn=document.createElement('button');claimBtn.className=btnCls;claimBtn.textContent=btnTxt;if(dis)claimBtn.disabled=true;claimBtn.addEventListener('click',e=>{e.stopPropagation();toggleClaim(book.id);});
   card.innerHTML=`
     <div class="card-cover">
       ${book.cover?`<img src="${esc(book.cover)}" alt="${esc(book.title)}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=card-cover-ph>📖</div>'">`:'<div class="card-cover-ph">📖</div>'}
@@ -744,7 +612,6 @@ function createBookCard(book,user){
       <div class="see-more-wrap"></div>
       <div class="claim-btn-wrap"></div>
     </div>`;
-
   if(hiddenCount>0){const b=document.createElement('button');b.className='btn-see-more';b.textContent='👁️ Se alle '+claims.length+' ønsker';b.addEventListener('click',e=>{e.stopPropagation();openModal(book.id);});card.querySelector('.see-more-wrap').appendChild(b);}
   if(!lotteryDone)card.querySelector('.claim-btn-wrap').appendChild(claimBtn);
   return card;
@@ -754,8 +621,7 @@ function openModal(bookId){isNewBookMode=false;currentBookId=bookId;const book=b
 function updateModalContent(book){
   const user=getUser();const img=document.getElementById('modalImg');img.src=book.cover||'';img.style.display=book.cover?'block':'none';
   document.getElementById('modalTitle').textContent=book.title;document.getElementById('modalAuthor').textContent=book.author;document.getElementById('modalDesc').textContent=book.desc||'Ingen beskrivelse.';
-  const claims=book.claims||[];
-  document.getElementById('modalClaims').innerHTML=claims.length?claims.map(c=>`<div class="claim-item${book.winner===c?' win':''}"><span>${esc(c)}</span>${book.winner===c?'<span>🏆 VINDER</span>':''}</div>`).join(''):'<p style="color:var(--muted);font-style:italic;font-size:13px;padding:6px 0">Ingen ønsker endnu</p>';
+  const claims=book.claims||[];document.getElementById('modalClaims').innerHTML=claims.length?claims.map(c=>`<div class="claim-item${book.winner===c?' win':''}"><span>${esc(c)}</span>${book.winner===c?'<span>🏆 VINDER</span>':''}</div>`).join(''):'<p style="color:var(--muted);font-style:italic;font-size:13px;padding:6px 0">Ingen ønsker endnu</p>';
   const btn=document.getElementById('modalActionButton');const isClaimed=user&&claims.includes(user);const lotteryDone=books.some(b=>b.winner);
   if(lotteryDone){btn.style.display='none';}else{btn.style.display='';if(!user){btn.textContent='Gem dit navn først';btn.disabled=true;btn.className='btn-ma';}else if(isClaimed){btn.textContent='Fjern ønske';btn.disabled=false;btn.className='btn-ma claimed';}else if(claims.length>=MAX_CLAIMS){btn.textContent='Fuld ('+MAX_CLAIMS+'/'+MAX_CLAIMS+')';btn.disabled=true;btn.className='btn-ma';}else{btn.textContent='Jeg ønsker mig bogen her';btn.disabled=false;btn.className='btn-ma';}}
   document.getElementById('newBookFields').style.display='none';document.getElementById('saveNewBookRow').style.display='none';document.getElementById('btnClearDesc').style.display='';
@@ -763,7 +629,6 @@ function updateModalContent(book){
   if(isAdminMode){adm.classList.add('active');document.getElementById('editBookFields').style.display='block';document.getElementById('searchLinks').style.display='';document.getElementById('editBookTitle').value=book.title;document.getElementById('editBookAuthor').value=book.author;document.getElementById('imageUrlInput').value='';document.getElementById('imageFileInput').value='';document.getElementById('descriptionTextarea').value=book.desc||'';document.getElementById('bookTypeSelect').value=book.type||'Voksenbog';const q=encodeURIComponent(book.title);document.getElementById('lrSearchLink').href='https://www.lindhardtogringhof.dk/soeg/'+q;document.getElementById('carlsenSearchLink').href='https://www.carlsen.dk/soeg/'+q;document.getElementById('googleImagesLink').href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(book.title+' '+book.author+' bog forside');const pl=document.getElementById('pageUrlLink');if(book.pageUrl){pl.href=book.pageUrl;pl.style.display='block';}else{pl.style.display='none';}}else{adm.classList.remove('active');document.getElementById('editBookFields').style.display='none';}
 }
 function closeModal(){if(isNewBookMode){isNewBookMode=false;tempNewBook=null;}document.getElementById('bookModal').classList.remove('active');document.body.style.overflow='';currentBookId=null;}
-
 async function uploadImageFromUrl(){const url=document.getElementById('imageUrlInput').value.trim();if(!url.startsWith('http')){toast('Ugyldig URL','err');return;}if(isNewBookMode&&tempNewBook){tempNewBook.cover=url;tempNewBook.manualCover=true;const img=document.getElementById('modalImg');img.src=url;img.style.display='block';toast('Billede-URL klar!','ok');return;}if(!currentBookId)return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.cover=url;book.manualCover=true;await saveBookToFirebase(book);const img=document.getElementById('modalImg');img.src=url;img.style.display='block';document.getElementById('imageUrlInput').value='';toast('Forside opdateret!','ok');}
 async function uploadImageFromFile(){const file=document.getElementById('imageFileInput').files[0];if(!file){toast('Vælg en fil','err');return;}if(file.size>2*1024*1024){toast('Maks 2MB','err');return;}const reader=new FileReader();reader.onload=async e=>{const dataUrl=e.target.result;if(isNewBookMode&&tempNewBook){tempNewBook.cover=dataUrl;tempNewBook.manualCover=true;const img=document.getElementById('modalImg');img.src=dataUrl;img.style.display='block';toast('Billede klar!','ok');return;}if(!currentBookId)return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.cover=dataUrl;book.manualCover=true;await saveBookToFirebase(book);const img=document.getElementById('modalImg');img.src=dataUrl;img.style.display='block';toast('Billede uploadet!','ok');};reader.readAsDataURL(file);}
 async function removeBookCover(){if(isNewBookMode&&tempNewBook){tempNewBook.cover='';tempNewBook.manualCover=false;document.getElementById('modalImg').style.display='none';toast('Billede fjernet','ok');return;}if(!currentBookId||!confirm('Fjern forsidebillede?'))return;const book=books.find(b=>b.id===currentBookId);if(!book)return;book.cover='';book.manualCover=false;await saveBookToFirebase(book);document.getElementById('modalImg').style.display='none';toast('Forside fjernet','ok');}
@@ -779,3 +644,10 @@ window.onload=init;
 </script>
 </body>
 </html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    
